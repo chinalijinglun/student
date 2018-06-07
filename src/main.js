@@ -6,8 +6,10 @@ import router from './router'
 import ElementUI from 'element-ui';
 import './style/index.css';
 import axios from 'axios';
+import selfComponents from './components';
 
 Vue.use(ElementUI);
+Vue.use(selfComponents);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
