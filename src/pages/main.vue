@@ -1,6 +1,7 @@
 <template>
     <div class="main-contain">
         <asides></asides>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -19,5 +20,6 @@
         width: 1000px;
         margin: 0 auto;
         overflow: hidden;
+        margin-top: 20px;
     }
 </style>
