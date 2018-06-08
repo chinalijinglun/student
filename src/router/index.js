@@ -5,6 +5,8 @@ import usePhone from '@/pages/regist/phone'
 import login from '@/pages/login'
 import main from '@/pages/main';
 
+import center from './center';
+
 Vue.use(Router)
 
 export default new Router({
@@ -32,11 +34,18 @@ export default new Router({
       component: login
     },
     {
-      // 个人中心
+      // 主页
       title:'首页',
       path: '/main',
       name: 'main',
       component: main,
+    },
+    {
+      title: '个人中心',
+      path: '/center',
+      component: main,
+      name: 'center',
+      children: center
     },
   ]
 })
