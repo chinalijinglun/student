@@ -7,7 +7,8 @@ import main from '@/pages/main';
 
 import center from './center';
 import data from './data';
-import preview from './preview'
+import preview from './preview';
+import homework from './homework';
 
 Vue.use(Router)
 
@@ -63,5 +64,12 @@ export default new Router({
       name: 'preview',
       children: preview
     },
+    {
+      title: '课后作业',
+      path: '/homework',
+      component: main,
+      name: 'homework',
+      children: homework
+    }
   ]
 })
