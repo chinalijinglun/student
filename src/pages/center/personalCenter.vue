@@ -78,11 +78,23 @@
                 <div class="more">更多 >></div>
             </div>
             <div class="course-details">
+                <div class="course-tit">
+                    <div class="les-name">
+                        Lesson 1 Exploring Space and Astronomy
+                    </div>
+                    
+                    <div class="times">
+                        <img src="../../assets/time.png" alt="">
+                        <span>2018-06-08  13：00-13：50</span>
+                    </div>
+                </div>
                 <div class="course-main">
                     
                     <ul class="detail-les">
+                        
                         <div class="check-homework">
-
+                            <img src="../../assets/chakanzuoye.png" alt="">
+                            查看作业
                         </div>
                     </ul>
                 </div>
@@ -259,6 +271,9 @@
         font-size: 14px;
         color: #333333;
     }
+    .detail-les{
+        padding-bottom: 27px;
+    }
     .detail-les li{
         height: 40px;
         margin-top: 20px;
@@ -290,5 +305,29 @@
     .les-rig img{
         float: left;
         margin: 13px 11px 7px 19px;
+    }
+    .les-name{
+        float: left;
+        line-height: 60px;
+        padding-left: 30px;
+        font-size: 14px;
+        color: #333333;
+    }
+    .check-homework{
+        background: #FFFFFF;
+        border: 1px solid #DCDCDC;
+        border-radius: 5px;
+        width: 120px;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 auto;
+        font-size: 14px;
+        color: #333333;
+        margin-top: 24px;
+        cursor: pointer;
+    }
+    .check-homework img{
+        float: left;
+        margin: 10px 10px 10px 17px;
     }
 </style>
