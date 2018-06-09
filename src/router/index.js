@@ -6,6 +6,7 @@ import login from '@/pages/login'
 import main from '@/pages/main';
 
 import center from './center';
+import data from './data';
 
 Vue.use(Router)
 
@@ -47,5 +48,12 @@ export default new Router({
       name: 'center',
       children: center
     },
+    {
+      title: '填写资料',
+      path: '/data',
+      component: main,
+      name: 'data',
+      children: data
+    }
   ]
 })
