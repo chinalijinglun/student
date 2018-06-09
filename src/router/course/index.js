@@ -1,5 +1,8 @@
 import date from '@/pages/course/date';
 import finished from '@/pages/course/finished';
+import homework from '@/pages/course/homework';
+import check from '@/pages/course/check';
+import ifinish from '@/pages/course/ifinish';
 
 export default [
     {
@@ -13,5 +16,23 @@ export default [
         path: 'date',
         name: 'date',
         component: date
-    }
+    },
+    {
+        name: '作业',
+        path: 'homework',
+        name: 'homework',
+        component: homework
+    },
+    {
+        name: '查看作业',
+        path: 'check',
+        name: 'check',
+        component: check
+    },
+    {
+        name: '我完成的作业',
+        path: 'ifinish',
+        name: 'ifinish',
+        component: ifinish
+    },
 ]
