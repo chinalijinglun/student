@@ -10,6 +10,7 @@ import data from './data';
 import preview from './preview';
 import homework from './homework';
 import timetable from './timetable';
+import course from './course';
 
 Vue.use(Router)
 
@@ -78,6 +79,13 @@ export default new Router({
       component: main,
       name: 'timetable',
       children: timetable
+    },
+    {
+      title: '我的课程',
+      path: '/course',
+      component: main,
+      name: 'course',
+      children: course
     }
   ]
 })
