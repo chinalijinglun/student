@@ -7,6 +7,7 @@ import main from '@/pages/main';
 
 import center from './center';
 import data from './data';
+import preview from './preview'
 
 Vue.use(Router)
 
@@ -54,6 +55,13 @@ export default new Router({
       component: main,
       name: 'data',
       children: data
-    }
+    },
+    {
+      title: '课前预习',
+      path: '/preview',
+      component: main,
+      name: 'preview',
+      children: preview
+    },
   ]
 })
