@@ -11,6 +11,8 @@ import preview from './preview';
 import homework from './homework';
 import timetable from './timetable';
 import course from './course';
+import order from './order';
+import report from './report';
 
 Vue.use(Router)
 
@@ -86,6 +88,20 @@ export default new Router({
       component: main,
       name: 'course',
       children: course
+    },
+    {
+      title: '我的订单',
+      path: '/order',
+      component: main,
+      name: 'order',
+      children: order
+    },
+    {
+      title: '成长报告',
+      path: '/report',
+      component: main,
+      name: 'report',
+      children: report
     }
   ]
 })

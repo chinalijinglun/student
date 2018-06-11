@@ -3,6 +3,8 @@ import finished from '@/pages/course/finished';
 import homework from '@/pages/course/homework';
 import check from '@/pages/course/check';
 import ifinish from '@/pages/course/ifinish';
+import review from '@/pages/course/review';
+import courseReview from '@/pages/course/courseReview'
 
 export default [
     {
@@ -34,5 +36,17 @@ export default [
         path: 'ifinish',
         name: 'ifinish',
         component: ifinish
+    },
+    {
+        name: '老师点评',
+        path: 'review',
+        name: 'review',
+        component: review
+    },
+    {
+        name: '评价老师',
+        path: 'courseReview',
+        name: 'courseReview',
+        component: courseReview
     },
 ]
