@@ -3,6 +3,10 @@
         <div class="select-bar">
             <ul class="bars">
                 <li class="active">
+                    <img class="imgs" src="@/assets/me01.png" alt="">
+                    <span>个人中心</span>
+                </li>
+                <li class="active">
                     <img class="imgs" src="@/assets/kechengbiao_h.png" alt="">
                     <span>课程表</span>
                 </li>
@@ -47,7 +51,7 @@
     }
     .select-bar{
         width: 100%;
-        height: 390px;
+        height: 450px;
         background: #fff;
     }
     .bars{

@@ -7,6 +7,9 @@ import ElementUI from 'element-ui';
 import './style/index.css';
 import axios from 'axios';
 import selfComponents from './components';
+import fullCalendar from 'vue-fullcalendar';
+
+Vue.component('full-calendar', fullCalendar)
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);

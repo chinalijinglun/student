@@ -138,8 +138,10 @@
         font-size: 14px;
         color: #666666;
         margin-top: 20px;
+        text-align: center;
     }
     .regist-now{
+        display: block;
         background: #FF8200;
         border-radius: 5px;
         width: 392px;

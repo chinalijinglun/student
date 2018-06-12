@@ -13,6 +13,7 @@ import timetable from './timetable';
 import course from './course';
 import order from './order';
 import report from './report';
+import schedule from './schedule';
 
 Vue.use(Router)
 
@@ -102,6 +103,13 @@ export default new Router({
       component: main,
       name: 'report',
       children: report
+    },
+    {
+      title: '课程表',
+      path: '/schedule',
+      component: main,
+      name: 'schedule',
+      children: schedule
     }
   ]
 })
