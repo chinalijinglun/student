@@ -4,6 +4,7 @@ import useEmail from '@/pages/regist/email'
 import usePhone from '@/pages/regist/phone'
 import login from '@/pages/login'
 import main from '@/pages/main';
+import perfect from '@/pages/perfect';
 
 import center from './center';
 import data from './data';
@@ -47,6 +48,13 @@ export default new Router({
       path: '/main',
       name: 'main',
       component: main,
+    },
+    {
+      //完善信息
+      title: '完善信息',
+      path: '/perfect',
+      name: 'perfect',
+      component: perfect
     },
     {
       title: '个人中心',

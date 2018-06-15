@@ -13,8 +13,17 @@ Vue.component('full-calendar', fullCalendar)
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
+//路由配置和拦截
+
+const baseAxios = axios.create({
+  baseURL: 'http://39.106.143.18:5000',
+  headers: { Accept: 'application/json; charset=utf-8' }
+});
+
+Vue.prototype.baseAxios = baseAxios;
+ 
 /* eslint-disable no-new */
 
 new Vue({

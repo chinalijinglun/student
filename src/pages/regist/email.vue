@@ -5,25 +5,28 @@
                 <div class="account-registration">
                     账号注册
                 </div>
-                <div class="use-phone">
-                   使用手机注册 
-                </div>
+                <router-link to="/usePhone"><div class="use-phone">
+                  使用手机注册 
+                </div></router-link> 
             </div>
             <div class="form">
                <div class="phone">
                    <div class="phone-left">
                        邮箱
                    </div>
-                   <input type="text" class="inps" placeholder="请输入您的邮箱地址">
+                   <input type="text" class="inps" placeholder="请输入您的邮箱地址" v-model="emailNum">
                </div>
                <div class="phone">
                    <div class="phone-left">
                        验证码
                    </div>
                    <div class="inps">
-                       <input type="text" class="yan-num" placeholder="请输入从邮件获取的验证码">
-                       <div class="click-btn">
-                           获取验证码
+                       <input type="text" class="yan-num" v-model="code" placeholder="请输入从邮件获取的验证码">
+                       <div class="click-btn" @click="sendAjax" v-if="sendNum">
+                           {{yzm}}
+                       </div>
+                       <div class="click-btn" v-if="seconde">
+                           {{numbers}}
                        </div>
                    </div>
                </div>
@@ -31,21 +34,21 @@
                    <div class="phone-left">
                        设置密码
                    </div>
-                   <input type="text" class="inps" placeholder="请设置登录密码（6-20位字符）">
+                   <input type="text" class="inps" v-model="secrtone" placeholder="请设置登录密码（6-20位字符）">
                </div>
                <div class="phone">
                    <div class="phone-left">
                        确认密码
                    </div>
-                   <input type="text" class="inps" placeholder="请再次输入密码">
+                   <input type="text" class="inps" v-model="secrtAgain" placeholder="请再次输入密码">
                </div>
                <div class="checkbox">
-                  <input type="checkbox">
+                  <input type="checkbox" checked>
                   <span>我已阅读并同意<span class="instructor">《UStutor用户注册协议》</span></span>
                </div>
-               <button class="regist-now">立即注册</button>
+               <button class="regist-now" @click="regists">立即注册</button>
                <div class="login">
-                   <span>已有账号？<span class="instructor">请登录</span></span>
+                   <span>已有账号？<router-link to="/login"><span class="instructor">请登录</span></router-link></span>
                </div>
             </div>
         </div>
@@ -55,10 +58,88 @@
 <script>
     export default {
         name: 'phone',
+        data(){
+            return {
+                emailNum: '',
+                yzm:'获取验证码',
+                sendNum: true,
+                seconde: false,
+                numbers: 60,
+                secrtone: '',
+                secrtAgain: '',
+                code: ''
+            };
+        },
+        created(){
+            // this.sendAjax();
+        },
+        methods: {
+            // 获取验证码
+            sendAjax(){
+               var that = this;
+                //验证邮箱格式是否正确
+               var filter  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+                if (!filter.test(that.emailNum)){
+                     alert('您的电子邮件格式不正确');
+                     return false;
+                }
+                //获取验证码（邮箱）
+               this.baseAxios.post('auth/emailverify',{
+                   "email_address": that.emailNum
+               })
+               .then(function(response) {
+                   that.sendNum = false;
+                   that.seconde = true;
+                   //倒计时
+                   var timer = setInterval(function(){
+                        if(that.numbers>1){
+                           that.numbers--;
+                        }else{
+                            that.sendNum = true;
+                            that.seconde = false;
+                            that.numbers = 60;
+                            clearInterval(timer);
+                        }
+                    },1000)
+                    // console.log(response)
+                })
+                .catch(function(response) {
+                    console.log(response);
+                });
+            },
+            // 注册
+            regists(){
+                var that = this;
+                if (!that.code) {
+                    alert('请输入验证码！');
+                    return false;
+                }
+                if (that.secrtone.length>0&&(that.secrtone == that.secrtAgain)) {
+                    //提交注册
+                    this.baseAxios.post('auth/register',{
+                        "password": that.secrtone,
+                        "username": that.emailNum,
+                        "usertype": "Student",
+                        "verify_code": that.code
+                    })
+                    .then(function(res){
+                        console.log(res)
+                    })
+                    .catch(function(res){
+
+                    })
+                }else{
+                    alert('密码长度不正确或者密码前后不一致，请重新输入！');
+                }
+            }
+        }
     }
 </script>
 
 <style scoped>
+    a{
+        text-decoration: none;
+    }
     .main-contain{
         width: 830px;
         height: 600px;
