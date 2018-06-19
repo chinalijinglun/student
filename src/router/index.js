@@ -5,6 +5,7 @@ import usePhone from '@/pages/regist/phone'
 import login from '@/pages/login'
 import main from '@/pages/main';
 import perfect from '@/pages/perfect';
+import fillInformation from '@/pages/fillInformation';
 
 import center from './center';
 import data from './data';
@@ -55,6 +56,13 @@ export default new Router({
       path: '/perfect',
       name: 'perfect',
       component: perfect
+    },
+    {
+      //填写资料
+      title: '填写资料',
+      path: '/fillInformation',
+      name: 'fillInformation',
+      component: fillInformation
     },
     {
       title: '个人中心',
