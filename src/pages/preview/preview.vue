@@ -99,7 +99,25 @@
 
 <script>
     export default {
-        
+        data(){
+          return {
+
+          }
+        },
+        created(){
+          this.findCourse();
+        },
+        methods: {
+          //查询所有课程信息
+          findCourse(){
+            const that = this;
+            this.baseAxios.get('/api/v1/course',
+              {'q':JSON.stringify({"filters":[{"name":"id","op":"gt","val":3}]})})
+              .then(function (data) {
+              console.log(data)
+            })
+          }
+        }
     }
 </script>
 
@@ -214,7 +232,7 @@
     }
     .les-lef{
         float: left;
-        padding-left: 30px; 
+        padding-left: 30px;
     }
     .les-lef img{
         margin: 15px 12px 15px 0;
@@ -233,7 +251,7 @@
         float: right;
         font-size: 14px;
         color: #333333;
-        margin-right: 20px; 
+        margin-right: 20px;
     }
     .les-rig img{
         float: left;

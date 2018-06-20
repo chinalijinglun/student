@@ -31,11 +31,11 @@
                 mobile_no: '',
                 passwd: ''
             }
-            
+
         },
         methods:{
             login(){
-                var that = this;
+               var that = this;
                 //验证手机格式是否正确
                var filter1  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
                //验证邮箱格式是否正确
@@ -49,13 +49,15 @@
                          })
                          .then(function(res){
                             //  存储token
+//                           console.log(res)
                              localStorage.setItem('Authorization',res.data.Authorization)
+                             localStorage.setItem('id',res.data.id)
                              that.$router.push({
                                 path:'/center/personal'
                              })
                          })
                          .catch(function(res){
-
+                            alert('账号或密码错误，请重新输入')
                          })
                      }
                 }else{
