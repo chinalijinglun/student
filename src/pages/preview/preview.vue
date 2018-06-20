@@ -98,6 +98,7 @@
 </template>
 
 <script>
+  import json2filter from '../../utils/index'
     export default {
         data(){
           return {
@@ -108,14 +109,16 @@
           this.findCourse();
         },
         methods: {
-          //查询所有课程信息
+
+
+    //查询所有课程信息
           findCourse(){
+            var filter = [{"name":"id","op":"gt","val":9}];
             const that = this;
-            this.baseAxios.get('/api/v1/course',
-              {'q':JSON.stringify({"filters":[{"name":"id","op":"gt","val":3}]})})
+            this.baseAxios.get('/api/v1/course',{params:{q:JSON.stringify({filters:filter})}})
               .then(function (data) {
-              console.log(data)
-            })
+                console.log(data)
+              })
           }
         }
     }
