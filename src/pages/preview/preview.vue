@@ -5,85 +5,31 @@
                 <div class="tit-lef">一周内要的上课</div>
                 <div class="more"></div>
             </div>
-            <div class="course-details">
+            <div class="course-details" v-for="item in course">
                 <div class="course-tit">
                     <div class="eslji">
-                        ESL英语综合提升中级
+                        {{item.course_name}}
                     </div>
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
+                        <span>{{item.created_at}}</span>
                     </div>
                 </div>
                 <div class="course-main">
                     <div class="lesson">
                         <div class="lesson-name">
-                            Lesson 1 Exploring Space and Astronomy
+                            {{item.course_desc}}
                         </div>
                         <div class="teacher">
-                            <img src="../../assets/logo.png" alt="">
-                            <span>Kira Yuan</span>
+                            <img :src="item.assist_teacher?item.assist_teacher.avatar:''" alt="">
+                            <span>{{item.assist_teacher?item.assist_teacher.nickname:''}}</span>
                         </div>
                     </div>
-                    <ul class="detail-les">
+                    <ul class="detail-les" v-for="wares in item.course_wares">
                         <li>
                             <div class="les-lef">
                                 <img src="../../assets/dian_01.png" alt="">
-                                <span>Exploring Space and Astronomy</span>
-                            </div>
-                            <div class="les-rig">
-                                <img src="../../assets/yulan.png" alt="">
-                                <span>预览课件</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="les-lef">
-                                <img src="../../assets/dian_01.png" alt="">
-                                <span>Exploring Space and Astronomy</span>
-                            </div>
-                            <div class="les-rig">
-                                <img src="../../assets/yulan.png" alt="">
-                                <span>预览课件</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="course-details">
-                <div class="course-tit">
-                    <div class="eslji">
-                        ESL英语综合提升中级
-                    </div>
-                    <div class="times">
-                        <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
-                    </div>
-                </div>
-                <div class="course-main">
-                    <div class="lesson">
-                        <div class="lesson-name">
-                            Lesson 1 Exploring Space and Astronomy
-                        </div>
-                        <div class="teacher">
-                            <img src="../../assets/logo.png" alt="">
-                            <span>Kira Yuan</span>
-                        </div>
-                    </div>
-                    <ul class="detail-les">
-                        <li>
-                            <div class="les-lef">
-                                <img src="../../assets/dian_01.png" alt="">
-                                <span>Exploring Space and Astronomy</span>
-                            </div>
-                            <div class="les-rig">
-                                <img src="../../assets/yulan.png" alt="">
-                                <span>预览课件</span>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="les-lef">
-                                <img src="../../assets/dian_01.png" alt="">
-                                <span>Exploring Space and Astronomy</span>
+                                <span>{{wares.ware_desc}}</span>
                             </div>
                             <div class="les-rig">
                                 <img src="../../assets/yulan.png" alt="">
@@ -94,30 +40,64 @@
                 </div>
             </div>
         </div>
+      <div class="pagin">
+        <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
 </template>
 
 <script>
-  import json2filter from '../../utils/index'
+  import dataFmt from '../../utils/time';
+
+  /**
+   * 课前预习
+   */
     export default {
         data(){
           return {
-
+              course:[],//课程列表
+              paginations: {
+                totalPage:0,
+                page_size: 2,
+              },
+              dateCourse:7,//几天内的课程
           }
         },
         created(){
-          this.findCourse();
+          this.changeDate();
+          this.findCourse(1);
         },
         methods: {
-
-
-    //查询所有课程信息
-          findCourse(){
-            var filter = [{"name":"id","op":"gt","val":9}];
+          handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+          },
+          handleCurrentChange(val) {
             const that = this;
-            this.baseAxios.get('/api/v1/course',{params:{q:JSON.stringify({filters:filter})}})
+            that.findCourse(val)
+          },
+          //几天内的课程
+          changeDate(){
+            var that = this;
+            var myDate = new Date(); //获取今天日期
+            myDate.setDate(myDate.getDate() + that.dateCourse);
+            that.dataCourse = dataFmt(myDate);
+          },
+          //查询所有课程信息
+          findCourse(page){
+            const that = this;
+            const filter =[{'name':'id','op':'eq','val':localStorage.getItem('id')}];
+//            const filter =[{'name':'created_at','op':'gt','val':dataFmt(new Date())},{'name':'created_at','op':'lt','val':that.dataCourse}];
+            this.baseAxios.get(`/api/v1/course?page=${page}&results_per_page=2`,{params:{q:JSON.stringify({filters:filter})}})
               .then(function (data) {
-                console.log(data)
+                  that.paginations.totalPage = data.data.total_pages;
+                  const course = data.data.objects;
+                  course.map((value)=>{
+                    if(value.created_at >dataFmt(new Date())|| value.created_at<that.changeDate()){
+                      that.course.push(value);
+                    }
+                  })
+
               })
           }
         }

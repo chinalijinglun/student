@@ -14,16 +14,16 @@
                     <div class="les-name">
                         Lesson 1 Exploring Space and Astronomy
                     </div>
-                    
+
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
                         <span>2018-06-08  13：00-13：50</span>
                     </div>
                 </div>
                 <div class="course-main">
-                    
+
                     <ul class="detail-les">
-                        
+
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
                             查看作业
@@ -44,8 +44,43 @@
 </template>
 
 <script>
-    export default {
-        
+  /**
+   * 调homework，通过本地存个学生id，去study_schedule获取homework，1是未，2是完成
+   */
+  export default {
+        data(){
+          return{
+            finish:[]
+          }
+        },
+        created(){
+          this.gethomework();
+        },
+        methods:{
+          getHomeworkFinsh(){
+            const that = this;
+            this.baseAxios.get('/api/v1/study_schedule',{params:{q:JSON.stringify({id:1})}})
+              .then(function (data) {
+                const homeFinsh = data.data;
+//                homeFinsh.objects.map((value)=>console.log(value))
+                homeFinsh.objects.map((value)=>
+                  value.homeworks.map((vvv)=>{
+                    if(vvv.homework_type == 2){
+                      that.finish.push(vvv)
+                    }}
+                  )
+                )
+              })
+          },
+          gethomework(){
+            const that = this;
+            const filter =[{'name':'id','op':'eq','val':1}];
+            this.baseAxios.get('/api/v1/course',{params:{q:JSON.stringify({filters:filter})}})
+              .then((data)=>{
+              console.log(data)
+              })
+          }
+        }
     }
 </script>
 
@@ -84,7 +119,7 @@
         padding: 0 30px;
         padding-bottom: 20px;
     }
-    
+
     .course-details{
         width: 100%;
     }
