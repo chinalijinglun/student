@@ -2,91 +2,85 @@
     <div class="will-completed">
         <div class="tab">
             <div class="completed click">
-                待完成作业
+              <router-link to="/homework/willCompleted">待完成作业</router-link>
             </div>
             <div class="finish">
-                已完成作业
+                <router-link to="/homework/finish">已完成作业</router-link>
             </div>
         </div>
-        <div class="mid">
+        <div class="mid" v-for="item in finish">
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
-                        Lesson 1 Exploring Space and Astronomy
+                       {{item.course_name}}
                     </div>
-                    
+
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
+                        <span>{{item.created_at}}</span>
                     </div>
                 </div>
                 <div class="course-main">
-                    
+
                     <ul class="detail-les">
-                        
+
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
+                          <a :href="item.question_attachment_url">查看作业</a>
                         </div>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="mid">
-            <div class="course-details">
-                <div class="course-tit">
-                    <div class="les-name">
-                        Lesson 1 Exploring Space and Astronomy
-                    </div>
-                    
-                    <div class="times">
-                        <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
-                    </div>
-                </div>
-                <div class="course-main">
-                    
-                    <ul class="detail-les">
-                        
-                        <div class="check-homework">
-                            <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
-                        </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="mid">
-            <div class="course-details">
-                <div class="course-tit">
-                    <div class="les-name">
-                        Lesson 1 Exploring Space and Astronomy
-                    </div>
-                    
-                    <div class="times">
-                        <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
-                    </div>
-                </div>
-                <div class="course-main">
-                    
-                    <ul class="detail-les">
-                        
-                        <div class="check-homework">
-                            <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
-                        </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      <div class="pagin">
+        <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
 </template>
 
 <script>
-    export default {
-        
+  export default {
+    data(){
+      return{
+        paginations: {
+          totalPage: 10,
+          page_size: 10,
+        },
+        finish:[]
+      }
+    },
+    created(){
+      this.gethomework(1);
+    },
+    methods:{
+      gethomework(page){
+        const that = this;
+        this.baseAxios1.post('/student/my_homework',{
+          "page_limit": 10,
+          "page_no": page
+        })
+          .then((data)=>{
+            const finsh = data.data.objects;
+            finsh.map((val)=>{
+              //查找未完成为1的
+              if(val.homework_type == 1){
+                that.finish.push(val);
+                console.log(that.finish)
+              }
+            })
+          })
+      },
+      handleSizeChange(val) {
+        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        const that = this;
+        that.finish = [];
+        that.gethomework(val)
+      }
     }
+  }
 </script>
 
 <style scoped>
@@ -124,7 +118,7 @@
         padding: 0 30px;
         padding-bottom: 20px;
     }
-    
+
     .course-details{
         width: 100%;
     }

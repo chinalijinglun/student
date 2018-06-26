@@ -1,36 +1,34 @@
 <template>
     <div class="finish">
         <div class="tab">
-            <div class="completed click">
-                待完成作业
+            <div class="completed">
+              <router-link to="/homework/willCompleted">待完成作业</router-link>
             </div>
-            <div class="finishs">
-                已完成作业
+            <div class="finishs click">
+              <router-link to="/homework/finish">已完成作业</router-link>
             </div>
         </div>
-        <div class="mid">
+        <div class="mid" v-for="item in finish">
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
-                        Lesson 1 Exploring Space and Astronomy
+                       {{item.course_name}}
                     </div>
 
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
+                        <span>{{item.created_at}}</span>
                     </div>
                 </div>
                 <div class="course-main">
-
                     <ul class="detail-les">
-
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
+                            <a :href="item.question_attachment_url">查看作业</a>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/xiugaizuoye.png" alt="">
-                            修改作业
+                            <span @click="openAlert(item.id)">修改作业</span>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/dianping.png" alt="">
@@ -40,45 +38,120 @@
                 </div>
             </div>
         </div>
+        <div class="homework_alert" ref="alert">
+             <div class="homework_all">
+                <span>
+              <label for="">标题</label>
+              <input type="text" v-model="fujian.title">
+              </span>
+               <span>
+              <label for="">描述</label>
+              <textarea v-model="fujian.textarea"></textarea>
+              </span>
+               <span>
+              <label for="">附件</label>
+              <input type="file" @change="updateFile">
+              </span>
+               <div class="btn">
+                 <button @click="submitHomework">确定</button>
+                 <button @click="noneAlert">取消</button>
+               </div>
+             </div>
+        </div>
+      <div class="pagin">
+        <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
 </template>
 
 <script>
   /**
    * 调homework，通过本地存个学生id，去study_schedule获取homework，1是未，2是完成
+   * 查看作业是查看老师留的question_attachment_url，
+   * 修改作业是重新上传自己的作业
+   * 查看点评是看成长报告的详情
+   *
+   * 离下逻辑，想要修改，用homework put，file在onchage时就提交了
    */
   export default {
         data(){
           return{
-            finish:[]
+            paginations: {
+              totalPage: 10,
+              page_size: 10,
+            },
+            finish:[],
+            fujian:[],
+            id:'',
+            url:''
           }
         },
         created(){
-          this.gethomework();
+          this.gethomework(1);
         },
         methods:{
-          getHomeworkFinsh(){
+          gethomework(page){
             const that = this;
-            this.baseAxios.get('/api/v1/study_schedule',{params:{q:JSON.stringify({id:1})}})
-              .then(function (data) {
-                const homeFinsh = data.data;
-//                homeFinsh.objects.map((value)=>console.log(value))
-                homeFinsh.objects.map((value)=>
-                  value.homeworks.map((vvv)=>{
-                    if(vvv.homework_type == 2){
-                      that.finish.push(vvv)
-                    }}
-                  )
-                )
+              this.baseAxios1.post(`/student/my_homework`,{
+                "page_limit": 10,
+                "page_no": page
+              })
+              .then((data)=>{
+                const finsh = data.data.objects;
+//                that.paginations.totalPage = finsh.total_pages;
+                finsh.map((val)=>{
+                  if(val.homework_type == 1){
+                    that.finish.push(val);
+                  }
+                })
               })
           },
-          gethomework(){
+          //打开弹窗
+          openAlert(id){
             const that = this;
-            const filter =[{'name':'id','op':'eq','val':1}];
-            this.baseAxios.get('/api/v1/course',{params:{q:JSON.stringify({filters:filter})}})
-              .then((data)=>{
+            this.$refs.alert.style.display='block';
+            that.id = id;
+          },
+          //关闭弹窗
+          noneAlert(){
+            const that = this;
+            that.fujian=[];
+            that.id = '';
+            this.$refs.alert.style.display='none'
+          },
+          //上传附件e
+          updateFile(e){
+            const that = this,
+                  file = e.target.files[0];
+                  that.fujian.param = new FormData();
+                  that.fujian.param.append('file',file);
+                  //console.log(that.fujian.param.get('file'))
+            this.baseAxios1.post('/upload',that.fujian.param).then((data)=>{
+              const url = data.data[0].download_file;
+                if(url){
+                that.url =location.origin+url;
+                this.$refs.alert.style.display='none';
+                }
+            })
+          },
+          //提交作业
+          submitHomework(){
+            const that = this;
+            that.baseAxios.put("/api/v1/homework/"+that.id,{
+              "answer_attachment_url": that.url,
+              "answer_text":that.fujian.title
+            }).then((data)=>{
               console.log(data)
-              })
+            })
+          },
+          handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+          },
+          handleCurrentChange(val) {
+            const that = this;
+            that.finish = [];
+            that.gethomework(val)
           }
         }
     }
@@ -186,5 +259,54 @@
     .check-homework img{
         float: left;
         margin: 10px 10px 10px 17px;
+    }
+    .homework_alert{
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top:0;
+      left:0;
+      display: none;
+      overflow: hidden;
+      background-color: rgba(0,0,0,.6);
+    }
+    .homework_all{
+      padding: 15px;
+      background-color: #FFFFFF;
+      width: 480px;
+      height: 320px;
+      position: absolute;
+      top:50%;
+      left: 50%;
+      margin-left: -255px;
+      margin-top: -175px;
+    }
+    .homework_all span{
+      width: 100%;
+      display: block;
+      margin: 15px 0;
+    }.homework_all span label{
+       margin:0 25px;
+     }
+    .homework_all span input[type='text']{
+      width: 70%;
+      border-radius: 3px;
+      border:1px solid #bbbbbb;
+      height: 35px;
+    }
+    .homework_all span textarea{
+      width: 335px;
+      border-radius: 3px;
+      border:1px solid #bbbbbb;
+      height: 135px;
+      vertical-align: text-top;
+    }
+    .btn{
+      text-align: center;
+    }
+    .btn button{
+      width: 40px;
+      height: 25px;
+      margin-right: 10px;
     }
 </style>

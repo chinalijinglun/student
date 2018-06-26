@@ -19,11 +19,22 @@ Vue.config.productionTip = false;
 
 const baseAxios = axios.create({
   baseURL: 'http://39.106.143.18:5000',
-  headers: { Accept: 'application/json; charset=utf-8' }
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+const baseAxios1 = axios.create({
+  baseURL: 'http://39.106.143.18:5000',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.getItem('Authorization')
+  }
 });
 
 Vue.prototype.baseAxios = baseAxios;
- 
+Vue.prototype.baseAxios1 = baseAxios1;
+
 /* eslint-disable no-new */
 
 new Vue({

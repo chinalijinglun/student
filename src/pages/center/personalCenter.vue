@@ -2,7 +2,7 @@
   <div class="personal">
     <div class="top">
       <div class="top-lef">
-        <img src="../../assets/logo.png" alt="">
+        <img :src="avatar" alt="">
       </div>
       <div class="top-rig">
         <div class="student-mess">
@@ -106,22 +106,19 @@
 <script>
   /**
    * homework_type,1：教师留作业，2：学生完成作业
-   * '学习状态，1：进行中，2：已经学完'
+   * study_state'学习状态，1：进行中，2：已经学完'
    * 待完成的任务：
    * 1、课件没找到
    * 2、homework找代做的。
    * 时间
+   * 1、个人中心缺个剩余课时
+   * 2、
    */
   export default {
     created() {
       this.getUserName();
       this.getCourseDetail();
-      this.getHomework();
-      this.changeId();
-      this.$nextTick(() => {
-        this.changeId();
-        console.log(this.subject)
-      })
+      this.willHomework();
     },
     data() {
       return {
@@ -136,7 +133,7 @@
     methods: {
       //获取用户信息
       getUserName() {
-        var that = this;
+        const that = this;
         this.baseAxios.get('/api/v1/student/' + localStorage.getItem('id'))
           .then(function (data) {
             const dataUser = data.data;
@@ -148,19 +145,21 @@
       ,
       //获取课程内容
       getCourseDetail() {
-        var that = this;
-        this.baseAxios.get('api/v1/study_schedule', {"id": localStorage.getItem('id')})
+        const that = this;
+        const filter =[{'name':'student_id','op':'eq','val':localStorage.getItem('id')}];
+        this.baseAxios.get('api/v1/study_schedule', {params:{q:JSON.stringify({filters:filter})}})
           .then(function (data) {
-            const studeyState = data.data.objects;
-            studeyState.map(function (value, key) {
-              if (value.study_state == 2) {
-                that.schedule.push(value);
-              }
-            });
-            //通过获取到的学习中状态的id，去获取课程
-            for (let i = 0; i < that.schedule.length; i++) {
-              that.getCourseName(that.schedule[i].id)
-            }
+//            console.log(data)
+//            const studeyState = data.data.objects;
+//            studeyState.map(function (value, key) {
+//              if (value.study_state == 2) {
+//                that.schedule.push(value);
+//              }
+//            });
+//            //通过获取到的学习中状态的id，去获取课程
+//            for (let i = 0; i < that.schedule.length; i++) {
+//              that.getCourseName(that.schedule[i].id)
+//            }
 
           })
       },
@@ -172,21 +171,6 @@
             const Course = data.data;
             that.subject.push(Course);
           })
-      },
-      getCoursewase() {
-        const that = this;
-        this.baseAxios.get('/api/v1/courseware/1',)
-          .then(function (data) {
-            }
-          )
-      },
-      //查作业
-      getHomework() {
-        const that = this;
-        this.baseAxios.get('api/v1/homework/1').then(
-          function (data) {
-          }
-        )
       },
       //根据study_schedule的homework放进和course一样的id
       changeId() {
@@ -204,6 +188,17 @@
               }
             }
           },500);
+      },
+      //待做的作业
+      willHomework(){
+        const that =this;
+        this.baseAxios1.post('/student/my_homework',{
+//          "homework_state": "0",
+          "page_limit": 10,
+          "page_no": 1
+        }).then((data)=>{
+          console.log(data)
+        })
       }
     }
   }
