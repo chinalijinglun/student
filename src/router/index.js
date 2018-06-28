@@ -6,6 +6,7 @@ import login from '@/pages/login'
 import main from '@/pages/main';
 import perfect from '@/pages/perfect';
 import fillInformation from '@/pages/fillInformation';
+import index from '@/pages/index';
 
 import center from './center';
 import data from './data';
@@ -21,6 +22,12 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      title: '首页',
+      path: '/index',
+      name: 'index',
+      component: index
+    },
     //注册
     //邮箱注册
     {
