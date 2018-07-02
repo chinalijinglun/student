@@ -1,44 +1,46 @@
 <template>
     <div class="finish">
         <div class="mid-tit">
-            <div class="tit-lef">待完成的作业</div>
+            <div class="tit-lef">{{course.courseName}}</div>
             <div class="more">
                 <img src="../../assets/fanhui.png" alt="">
-                返回
+                <router-link to="timetable/timetable">返回</router-link>
             </div>
         </div>
         <div class="process">
-            <span>教师：Kira Yuan</span>
-            <span class="state"> 进度：01/10</span>
+            <span>教师：{{course.teacherName}}</span>
+            <span class="state"> 进度：{{course.finish}}/{{course.ifinish}}</span>
         </div>
         <div class="tab">
             <div class="completed">
+              <router-link :to="{ path:'/course/date', query: { 'id': id }}">
                 已约课程
+              </router-link>
             </div>
             <div class="finishs click">
                 已上课程
             </div>
         </div>
         <div class="mid">
-            
-            <div class="course-details">
+
+            <div class="course-details" v-for="item in fenye[index]">
                 <div class="course-tit">
                     <div class="les-name">
-                        Lesson 1 Exploring Space and Astronomy
+                        {{item.name}}
                     </div>
-                    
+
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
-                        <span>2018-06-08  13：00-13：50</span>
+                        <span>{{item.end}}</span>
                     </div>
                 </div>
                 <div class="course-main">
-                    
+
                     <ul class="detail-les">
-                        
+
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
+                            <router-link :to="{ path:'/course/homework', query:{id:item.id}}">查看作业</router-link>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/huifang.png" alt="">
@@ -52,12 +54,102 @@
                 </div>
             </div>
         </div>
+      <div class="pagin">
+        <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
 </template>
 
 <script>
+  import fmtDate from '../../utils/time';
+
     export default {
-        
+        data(){
+          return {
+            id:this.$route.query.id,
+            paginations: {
+              totalPage:0,
+              page_size: 10,
+            },
+            course:{
+              teacherName:"",
+              courseName:"",
+              finish:'',
+              ifinish:''
+            },
+            finish:[],
+            fenye:[],
+            index:'0' //分页的
+          }
+        },
+        created(){
+          this.getIdData();
+          this.getNameother();
+        },
+        mounted(){
+
+        },
+        methods:{
+          handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+          },
+          handleCurrentChange(val) {
+            const that = this;
+            console.log(val)
+            that.index = val - 1;
+          },
+          //获取数据
+          getIdData(){
+            const that = this;
+            this.baseAxios1.post('/student/schedule',{
+              "course_id": that.id,
+              "page_limit": 1000,
+              "page_no": 1
+            }).then((data)=>{
+              const overDate = data.data.objects;
+              overDate.map((val)=>{
+                if(fmtDate(new Date())> val.end){
+                  that.finish.push(val);
+                  that.paginations.totalPage = that.finish.length;
+
+                }
+              })
+              that.fenye = that.sliceArray(that.finish,10);
+              console.log(that.fenye);
+            })
+          },
+          //获取教师名字和其他
+          getNameother(){
+            const that= this;
+            this.baseAxios1.post('/student/my_course',{
+              "course_id": that.id,
+              "page_limit": 1,
+              "page_no": 1
+            }).then((data)=>{
+              const detail = data.data.objects[0];
+              that.course.teacherName = detail.nickname;
+              that.course.courseName = detail.course_name;
+              that.course.ifinish = detail.classes_number;
+              that.course.finish = detail.finish;
+            })
+          },
+          //分割数组
+          sliceArray(array, size) {
+            var result = [];
+            for (var x = 0; x < Math.ceil(array.length / size); x++) {
+              var start = x * size;
+              var end = start + size;
+              result.push(array.slice(start, end));
+            }
+            return result;
+          }
+        },
+        watch: {
+          // 如果路由有变化，会再次执行该方法
+          "$route": "getIdData",
+
+        }
     }
 </script>
 
@@ -96,7 +188,7 @@
         padding: 0 30px;
         padding-bottom: 20px;
     }
-    
+
     .course-details{
         width: 100%;
     }

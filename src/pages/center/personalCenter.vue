@@ -43,8 +43,8 @@
               {{item.course_desc}}
             </div>
             <div class="teacher">
-              <img :src="subject[0]?subject[0].assist_teacher.avatar:''" alt="">
-              <span>{{item.primary_teacher.nickname}}</span>
+              <img :src="item.avatar?item.avatar:''" alt="">
+              <span>{{item.nickname}}</span>
             </div>
           </div>
           <ul class="detail-les">
@@ -77,7 +77,7 @@
         <div class="tit-lef">待完成的作业</div>
         <div class="more">更多 >></div>
       </div>
-      <div class="course-details" v-for="item in subject">
+      <div class="course-details" v-for="item in homework">
         <div class="course-tit">
           <div class="les-name">
             {{item.course_name}}
@@ -94,7 +94,9 @@
 
             <div class="check-homework">
               <img src="../../assets/chakanzuoye.png" alt="">
-              查看作业
+              <router-link :to="item.question_attachment_url">
+                查看作业
+              </router-link>
             </div>
           </ul>
         </div>
@@ -108,16 +110,13 @@
    * homework_type,1：教师留作业，2：学生完成作业
    * study_state'学习状态，1：进行中，2：已经学完'
    * 待完成的任务：
-   * 1、课件没找到
-   * 2、homework找代做的。
-   * 时间
    * 1、个人中心缺个剩余课时
-   * 2、
+   * 2、课程下面没有挂对应的课件
    */
   export default {
     created() {
       this.getUserName();
-      this.getCourseDetail();
+      this.getMycourse();
       this.willHomework();
     },
     data() {
@@ -126,8 +125,8 @@
         id: "",
         age: "",
         avatar: "",
-        schedule: [],//课程id
         subject: [],//课程
+        homework:[]//作业
       }
     },
     methods: {
@@ -141,63 +140,29 @@
             that.id = dataUser.id;
             that.avatar = dataUser.avatar;
           })
-      }
-      ,
-      //获取课程内容
-      getCourseDetail() {
-        const that = this;
-        const filter =[{'name':'student_id','op':'eq','val':localStorage.getItem('id')}];
-        this.baseAxios.get('api/v1/study_schedule', {params:{q:JSON.stringify({filters:filter})}})
-          .then(function (data) {
-//            console.log(data)
-//            const studeyState = data.data.objects;
-//            studeyState.map(function (value, key) {
-//              if (value.study_state == 2) {
-//                that.schedule.push(value);
-//              }
-//            });
-//            //通过获取到的学习中状态的id，去获取课程
-//            for (let i = 0; i < that.schedule.length; i++) {
-//              that.getCourseName(that.schedule[i].id)
-//            }
+      },
 
-          })
-      },
-      //根据课程内容id查对应课程名称
-      getCourseName(id) {
-        var that = this;
-        this.baseAxios.get('api/v1/course/' + id)
-          .then(function (data) {
-            const Course = data.data;
-            that.subject.push(Course);
-          })
-      },
-      //根据study_schedule的homework放进和course一样的id
-      changeId() {
-        const that = this,
-          schedule = this.schedule,
-          subject = this.subject;
-          //循环开始
-          setTimeout(function () {
-            for (let i = 0; i < schedule.length; i++) {
-              for(let j = 0 ; j<subject.length;j++){
-                if(schedule[i].id == subject[j].id){
-                  subject[j].homeworks = schedule[i].homeworks;
-//                  this.homeworks = schedule[i].homeworks;
-                }
-              }
-            }
-          },500);
+      //获取课程内容
+      getMycourse(){
+        const that = this;
+        this.baseAxios1.post('/student/my_course',{
+          "page_limit": 1,
+          "page_no": 1,
+          "course_status": "2" //没上完的课
+        }).then((data)=>{
+            that.subject =data.data.objects;
+            console.log(that.subject)
+        })
       },
       //待做的作业
       willHomework(){
         const that =this;
         this.baseAxios1.post('/student/my_homework',{
-//          "homework_state": "0",
-          "page_limit": 10,
-          "page_no": 1
+          "page_limit": 1,
+          "page_no": 1,
+          "homework_state": "0"
         }).then((data)=>{
-          console.log(data)
+          that.homework = data.data.objects;
         })
       }
     }

@@ -6,34 +6,12 @@
                     <img class="imgs center" :src=items.img alt="">
                     <span>{{items.name}}</span>
                 </li>
-                <!-- <li class="active">
-                    <img class="imgs" src="@/assets/kechengbiao_h.png" alt="">
-                    <span>课程表</span>
-                </li>
-                <li class="active">
-                    <img class="imgs" src="@/assets/yuxi_h.png" alt="">
-                    <span>课前预习</span>
-                </li>
-                <li class="active">
-                    <img class="imgs" src="@/assets/zuoye_h.png" alt="">
-                    <span>课后作业</span>
-                </li>
-                <li class="active">
-                    <img class="imgs" src="@/assets/kecheng_h.png" alt="">
-                    <span>我的课程</span>
-                </li>
-                <li class="active">
-                    <img class="imgs" src="@/assets/dingdan_h.png" alt="">
-                    <span>我的订单</span>
-                </li>
-                <li class="active">
-                    <img class="imgs" src="@/assets/chengzhang_h.png" alt="">
-                    <span>成长报告</span>
-                </li> -->
             </ul>
         </div>
         <div class="wenti">
-
+          <router-link to="/report/question">
+          <img src="../assets/wenti.png" alt="" class="img">
+          </router-link>
         </div>
     </div>
 </template>
@@ -114,9 +92,12 @@
         margin: 20px;
     }
     .wenti{
+      width: 180px;
+      height: 102px;
+      margin-top: 20px;
+    }
+    .wenti img{
         width: 180px;
         height: 102px;
-        background: url('../assets/wenti.png');
-        margin-top: 20px;
     }
 </style>

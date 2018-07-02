@@ -14,27 +14,27 @@
             </span>
             <span class="state">2018.04.30 13:00 - 13:50</span>
         </div>
-        
+
         <div class="mid">
-            
-            <div class="course-details">
+
+            <div class="course-details" v-for="item in homework">
                 <div class="course-tit">
                     <div class="les-name">
                         <img src="../../assets/dian_01.png" alt="">
-                          Exploring Space and Astronomy 作业名称
+                         {{item.question_name}}
                     </div>
-                    
+
                     <div class="times">
                         <span>Homework</span>
                     </div>
                 </div>
                 <div class="course-main">
-                    
+
                     <ul class="detail-les">
-                        
+
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
+                          <a :href=item.question_attachment_url>查看作业</a>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/dianping.png" alt="">
@@ -53,7 +53,30 @@
 
 <script>
     export default {
-        
+        data(){
+          return{
+            id:this.$route.query.id,
+            homework:[]
+          }
+        },
+        created(){
+          this.getHomework()
+        },
+        methods:{
+          //获取小课的homework
+          getHomework(){
+            const that = this;
+            this.baseAxios1.post('/student/my_homework',{
+              "study_schedule_id": this.$route.query.id,
+              "page_limit": 1000,
+              "page_no": 1
+            })
+            .then((data)=>{
+              const backdata = data.data.objects;
+              that.homework = backdata;
+            })
+          }
+        }
     }
 </script>
 
@@ -92,7 +115,7 @@
         padding: 0 30px;
         padding-bottom: 20px;
     }
-    
+
     .course-details{
         width: 100%;
     }

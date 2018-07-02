@@ -64,7 +64,7 @@
 
 <script>
   /**
-   * 差个老师的查询条件
+   * 完事 6月27日16：50
    */
   export default {
     data() {
@@ -125,6 +125,9 @@
         };
         if(that.formInline.classname != ''){
           bbb.course_name =that.formInline.classname
+        }
+        if(that.formInline.teachername != ''){
+          bbb.teacher_name =that.formInline.teachername
         }
         if(that.time[0] != undefined){
           bbb.created_at_start =that.time[0]
