@@ -4,7 +4,7 @@
             <div class="tit-lef">{{course.courseName}}</div>
             <div class="more">
                 <img src="../../assets/fanhui.png" alt="">
-                <router-link to="timetable/timetable">返回</router-link>
+                <router-link to="/timetable/timetable">返回</router-link>
             </div>
         </div>
         <div class="process">
@@ -144,6 +144,15 @@
             }
             return result;
           }
+//          ,test1(){
+//            this.baseAxios1.post('/student/schedule',{
+//              course_id:'32',
+//              page_limit:1000,
+//              page_no:1
+//            }).then(function (data) {
+//              console.log(data)
+//            })
+//          }
         },
         watch: {
           // 如果路由有变化，会再次执行该方法

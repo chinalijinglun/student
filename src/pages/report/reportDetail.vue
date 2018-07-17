@@ -3,45 +3,46 @@
         <div class="main-tit">
             <p class="firline">Lesson 64 The Wolf Within / Lesson 64 The Wolf Within</p>
             <p>成长报告</p>
+
         </div>
         <div class="tea">
             <div class="tilte">教师评语</div>
             <div class="teach">
                <div class="firs">
-                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>   
+                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
                     <div class="student-name"><span>Student:</span>   ALEX ren </div>
-                </div>  
+                </div>
                 <div class="feedback">
-                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing 
-                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By 
+                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing
+                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By
                 the end of the story, he was doing that a lot better. Skills the student exhibited well: Good writing!
                 </div>
-                
+
                 <div class="suggestion">
-                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best 
+                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best
                 employee.
-                </div>  
-                
+                </div>
+
             </div>
         </div>
         <div class="tea">
             <div class="tilte">成绩单</div>
             <div class="teach">
                <div class="firs">
-                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>   
+                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
                     <div class="student-name"><span>Student:</span>   ALEX ren </div>
-                </div>  
+                </div>
                 <div class="feedback">
-                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing 
-                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By 
+                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing
+                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By
                 the end of the story, he was doing that a lot better. Skills the student exhibited well: Good writing!
                 </div>
-                
+
                 <div class="suggestion">
-                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best 
+                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best
                 employee.
-                </div>  
-                
+                </div>
+
             </div>
         </div>
     </div>
@@ -49,7 +50,35 @@
 
 <script>
     export default {
-        
+      data() {
+        return {
+
+        }
+      },
+        created(){
+//          this.getDetailReport();
+          this.getRult();
+        },
+        methods: {
+          getDetailReport(){
+            const that = this;
+            this.baseAxios1.post('/student/report_card',{
+              'course_id':'1',//this.$route.query.id
+              "page_limit": 1000,
+              "page_no": 1
+            })
+              .then(function (data) {
+                console.log(data)
+              })
+          },
+          getRult(){
+            const that = this;
+            const filter =[{'name':'student_id','op':'eq','val':'1'}];
+            this.baseAxios.get('api/v1/study_result',{params:{q:JSON.stringify({filters:filter})}}).then(function (data) {
+              console.log(data)
+            })
+          }
+        }
     }
 </script>
 
@@ -81,7 +110,7 @@
         color: #333333;
         border-left: 3px solid #FF8200;
         line-height: 40px;
-        text-indent: 10px; 
+        text-indent: 10px;
     }
     .teach{
         margin-top: 20px;

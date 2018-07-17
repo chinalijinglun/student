@@ -25,6 +25,9 @@ export default {
   padding: 0;
   margin: 0;
 }
+body,html{
+  height: 100%;
+}
 body{
   background: #F3F3F3;
 }
@@ -32,8 +35,9 @@ body{
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
   color: #2c3e50;
+  min-height: 100%;
+  position: relative;
 }
 .main-text{
   min-width: 1200px;

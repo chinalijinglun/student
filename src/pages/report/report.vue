@@ -26,43 +26,28 @@
       </el-form-item>
     </el-form>
     <div class="forms">
-      <div class="ji">
+      <div class="ji" v-for="item in lessons">
         <div class="title">
-          <div class="lef-esl">ESL英语综合提升中级</div>
+          <div class="lef-esl">{{item.course_name}}</div>
           <div class="teacger">
-            <img src="../../assets/logo.png" alt="">
-            Kira Yuan
+            <img :src="item.teacher_avatar" alt="">
+            {{item.nickname}}
           </div>
         </div>
-        <div class="lists">
+        <div class="lists" v-for="les in item.xiaoke">
           <div class="list">
             <div class="list-lef">
               <div class='list-lef-top'>
                 <img src="../../assets/dian_01.png" alt="">
-                Lesson1 Exploring Space and Astronomy
+                {{les.name}}
               </div>
               <div class="btm">
-                2018-06-08 13：00-13：50
+                {{les.start}}---{{les.end}}
               </div>
             </div>
             <div class="list-rig">
               <img src="../../assets/chengzhang_h.png" alt="">
-              查看报告
-            </div>
-          </div>
-          <div class="list">
-            <div class="list-lef">
-              <div class='list-lef-top'>
-                <img src="../../assets/dian_01.png" alt="">
-                Lesson1 Exploring Space and Astronomy
-              </div>
-              <div class="btm">
-                2018-06-08 13：00-13：50
-              </div>
-            </div>
-            <div class="list-rig">
-              <img src="../../assets/chengzhang_h.png" alt="">
-              查看报告
+              <router-link :to="{path:'/report/reportDetail',query:{id:les.id}}">查看报告</router-link>
             </div>
           </div>
         </div>
@@ -83,54 +68,52 @@
       }
     },
     created(){
-      this.getSchdule();
+      this.getCourse();
     },
     methods: {
       onSubmit() {
         console.log('submit!');
       },
-      //获取全部的报告
-      getReports(){
+      getCourse(){
         const that = this;
-        this.baseAxios1.post('/student/report_card',{
-          "page_limit": 10,
+        this.baseAxios1.post('/student/my_course',{
+          "page_limit": 1000,
           "page_no": 1,
-//          'course_id':23
         }).then((data)=>{
-          console.log(data)
+          const data1 = data.data.objects;
+          console.log(data1)
+//          const lessonss = data1
+//          data1.map((val,index)=>{
+//            this.baseAxios1.post('/student/schedule',{
+//              "course_schedule_id": (val.id).toString(),
+//              "page_limit": 1000,
+//              "page_no": 1
+//            }).then((data)=>{
+////              console.log(lessonss[index].xiaoke = (data.data.objects))
+//              lessonss[index].xiaoke = data.data.objects;
+//              that.lessons = lessonss;
+//            })
+//          })
+
         })
       },
-      //
-      getGrowth(){
+      getSchdul(id){
         const that = this;
-        this.baseAxios1.post('/student/growth_report',{
-          "page_limit": 10,
+        this.baseAxios1.post('/student/report_card',{
+          "course_id": "1",
+          "page_limit": 1000,
           "page_no": 1
         }).then((data)=>{
           console.log(data)
         })
       },
-      //get
-      getSchdule(){
-        const that = this;
-        const filter =[{'name':'student_id','op':'eq','val':localStorage.getItem('id')}];
-        this.baseAxios.get('/api/v1/study_schedule',{params:{q:JSON.stringify({filters:filter})}}).then((data)=>{
-          const backData = data.data.objects;
-          that.lessons = backData;
-
-          backData.map((val)=>{
-            that.getCourse(val.id.toString());
-          })
-        })
-      },
-      getCourse(id){
-        const that = this;
+      test1(){
         this.baseAxios1.post('/student/schedule',{
-          "course_id": id,
-          "page_limit": 10,
-          "page_no": 1,
+          "course_schedule_id": '32',
+          "page_limit": 1000,
+          "page_no": 1
         }).then((data)=>{
-          console.log(data.data.objects)
+          console.log(data)
         })
       }
     }
@@ -166,6 +149,7 @@
 
   .ji {
     width: 740px;
+    margin-bottom: 20px;
   }
 
   .title {
