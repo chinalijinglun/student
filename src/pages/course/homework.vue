@@ -1,22 +1,23 @@
 <template>
     <div class="finish">
         <div class="mid-tit">
-            <div class="tit-lef">Lesson 1 Exploring Space and Astronomy</div>
-            <div class="more">
+            <div class="tit-lef">
+              {{homework[0]?homework[0].course_name:''}}
+            </div>
+            <div class="more" @click="backRouter">
                 <img src="../../assets/fanhui.png" alt="">
                 返回
             </div>
         </div>
         <div class="process">
             <span>
-                <img src="../../assets/logo.png" alt="">
-                Kira Yuan
+                <img :src="homework[0]?homework[0].teacher_avatar:''" alt="">
+                {{homework[0]?homework[0].teacher_name:""}}
             </span>
-            <span class="state">2018.04.30 13:00 - 13:50</span>
+            <!--<span class="state">2018.04.30 13:00 - 13:50</span>-->
         </div>
 
         <div class="mid">
-
             <div class="course-details" v-for="item in homework">
                 <div class="course-tit">
                     <div class="les-name">
@@ -34,15 +35,21 @@
 
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                          <a :href=item.question_attachment_url>查看作业</a>
+                          <router-link :to="{path:'/course/check',query:{id:item.id,schedul:id}}">
+                            查看作业
+                          </router-link>
                         </div>
                         <div class="check-homework">
+                          <router-link :to="{path:'/course/review',query:{id:item.id,schedul:id}}">
                             <img src="../../assets/dianping.png" alt="">
                             老师点评
+                          </router-link>
                         </div>
                         <div class="check-homework" style="width:150px;">
+                          <router-link :to="{path:'/course/ifinish',query:{id:item.id,schedul:id}}">
                             <img src="../../assets/wancheng.png" alt="">
                             我完成的作业
+                          </router-link>
                         </div>
                     </ul>
                 </div>
@@ -75,6 +82,10 @@
               const backdata = data.data.objects;
               that.homework = backdata;
             })
+          },
+          backRouter(){
+            this.$router.go(-1);
+//            this.$router.back()
           }
         }
     }

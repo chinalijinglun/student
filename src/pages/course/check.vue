@@ -1,43 +1,35 @@
 <template>
     <div class="finish">
         <div class="mid-tit">
-            <div class="tit-lef">Lesson 1 Exploring Space and Astronomy</div>
+            <div class="tit-lef">{{teacher.course_name}}</div>
         </div>
         <div class="process">
             <span>
-                <img src="../../assets/logo.png" alt="">
-                Kira Yuan
+                <img :src="teacher.teacher_avatar" alt="">
+               {{teacher.teacher_name}}
             </span>
-            <span class="state">2018.04.30 13:00 - 13:50</span>
+            <span class="state">{{teacher.created_at}}</span>
         </div>
-        
+
         <div class="mid">
-            
+
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
                         <img src="../../assets/dian_01.png" alt="">
-                          Exploring Space and Astronomy 作业名称
+                          {{homework.question_name}}
                     </div>
-                    
+
                     <div class="times">
                         <span>Homework</span>
                     </div>
                 </div>
                 <div class="course-main">
                     <div class="contains">
-                        Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing 
-the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By the end of the story, he was doing that a lot better. Skills the student exhibited well: Good writing!
+                      {{homework.question_text}}
                     </div>
                     <div class="down">
-                        <div class="box">
-                            <img src="../../assets/fujian.png" alt="">
-                            <div class="wenzi">
-                                <p>Alex and I practiced writing </p>
-                                <p class="download">下载附件</p>
-                            </div>
-                        </div>
-                        <div class="box">
+                        <div class="box" v-for="item in homework.question_attachment_url">
                             <img src="../../assets/fujian.png" alt="">
                             <div class="wenzi">
                                 <p>Alex and I practiced writing </p>
@@ -46,12 +38,12 @@ the next. I taught him that each sentence, no matter how crazy, needs to logical
                         </div>
                     </div>
                     <ul class="detail-les">
-                        
+
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            查看作业
+                            写作业
                         </div>
-                        <div class="check-homework">
+                        <div class="check-homework" @click="backRouter">
                             <img src="../../assets/fanhui.png" alt="">
                             返回
                         </div>
@@ -64,7 +56,39 @@ the next. I taught him that each sentence, no matter how crazy, needs to logical
 
 <script>
     export default {
-        
+      data(){
+        return{
+          id:this.$route.query.id,
+          schedul:this.$route.query.schedul,
+          homework:{},
+          teacher:{}
+        }
+      },
+      created(){
+        this.getDetailHomework();
+        this.getTeacher();
+      },
+      methods: {
+        getDetailHomework(){
+          const that = this;
+          this.baseAxios.get('/api/v1/homework/'+that.id).then(function (data) {
+            that.homework = data.data;
+          })
+        },
+        backRouter(){
+          this.$router.go(-1);
+        },
+        getTeacher(){
+          const that =this;
+          this.baseAxios1.post('/student/my_homework',{
+            "study_schedule_id":that.schedul,
+            "page_limit":1,
+            "page_no":1
+          }).then(function (data) {
+            that.teacher = data.data.objects[0];
+          })
+        }
+      }
     }
 </script>
 
@@ -103,7 +127,7 @@ the next. I taught him that each sentence, no matter how crazy, needs to logical
         padding: 0 30px;
         padding-bottom: 20px;
     }
-    
+
     .course-details{
         width: 100%;
     }
@@ -225,10 +249,11 @@ the next. I taught him that each sentence, no matter how crazy, needs to logical
         width: 242px;
         margin-left: 50px;
         float: left;
+        margin-bottom: 10px;
     }
     .box img{
         float: left;
-        margin-right:13px; 
+        margin-right:13px;
     }
     .box p{
         font-size: 14px;

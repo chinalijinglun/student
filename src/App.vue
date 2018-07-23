@@ -41,5 +41,6 @@ body{
 }
 .main-text{
   min-width: 1200px;
+  padding-bottom: 100px;
 }
 </style>

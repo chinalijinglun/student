@@ -4,7 +4,7 @@
       <div class="tit-lef">{{course.courseName}}</div>
       <div class="more">
         <img src="../../assets/fanhui.png" alt="">
-        <router-link to="timetable/timetable">返回</router-link>
+        <router-link to="/timetable/timetable">返回</router-link>
       </div>
     </div>
     <div class="process">
@@ -38,11 +38,11 @@
 
           <ul class="detail-les">
 
-            <div class="check-homework">
+            <div class="check-homework" @click="test2(item.id)">
               <img src="../../assets/chakanzuoye.png" alt="">
               进入教室
             </div>
-            <div class="check-homework">
+            <div class="check-homework" @click="previewCourse(item.id)">
               <img src="../../assets/huifang.png" alt="">
               预览课件
             </div>
@@ -58,6 +58,10 @@
 </template>
 
 <script>
+  /**
+   * 代做：1预览课件，需要调多倍api
+   *
+   */
   import fmtDate from '../../utils/time';
 
   export default {
@@ -76,6 +80,8 @@
         },
         finish:[],
         fenye:[],
+        roomId:'',
+        study_schedule_id:"",
         index:'0' //分页的
       }
     },
@@ -92,14 +98,13 @@
       },
       handleCurrentChange(val) {
         const that = this;
-        console.log(val)
         that.index = val - 1;
       },
       //获取数据
       getIdData(){
         const that = this;
         this.baseAxios1.post('/student/schedule',{
-          "course_id": that.id,
+          "course_schedule_id": that.id,
           "page_limit": 1000,
           "page_no": 1
         }).then((data)=>{
@@ -112,22 +117,25 @@
             }
           })
           that.fenye = that.sliceArray(that.finish,10);
-          console.log(that.fenye);
         })
       },
       //获取教师名字和其他
       getNameother(){
         const that= this;
         this.baseAxios1.post('/student/my_course',{
-          "course_id": that.id,
-          "page_limit": 1,
+          "course_id": '1',
+          "page_limit": 1000,
           "page_no": 1
         }).then((data)=>{
-          const detail = data.data.objects[0];
-          that.course.teacherName = detail.nickname;
-          that.course.courseName = detail.course_name;
-          that.course.ifinish = detail.classes_number;
-          that.course.finish = detail.finish;
+          const data1 = data.data.objects;
+          data1.map(function (val) {
+            if(val.id == that.id){
+              that.course.teacherName = val.nickname;
+              that.course.courseName = val.course_name;
+              that.course.ifinish = val.classes_number;
+              that.course.finish = val.finish;
+            }
+          })
         })
       },
       //分割数组
@@ -139,6 +147,34 @@
           result.push(array.slice(start, end));
         }
         return result;
+      }
+      //进入教室获取教师地址
+      ,test2(id){
+        const that = this;
+        this.baseAxios1.post('/student/get_enter_room_url',{
+//          41
+          'study_schedule_id': id == 40 ? 41: id
+        }).then(function (data) {
+          if(data.status == 200){
+            window.location.href = data.data.url;
+//            window.open(data.data.url)
+          }else{
+            alert('无法进入教室，请稍后再试')
+          }
+
+        })
+      },
+      //预览课件
+      previewCourse(id){
+        const that = this;
+        this.baseAxios1.post('/student/get_preview_doc',{
+          "page_limit": 10,
+          "page_no": 1,
+          "study_schedule_id": id
+        })
+          .then(function (data) {
+            console.log(data.data.objects)
+          })
       }
     },
     watch: {

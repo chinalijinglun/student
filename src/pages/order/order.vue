@@ -54,10 +54,10 @@
           <li class="price">￥ {{item.amount}}</li>
         </ul>
       </div>
-    </div>
-    <div class="pagin">
-      <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
-      </el-pagination>
+      <div class="pagin">
+        <el-pagination background layout="prev, pager, next" :page-size="paginations.page_size" :total="paginations.totalPage" @size-change="handleSizeChange" @current-change="handleCurrentChange">
+        </el-pagination>
+      </div>
     </div>
   </div>
 </template>

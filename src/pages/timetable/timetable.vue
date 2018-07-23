@@ -163,6 +163,7 @@
     width: 800px;
     float: right;
     background: #fff;
+    padding-bottom: 20px;
   }
 
   .demo-form-inline {

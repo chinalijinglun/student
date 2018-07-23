@@ -48,7 +48,9 @@
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/pingjialaoshi.png" alt="">
+                          <router-link :to="{ path:'/course/courseReview', query:{id:item.id}}">
                             课程评价
+                          </router-link>
                         </div>
                     </ul>
                 </div>
@@ -103,7 +105,7 @@
           getIdData(){
             const that = this;
             this.baseAxios1.post('/student/schedule',{
-              "course_id": that.id,
+              "course_schedule_id": that.id,
               "page_limit": 1000,
               "page_no": 1
             }).then((data)=>{
@@ -123,15 +125,19 @@
           getNameother(){
             const that= this;
             this.baseAxios1.post('/student/my_course',{
-              "course_id": that.id,
-              "page_limit": 1,
+              "course_id": '1',
+              "page_limit": 1000,
               "page_no": 1
             }).then((data)=>{
-              const detail = data.data.objects[0];
-              that.course.teacherName = detail.nickname;
-              that.course.courseName = detail.course_name;
-              that.course.ifinish = detail.classes_number;
-              that.course.finish = detail.finish;
+              const data1 = data.data.objects;
+              data1.map(function (val) {
+               if(val.id == that.id){
+                 that.course.teacherName = val.nickname;
+                that.course.courseName = val.course_name;
+                that.course.ifinish = val.classes_number;
+                that.course.finish = val.finish;
+               }
+              })
             })
           },
           //分割数组
