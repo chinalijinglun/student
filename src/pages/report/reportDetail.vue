@@ -1,82 +1,112 @@
 <template>
     <div class="report-detail">
-        <div class="main-tit">
-            <p class="firline">Lesson 64 The Wolf Within / Lesson 64 The Wolf Within</p>
-            <p>成长报告</p>
+       <template v-if="studyresultId">
+         <div class="main-tit">
+           <p class="firline">Lesson 64 The Wolf Within / Lesson 64 The Wolf Within</p>
+           <p>成长报告</p>
 
-        </div>
-        <div class="tea">
-            <div class="tilte">教师评语</div>
-            <div class="teach">
-               <div class="firs">
-                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
-                    <div class="student-name"><span>Student:</span>   ALEX ren </div>
-                </div>
-                <div class="feedback">
-                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing
-                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By
-                the end of the story, he was doing that a lot better. Skills the student exhibited well: Good writing!
-                </div>
+         </div>
+         <div class="tea">
+           <div class="tilte">教师评语</div>
+           <div class="teach">
+             <div class="firs">
+               <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
+               <div class="student-name"><span>Student:</span>   ALEX ren </div>
+             </div>
+             <div class="feedback" v-html="studyresult.evaluation">
+               <!--{{}}-->
+             </div>
 
-                <div class="suggestion">
-                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best
-                employee.
-                </div>
+           </div>
+         </div>
+         <!--<div class="tea">-->
+           <!--<div class="tilte">成绩单</div>-->
+           <!--<div class="teach">-->
+             <!--<div class="firs">-->
+               <!--<div class="left-fir"><span>Teacher:</span>   Robert Little</div>-->
+               <!--<div class="student-name"><span>Student:</span>   ALEX ren </div>-->
+             <!--</div>-->
+             <!--<div class="feedback">-->
+               <!--{{studyresult.report_card_url}}-->
+             <!--</div>-->
 
-            </div>
-        </div>
-        <div class="tea">
-            <div class="tilte">成绩单</div>
-            <div class="teach">
-               <div class="firs">
-                    <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
-                    <div class="student-name"><span>Student:</span>   ALEX ren </div>
-                </div>
-                <div class="feedback">
-                    Feedback: Alex and I practiced writing a narrative story together. I wrote a sentence, and he followed by writing
-                the next. I taught him that each sentence, no matter how crazy, needs to logically follow the sentence before. By
-                the end of the story, he was doing that a lot better. Skills the student exhibited well: Good writing!
-                </div>
+           <!--</div>-->
+         <!--</div>-->
+       </template>
+       <template v-else-if="studyscheduleId">
+         <div class="main-tit">
+           <p class="firline">{{studyschedule.name}}</p>
+           <p>成长报告</p>
+         </div>
+         <div class="tea">
+           <div class="tilte">教师评语</div>
+           <div class="teach">
+             <div class="firs">
+               <div class="left-fir"><span>Teacher:</span>   Robert Little</div>
+               <div class="student-name"><span>Student:</span>   {{studyschedule.study_courses.name}} </div>
+             </div>
+             <div class="feedback" v-html="studyschedule.teacher_evaluation">
+               <!--{{}}-->
+             </div>
 
-                <div class="suggestion">
-                    Study Suggestion: Comment on last homework: That was a good paragraph about why the boy was the best
-                employee.
-                </div>
+           </div>
+         </div>
+         <!--<div class="tea">-->
+           <!--<div class="tilte">成绩单</div>-->
+           <!--<div class="teach">-->
+             <!--<div class="firs">-->
+               <!--<div class="left-fir"><span>Teacher:</span>   Robert Little</div>-->
+               <!--<div class="student-name"><span>Student:</span>   ALEX ren </div>-->
+             <!--</div>-->
+             <!--<div class="feedback">-->
+               <!--{{studyresult.report_card_url}}-->
+             <!--</div>-->
 
-            </div>
-        </div>
+           <!--</div>-->
+         <!--</div>-->
+       </template>
     </div>
 </template>
 
 <script>
+  /**
+   * 要是课程报告就去拿study——result
+   * 要是小课总结就去拿study_schedule
+   */
     export default {
       data() {
         return {
-
+          studyresultId : this.$route.query.studyresultId,
+          studyscheduleId : this.$route.query.studyscheduleId,
+          studyresult : [],
+          studyschedule: []
         }
       },
         created(){
-//          this.getDetailReport();
-          this.getRult();
+          this.init();
         },
         methods: {
-          getDetailReport(){
+          init(){
             const that = this;
-            this.baseAxios1.post('/student/report_card',{
-              'course_id':'1',//this.$route.query.id
-              "page_limit": 1000,
+            that.studyresultId ? that.getStudyResult(): that.getDetailSchedule()
+          },
+          getStudyResult(){
+            const that = this;
+            this.baseAxios.get('/api/v1/study_result/'+that.studyresultId,{
+              "page_limit": 10,
               "page_no": 1
-            })
-              .then(function (data) {
-                console.log(data)
+            }).then(function (data) {
+                that.studyresult = data.data;
               })
           },
-          getRult(){
+          getDetailSchedule(){
             const that = this;
-            const filter =[{'name':'student_id','op':'eq','val':'1'}];
-            this.baseAxios.get('api/v1/study_result',{params:{q:JSON.stringify({filters:filter})}}).then(function (data) {
-              console.log(data)
-            })
+            this.baseAxios.get('/api/v1/study_schedule/'+that.studyscheduleId,{
+              "page_limit": 10,
+              "page_no": 1
+            }).then(function (data) {
+                that.studyschedule = data.data;
+              })
           }
         }
     }

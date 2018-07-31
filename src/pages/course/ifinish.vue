@@ -4,7 +4,6 @@
             <div class="tit-lef">我完成的作业</div>
         </div>
 
-
         <div class="mid" v-for="item in homeworkFinish">
           <div class="process">
             <span class="state">{{item.created_at}}</span>
@@ -17,10 +16,18 @@
                     </div>
                 </div>
                 <div class="course-main">
-                    <div class="contains">
-                        {{item.answer_text}}
+                    <div class="contains" v-html="item.answer_text">
                     </div>
                     <div class="down">
+                      <div class="box box1" v-for="fujian in forMate(item.answer_attachment_url)">
+                      <img src="../../assets/fujian.png" alt="">
+                      <div class="wenzi">
+                      <a :href="fujian.download_file">
+                      <p>Alex and I practiced writing </p>
+                      <p class="download">下载附件</p>
+                      </a>
+                      </div>
+                      </div>
                       <template v-if="item.answer_attachment_url == 'string'">
                         <div class="box box1">
                           <img src="../../assets/fujian.png" alt="">
@@ -33,22 +40,22 @@
                         </div>
                       </template>
 
-                      <template v-if="item.answer_attachment_url != 'string'">
-                        <div class="box box2" v-for="fujian in item.answer_attachment_url">
-                          <img src="../../assets/fujian.png" alt="">
-                          <div class="wenzi">
-                            <a :href="fujian.url">
-                            <p>Alex and I practiced writing </p>
-                            <p class="download">下载附件</p>
-                            </a>
-                          </div>
-                        </div>
-                      </template>
+                      <!--<template v-if="item.answer_attachment_url != 'string'">-->
+                        <!--<div class="box box2" v-for="fujian in item.answer_attachment_url">-->
+                          <!--<img src="../../assets/fujian.png" alt="">-->
+                          <!--<div class="wenzi">-->
+                            <!--<a :href="fujian.url">-->
+                            <!--<p>Alex and I practiced writing </p>-->
+                            <!--<p class="download">下载附件</p>-->
+                            <!--</a>-->
+                          <!--</div>-->
+                        <!--</div>-->
+                      <!--</template>-->
 
                     </div>
                     <ul class="detail-les">
 
-                        <div class="check-homework">
+                        <div class="check-homework" @click="showBgF(item.id)">
                             <img src="../../assets/xiugaizuoye.png" alt="">
                             修改作业
                         </div>
@@ -60,10 +67,38 @@
                 </div>
             </div>
         </div>
+      <div class="bg" v-show="showBg">
+        <div class="alert">
+          <div class="alert_title">写作业</div>
+          <div class="alert_biaoti">
+            <span class="alert_biaoti_head">标题</span>
+            <span class="alert_biaoti_input">
+            <input type="text" placeholder="请输入标题" v-model="title">
+          </span>
+          </div>
+          <div class="alert_biaoti">
+            <span class="alert_biaoti_head">描述</span>
+            <span class="alert_content">
+            <vue-editor v-model="content"></vue-editor>
+          </span>
+          </div>
+          <div class="alert_biaoti">
+            <span class="alert_biaoti_head">附件</span>
+            <span>
+            <input ref="input1" type="file" value="上传" multiple @change="updateFile">
+          </span>
+          </div>
+          <div class="submit">
+            <span @click="writeHomework">提交</span>
+            <span @click="showBgF">取消</span>
+          </div>
+        </div>
+      </div>
     </div>
 </template>
 
 <script>
+  import { VueEditor } from 'vue2-editor'
   /**
    * 获取完成的作业，请求my_homework接口，传递homework_state为1，然后，传递课程计划id
    */
@@ -74,8 +109,17 @@
         },
         data(){
             return{
+              putID:'',
+              schedul:this.$route.query.schedul,
+              showBg:false,
+              content: '请输入内容',
+              title:'',
+              btnStatue:true,
               homeworkFinish:[]
             }
+        },
+        components: {
+          VueEditor
         },
         methods:{
           getFinish(){
@@ -84,7 +128,7 @@
               'homework_state':'1',
               'study_schedule_id':(this.$route.query.schedul).toString(),
               'page_no':1,
-              'page_limit':10
+              'page_limit':1000
             }).then(function (data) {
               that.homeworkFinish = data.data.objects;
 //              console.log(typeof(data.data.objects[0].homework_type))
@@ -93,6 +137,83 @@
           backRouter(){
             this.$router.go(-1);
 //            this.$router.back()
+          },
+          //格式化
+          forMate(val){
+            try{
+                return JSON.parse(val);
+            }catch(err){
+//              return val;
+              console.log(val)
+            }
+          },
+          showBgF(putID){
+            if(putID){
+              this.putID = putID;
+            }
+            this.showBg =!this.showBg;
+            this.content = '';
+            this.title = '';
+            this.$refs.input1.value = ''
+          },
+          //修改作业
+          writeHomework(){
+            const that = this;
+            const sendObj = {
+              "study_schedule_id": that.schedul,//课节id
+            };
+            if(that.files != ''){
+              sendObj.answer_attachment_url = JSON.stringify(that.files)//附件
+            }
+            if(that.content != ''){
+              sendObj.answer_text = that.content
+            }
+            if(that.title != ''){
+              sendObj.question_name = that.title
+            }
+
+            if(that.btnStatue){
+              this.baseAxios.put('/api/v1/homework/'+that.putID,sendObj).then(function (data) {
+                if(data.status == 200){
+                  that.showBg =!that.showBg;
+                  that.open2('提交成功');
+                  that.getFinish();
+                }else{
+                  that.open4('提交失败');
+                }
+              })
+            }else{
+              that.open4('文件上传中');
+            }
+
+          },
+          //上传附件e
+          updateFile(e){
+            const that = this,
+              file = e.target.files;
+            that.btnStatue = false;
+            const fujian = new FormData();
+            for(var i = 0; i<file.length;i++){
+              fujian.append('file', file[i]);
+            }
+            this.baseAxios1.post('/upload',fujian).then((data)=>{
+              if(data.status == 200){
+                that.files = data.data;
+                that.btnStatue = true;
+                that.open2('文件上传成功');
+              }else{
+                that.open4('文件上传失败');
+              }
+            })
+          },
+          open2(msg) {
+            this.$message({
+              message: msg,
+              type: 'success'
+            });
+          },
+          open4(msg) {
+            this.$message.error(msg);
           }
         }
     }
@@ -269,5 +390,87 @@
     }
     .down{
         overflow: hidden;
+    }
+    .bg{
+      position: fixed;
+      top:0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      background: rgba(43,43,43,0.98);
+    }
+    .alert{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -400px;
+      margin-top: -300px;
+      width: 800px;
+      height: 600px;
+      border-radius: 10px;
+      background: #fff;
+    }
+    .alert_title{
+      margin-left: 55px;
+      height: 86px;
+      line-height: 86px;
+      font-size: 22px;
+      color: #333333;
+      border-bottom: 1px solid #E8E8E8;
+    }
+    .alert_biaoti{
+      margin: 20px 0;
+    }
+    .alert_title::after{
+      content: '';
+      display: block;
+      width: 67px;
+      border-bottom: 2px solid #FF8200;
+      margin-top: -4px;
+    }
+    .alert_biaoti span{
+      display: inline-block;
+      font-size: 16px;
+      color: #333333;
+    }
+    .alert_biaoti_head{
+      width: 105px;
+      text-align: center;
+    }
+    .alert_biaoti_input input{
+      width: 630px;
+      height: 52px;
+      padding-left: 10px;
+      background: #FFFFFF;
+      border: 1px solid #DCDCDC;
+      border-radius: 5px;
+      outline: none;
+    }
+    .alert_content{
+      width: 640px;
+      vertical-align: text-top;
+    }
+    .submit{
+      padding-left: 300px;
+    }
+    .submit span{
+      display: inline-block;
+      width: 120px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .submit span:first-child{
+      background: #FF8200;
+      color: #FFFFFF;
+      margin-right: 30px;
+    }
+    .submit span:last-child{
+      background: #FFFFFF;
+      border: 1px solid #DCDCDC;
+      color: #333333;
     }
 </style>

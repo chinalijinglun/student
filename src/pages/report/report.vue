@@ -1,55 +1,100 @@
 <template>
   <div class="report">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="课程名">
-        <el-input v-model="formInline.user" placeholder="课程名"></el-input>
+      <el-form-item label="课程包名称">
+        <el-input v-model="formInline.courseBigName" placeholder="课程包名称"></el-input>
       </el-form-item>
-      <el-form-item label="上课时间">
-        <el-date-picker
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期">
-        </el-date-picker>
+      <el-date-picker
+        v-model="formInline.value6"
+        type="daterange"
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期">
+      </el-date-picker>
+      <el-form-item label="课程名" style="margin-right: 30px">
+        <el-input v-model="formInline.courseName" placeholder="课程名"></el-input>
       </el-form-item>
       <el-form-item label="教师名">
-        <el-input v-model="formInline.user" placeholder="课程名"></el-input>
-      </el-form-item>
-      <el-form-item label="课程状态">
-        <el-select v-model="formInline.region" placeholder="所有状态">
-          <el-option label="区域一" value="shanghai"></el-option>
-          <el-option label="区域二" value="beijing"></el-option>
-        </el-select>
+        <el-input v-model="formInline.teacherName" placeholder="教师名"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="searchResult">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="forms">
-      <div class="ji" v-for="item in lessons">
+      <div class="ji" v-for="item in course">
         <div class="title">
           <div class="lef-esl">{{item.course_name}}</div>
           <div class="teacger">
             <img :src="item.teacher_avatar" alt="">
-            {{item.nickname}}
+            {{item.teacher_name}}
           </div>
         </div>
-        <div class="lists" v-for="les in item.xiaoke">
-          <div class="list">
-            <div class="list-lef">
-              <div class='list-lef-top'>
-                <img src="../../assets/dian_01.png" alt="">
-                {{les.name}}
+        <div class="lists">
+          <template v-if="item.result_type == 'SUMMARY'">
+            <div class="list">
+              <div class="list-lef">
+                <div class='list-lef-top'>
+                  <img src="../../assets/dian_01.png" alt="">
+                  课程总结
+                </div>
+                <div class="btm">
+                  时间
+                </div>
               </div>
-              <div class="btm">
-                {{les.start}}---{{les.end}}
+              <div class="list-rig">
+                <img src="../../assets/chengzhang_h.png" alt="">
+                <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item.id}}">查看课程总结</router-link>
               </div>
             </div>
-            <div class="list-rig">
-              <img src="../../assets/chengzhang_h.png" alt="">
-              <router-link :to="{path:'/report/reportDetail',query:{id:les.id}}">查看报告</router-link>
+            <div class="list">
+              <div class="list-lef">
+                <div class='list-lef-top'>
+                  <img src="../../assets/dian_01.png" alt="">
+                  成绩单
+                </div>
+                <div class="btm">
+                  时间
+                </div>
+              </div>
+              <div class="list-rig">
+                <img src="../../assets/chengzhang_h.png" alt="">
+                <router-link :to="item.report_card_url?item.report_card_url:''">查看成绩单</router-link>
+              </div>
             </div>
-          </div>
+          </template>
+          <template v-else-if="item.result_type == 'NO'">
+            <div class="list">
+              <div class="list-lef">
+                <div class='list-lef-top'>
+                  <img src="../../assets/dian_01.png" alt="">
+                  成绩单
+                </div>
+                <div class="btm">
+                  时间
+                </div>
+              </div>
+              <div class="list-rig">
+                <img src="../../assets/chengzhang_h.png" alt="">
+                <router-link :to="item.report_card_url?item.report_card_url:''">查看成绩单</router-link>
+              </div>
+            </div>
+            <div class="list">
+              <div class="list-lef">
+                <div class='list-lef-top'>
+                  <img src="../../assets/dian_01.png" alt="">
+                  {{item.class_name}}
+                </div>
+                <div class="btm">
+                  <!--{{xiaoke.start}}&#45;&#45;{{xiaoke.end}}-->
+                </div>
+              </div>
+              <div class="list-rig">
+                <img src="../../assets/chengzhang_h.png" alt="">
+                <router-link :to="{path:'/report/reportDetail',query:{studyscheduleId:item.id}}">查看课节报告</router-link>
+              </div>
+            </div>
+          </template>
         </div>
       </div>
     </div>
@@ -57,64 +102,82 @@
 </template>
 
 <script>
+  /**
+   * 1、现获取my_course的课程，
+   * 2、通过course的id去查询/student/schedule，然后通过返回的id去查study_schedule评价
+   */
   export default {
     data() {
       return {
-        lessons:[],
+        lessons: [],
         formInline: {
-          user: '',
-          region: ''
-        }
+          courseBigName: '',
+          courseName: '',
+          teacherName:"",
+          value6:''
+        },
+        course: []
       }
     },
-    created(){
-      this.getCourse();
+    created() {
+//      this.getCourse();
+      this.test1({
+        'page_no': 1,
+        'page_limit': 1000
+      });
     },
     methods: {
       onSubmit() {
         console.log('submit!');
       },
-      getCourse(){
+      //获取课程
+      getCourse() {
         const that = this;
-        this.baseAxios1.post('/student/my_course',{
-          "page_limit": 1000,
+//        this.baseAxios1.post('/student/report_card',{
+        this.baseAxios1.post('/student/my_course', {
+          "page_limit": 20,
           "page_no": 1,
-        }).then((data)=>{
-          const data1 = data.data.objects;
-          console.log(data1)
-//          const lessonss = data1
-//          data1.map((val,index)=>{
-//            this.baseAxios1.post('/student/schedule',{
-//              "course_schedule_id": (val.id).toString(),
-//              "page_limit": 1000,
-//              "page_no": 1
-//            }).then((data)=>{
-////              console.log(lessonss[index].xiaoke = (data.data.objects))
-//              lessonss[index].xiaoke = data.data.objects;
-//              that.lessons = lessonss;
-//            })
-//          })
+        }).then(function (data) {
+          const course1 = data.data.objects;
+
+          course1.map(function (val, index) {
+            const scheduleId = val.id;
+            that.baseAxios1.post('/student/schedule', {
+              'course_schedule_id': scheduleId,
+              "page_limit": 1000,
+              "page_no": 1,
+            }).then(function (data) {
+//              console.log(data)
+              that.course[index].xiaoke = data.data.objects;
+            })
+          })
+          that.course = course1;
+          console.log(that.course)
 
         })
       },
-      getSchdul(id){
+      test1(data){
         const that = this;
-        this.baseAxios1.post('/student/report_card',{
-          "course_id": "1",
-          "page_limit": 1000,
-          "page_no": 1
-        }).then((data)=>{
-          console.log(data)
-        })
+        this.baseAxios1.post('/student/growth_report', data)
+          .then(function (data) {
+            that.course = data.data.objects;
+          })
       },
-      test1(){
-        this.baseAxios1.post('/student/schedule',{
-          "course_schedule_id": '32',
-          "page_limit": 1000,
-          "page_no": 1
-        }).then((data)=>{
-          console.log(data)
-        })
+      searchResult(){
+        const that = this;
+        const searchData = {
+          "page_limit": 100,
+          "page_no": 1,
+        };
+        searchData.class_name = that.formInline.courseBigName; //课程名称
+        searchData.teacher_name = that.formInline.courseName;//教师名称
+        searchData.course_name = that.formInline.teacherName; //课程包名
+        searchData.class_at = that.formInline.value6[0];
+//        console.log(searchData);
+        that.test1(searchData)
+//        this.baseAxios1.post('/student/growth_report',searchData).then(function (data) {
+//          console.log(data)
+//        })
       }
     }
   }
@@ -218,7 +281,7 @@
     font-size: 14px;
     color: #333333;
     line-height: 40px;
-    width: 120px;
+    width: 140px;
     height: 40px;
     float: right;
     margin: 25px 20px;
