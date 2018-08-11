@@ -139,6 +139,7 @@
             that.userName = dataUser.username;
             that.id = dataUser.id;
             that.avatar = dataUser.avatar;
+            localStorage.setItem('name',dataUser.name);
           })
       },
 

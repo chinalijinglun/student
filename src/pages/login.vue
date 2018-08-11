@@ -50,8 +50,8 @@
                          .then(function(res){
                             //  存储token
 //                           console.log(res)
-                             localStorage.setItem('Authorization',res.data.Authorization)
-                             localStorage.setItem('id',res.data.id)
+                             localStorage.setItem('Authorization',res.data.Authorization);
+                             localStorage.setItem('id',res.data.id);
                              that.$router.push({
                                 path:'/center/personal'
                              })

@@ -23,6 +23,10 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
+      path: '/',
+      component: login
+    },
+    {
       title: '首页',
       path: '/index',
       name: 'index',
@@ -133,6 +137,8 @@ export default new Router({
       component: main,
       name: 'schedule',
       children: schedule
-    }
+    },
+    // 404 page
+    {path: '*', component: login}
   ]
 })

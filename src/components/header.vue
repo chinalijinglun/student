@@ -3,16 +3,16 @@
         <div class="header-top">
             <div class="centers">
                 <div class="left">
-                    <span class="zh click">中文 </span> | 
+                    <span class="zh click">中文 </span> |
                     <span class="en"> English</span>
                 </div>
                 <div class="right_01">
                     <img src="@/assets/dianhua_s.png" class="tel" alt="">
                     <span class="user">
-                        <span>Hi，13520865271</span>    
-                        <span>账户设置 </span> 
-                        <span>|</span>  
-                        <span> 退出</span>
+                        <span>Hi，{{name}}</span>
+                        <span>账户设置 </span>
+                        <span>|</span>
+                        <span @click="quit">退出</span>
                     </span>
                     <span class="mouseenter">
                         <span class="span">关注美师在线</span>
@@ -46,12 +46,18 @@
                 </li>
             </ul>
             <div class="btn-box">
-                <div class="login">
-                    登录
-                </div>
-                <div class="regist">
-                    注册
-                </div>
+                <template v-if="token === null">
+                  <div class="login">
+                    <router-link to="/login">
+                      登录
+                    </router-link>
+                  </div>
+                  <div class="regist">
+                    <router-link to="/useEmail">
+                      注册
+                    </router-link>
+                  </div>
+                </template>
             </div>
             <div class="tels" v-if="show">
                 <img src="@/assets/dianhua_b.png" alt="" class="b_dianhua">
@@ -84,9 +90,11 @@
         data(){
             return{
                 show: false,
-                showAdmissions: false
+                showAdmissions: false,
+                name: localStorage.getItem('name'),
+                token: localStorage.getItem('Authorization')
             }
-            
+
         },
         methods:{
             mouserover(){
@@ -94,6 +102,11 @@
             },
             mouseout(){
                 this.showAdmissions = false;
+            },
+            quit(){
+              localStorage.clear();
+              this.name = '';
+              this.$router.push('/login')
             }
         }
     }
@@ -134,7 +147,7 @@
     }
     .right_01{
         float: right;
-        
+
     }
     .right_01 img{
         margin: 7px;
@@ -170,7 +183,7 @@
         display: block;
     }
     .mouseenter:hover .span{
-        color: #FF8200;        
+        color: #FF8200;
     }
     .mouseenter:hover{
         background: url(../assets/weixin.png) no-repeat center left;
@@ -225,7 +238,7 @@
         float: left;
         text-align: center;
         line-height: 40px;
-        cursor: pointer; 
+        cursor: pointer;
         background: #FF8200;
         border-radius: 100px;
         font-size: 14px;
