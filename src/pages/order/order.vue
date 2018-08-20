@@ -1,18 +1,18 @@
 <template>
   <div class="order">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
-      <el-form-item label="课程名">
-        <el-input v-model="formInline.classname" placeholder="课程名"></el-input>
+      <el-form-item label="订单编号">
+        <el-input v-model="formInline.teachername" placeholder="课程名"></el-input>
       </el-form-item>
-      <el-form-item label="上课时间">
+      <el-form-item label="下单时间">
         <el-date-picker v-model="time" type="daterange" range-separator="至" start-placeholder="开始日期"
                         end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="教师名">
-        <el-input v-model="formInline.teachername" placeholder="课程名"></el-input>
+      <el-form-item label="课程名称">
+        <el-input v-model="formInline.classname" placeholder="课程名"></el-input>
       </el-form-item>
-      <el-form-item label="课程状态">
+      <el-form-item label="订单状态">
         <el-select v-model="value" placeholder="所有状态" @change="changeStatue">
           <el-option
             v-for="statue in region"
@@ -49,8 +49,10 @@
         <ul>
           <li class="courses lef">{{item.course_name}}</li>
           <li class="jie">{{item.classes_number}}</li>
-          <li class="stat">已付款</li>
-          <li class="tea">{{item.nickname}}</li>
+          <li class="stat" v-text="returnPayment(item.payment_state)">
+
+          </li>
+          <li class="tea">{{item.teacher_name?item.teacher_name:" "}}</li>
           <li class="price">￥ {{item.amount}}</li>
         </ul>
       </div>
@@ -65,6 +67,37 @@
 <script>
   /**
    * 完事 6月27日16：50
+   *
+   COMMON :普通订单
+   GIVE :赠送订单
+   COMPENSATE :补偿订单
+   FREE :免费订单
+   REFUND:退款订单
+   AUDITIONS:试听
+   COMMON = 1
+   GIVE = 2
+   COMPENSATE = 3
+   FREE = 4
+   REFUND = 5
+   AUDITIONS = 6
+
+
+   PAY：下订单
+   PAID :已经付款
+   CANCEL : 取消
+   APPLY_REFUND:申请退款
+   CHECK_PASSED 审核通过
+   CHECK_DENY 审核驳回
+   REFUND :退款
+   USED :已经使
+   PAY = 1
+   PAID =2
+   CANCEL =3
+   APPLY_REFUND = 4
+   CHECK_PASSED = 5
+   CHECK_DENY = 6
+   REFUND =7
+   USED=8
    */
   export default {
     data() {
@@ -94,7 +127,8 @@
         formInline: {
           classname: '',
           teachername:'',
-          regions:''
+          regions:'',
+          course_name:""
         },
         order:[],//订单
       }
@@ -123,11 +157,11 @@
           "page_limit": 10,
           "page_no": 1,
         };
+        if(that.formInline.teachername!= ''){
+          bbb.order_id =that.formInline.teachername
+        }
         if(that.formInline.classname != ''){
           bbb.course_name =that.formInline.classname
-        }
-        if(that.formInline.teachername != ''){
-          bbb.teacher_name =that.formInline.teachername
         }
         if(that.time[0] != undefined){
           bbb.created_at_start =that.time[0]
@@ -159,6 +193,25 @@
       handleCurrentChange(val) {
         const that = this;
         that.getOrder(val)
+      },
+      returnPayment(id){
+        if(id === 1){
+          return '下订单'
+        }else if( id === 2){
+          return '已经付款'
+        }else if(id === 3){
+          return '取消'
+        }else if(id ===4 ){
+          return '申请退款'
+        }else if(id ===5){
+          return '审核通过'
+        }else if(id ===6){
+          return '审核驳回'
+        }else if(id ===7){
+          return '退款'
+        }else if(id ===8){
+          return '已经使'
+        }
       }
     }
   }
@@ -266,6 +319,7 @@
     font-size: 12px;
     color: #333333;
     text-align: center;
+    height: 53px;
     line-height: 53px;
   }
 

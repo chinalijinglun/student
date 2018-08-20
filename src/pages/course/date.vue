@@ -104,7 +104,7 @@
       getIdData(){
         const that = this;
         this.baseAxios1.post('/student/schedule',{
-          "course_schedule_id": that.id,
+          "course_id": that.id,
           "page_limit": 1000,
           "page_no": 1
         }).then((data)=>{
@@ -123,18 +123,17 @@
       getNameother(){
         const that= this;
         this.baseAxios1.post('/student/my_course',{
-          "course_id": '1',
-          "page_limit": 1000,
+          "course_id": that.id,
+          "page_limit": 1,
           "page_no": 1
         }).then((data)=>{
+          console.log(data)
           const data1 = data.data.objects;
           data1.map(function (val) {
-            if(val.id == that.id){
-              that.course.teacherName = val.nickname;
+              that.course.teacherName = val.teacher_name;
               that.course.courseName = val.course_name;
               that.course.ifinish = val.classes_number;
               that.course.finish = val.finish;
-            }
           })
         })
       },

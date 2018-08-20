@@ -12,20 +12,26 @@
           </div>
           <div class="student-num">
             <span class="student-id">学生ID：{{id}}</span>
-            <span class="student-age">年龄：{{age}}岁</span>
+            <span class="student-age" v-text="birtht()"></span>
           </div>
         </div>
         <div class="rest">
           <img src="../../assets/jian.png" alt="">
-          <span class="rest-time">剩余课时：<span class="rest-course">128</span> 节</span>
-          <span class="course-detail">课时详情</span>
+          <span class="rest-time">剩余课时：<span class="rest-course">{{numberAll}}</span> 节</span>
+          <span class="course-detail">
+            <router-link to="/timetable/timetable">课时详情</router-link>
+          </span>
         </div>
       </div>
     </div>
     <div class="mid">
       <div class="mid-tit">
         <div class="tit-lef">即将开课</div>
-        <div class="more">更多 >></div>
+        <div class="more">
+        <router-link to="/timetable/timetable">
+          更多>>
+        </router-link>
+        </div>
       </div>
       <div class="course-details" v-for="item in subject">
         <div class="course-tit">
@@ -48,24 +54,14 @@
             </div>
           </div>
           <ul class="detail-les">
-            <li>
+            <li v-for="ini in xiaoke">
               <div class="les-lef">
                 <img src="../../assets/dian_01.png" alt="">
-                <span>Exploring Space and Astronomy</span>
+                <span>{{ini.name}}</span>
               </div>
               <div class="les-rig">
                 <img src="../../assets/yulan.png" alt="">
-                <span>预览课件</span>
-              </div>
-            </li>
-            <li>
-              <div class="les-lef">
-                <img src="../../assets/dian_01.png" alt="">
-                <span>Exploring Space and Astronomy</span>
-              </div>
-              <div class="les-rig">
-                <img src="../../assets/yulan.png" alt="">
-                <span>预览课件</span>
+                <span @click="previewCourse(ini.id)">预览课件</span>
               </div>
             </li>
           </ul>
@@ -106,6 +102,7 @@
 </template>
 
 <script>
+  import dateFmt from '../../utils/time'
   /**
    * homework_type,1：教师留作业，2：学生完成作业
    * study_state'学习状态，1：进行中，2：已经学完'
@@ -118,6 +115,7 @@
       this.getUserName();
       this.getMycourse();
       this.willHomework();
+      this.allTime();
     },
     data() {
       return {
@@ -126,7 +124,10 @@
         age: "",
         avatar: "",
         subject: [],//课程
-        homework:[]//作业
+        birth:'',
+        homework:[],//作业
+        numberAll:"",
+        xiaoke:[]
       }
     },
     methods: {
@@ -136,10 +137,21 @@
         this.baseAxios.get('/api/v1/student/' + localStorage.getItem('id'))
           .then(function (data) {
             const dataUser = data.data;
-            that.userName = dataUser.username;
+            that.userName = dataUser.name;
             that.id = dataUser.id;
+            that.birth = dataUser.birth;
             that.avatar = dataUser.avatar;
+
             localStorage.setItem('name',dataUser.name);
+
+            const len = [];
+            dataUser.study_courses.map(function (item,index) {
+              if(item.actual_start>dateFmt(new Date())){
+                len.push(item);
+              }
+            })
+            that.numberAll = len.length;
+            console.log(that.numberAll)
           })
       },
 
@@ -151,8 +163,14 @@
           "page_no": 1,
           "course_status": "2" //没上完的课
         }).then((data)=>{
-            that.subject =data.data.objects;
-            console.log(that.subject)
+            that.subject = data.data.objects;
+            that.baseAxios1.post('/student/schedule',{
+              course_id:data.data.objects[0].course_id,
+              page_limit:1000,
+              page_no:1
+            }).then(function (data) {
+              that.xiaoke = data.data.objects;
+            })
         })
       },
       //待做的作业
@@ -165,6 +183,27 @@
         }).then((data)=>{
           that.homework = data.data.objects;
         })
+      },
+      birtht(){
+        const that =this;
+        const birthh = new Date().getFullYear() - new Date(that.birth).getFullYear();
+        return "年龄："+birthh+"岁"
+      },
+      //综合
+      allTime(){
+        const that = this;
+
+      },
+      previewCourse(id){
+        const that = this;
+        this.baseAxios1.post('/student/get_preview_doc',{
+          "page_limit": 10,
+          "page_no": 1,
+          "study_schedule_id": id
+        })
+          .then(function (data) {
+            console.log(data.data.objects)
+          })
       }
     }
   }
@@ -398,6 +437,7 @@
     font-size: 14px;
     color: #333333;
     margin-right: 20px;
+    cursor: pointer;
   }
 
   .les-rig img {

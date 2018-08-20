@@ -8,11 +8,14 @@ import './style/index.css';
 import axios from 'axios';
 import selfComponents from './components';
 import fullCalendar from 'vue-fullcalendar';
-
-Vue.component('full-calendar', fullCalendar)
+import './style/default.css';
+import Calendar from 'vue2-event-calendar';
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);
+Vue.component('Calendar', Calendar)
+Vue.component('full-calendar', fullCalendar)
+
 Vue.config.productionTip = false;
 
 //路由配置和拦截

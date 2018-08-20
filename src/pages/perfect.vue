@@ -11,7 +11,7 @@
                     <span>*</span>学生姓名
                 </div>
                 <div>
-                    <input type="text" class="inps">
+                    <input type="text" class="inps" v-model="name">
                 </div>
             </div>
             <div class="gender">
@@ -19,9 +19,9 @@
                     <span>*</span>Gender
                 </div>
                 <div class="radio">
-                    <span class="checked"><input type="radio" name="gender"> 男</span>
-                    <span><input type="radio" name="gender"> 女</span>
-                    <span><input type="radio" name="gender"> 保密</span>
+                    <span class="checked"><input type="radio" name="gender" value="男" v-model="sex"> 男</span>
+                    <span><input type="radio" name="gender" value="女" v-model="sex"> 女</span>
+                    <span><input type="radio" name="gender" value="保密" v-model="sex"> 保密</span>
                 </div>
             </div>
             <div class="country-grade">
@@ -29,16 +29,16 @@
                     <div class="name">
                         <span>*</span>在读国家
                     </div>
-                    <select name="" id="">
-                        <option value=""></option>
-                    </select>
+                  <select name="" v-model="contury1">
+                    <option v-for="(item,index) in contury" :value="item">{{item}}</option>
+                  </select>
                 </div>
                 <div class="grade">
                     <div class="name">
                         <span>*</span>所在年级
                     </div>
-                    <select name="" id="">
-                        <option value=""></option>
+                    <select name="" v-model="selected">
+                        <option v-for="(item,index) in subject" :value="item">{{item}}</option>
                     </select>
                 </div>
             </div>
@@ -46,31 +46,135 @@
                 <div class="name">
                     <span>*</span>意向学习科目
                 </div>
-                <select name="" id="">
-                    <option value=""></option>
+                <select name="" v-model="first">
+                    <option :value="item" v-for="item in firsts">
+                      {{item.full_name_zh}}
+                    </option>
                 </select>
-                <select name="" id="">
-                    <option value=""></option>
+                <select name="" v-model="second">
+                    <option :value="item" v-for="item in seconds">{{item}}</option>
                 </select>
-                <input type="text" class="inps">
+              <select name="" v-model="thrid">
+                <option :value="item" v-for="item in thrids">{{item}}</option>
+              </select>
             </div>
             <div class="parent-tele">
                 <div class="name">
                     <span>*</span>家长电话
                 </div>
-                <select name="" id="" class="code">
-                    <option value=""></option>
+                <select name="" class="code">
+                    <option value="">+86</option>
                 </select>
-                <input type="text" class="tele">
+                <input type="text" class="tele" v-model="parent_mobile">
             </div>
         </div>
-        <button class="btn">确定</button>
+        <button class="btn" @click="execute">确定</button>
     </div>
 </template>
 
 <script>
     export default {
-        
+      data(){
+        return {
+          name:'',
+          sex:'男',
+          contury1:"",
+          contury:[
+            '中国',
+            '美国',
+            '加拿大',
+            '澳大利亚',
+            '其他'
+          ],
+          nianji:"",
+          kemu:[1,2,3],
+          parent_mobile:'',
+          selected:"",
+          subject:[
+            '1',
+            "2",
+            "3",
+            "4",
+            "5",
+            "6","7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12"
+          ],
+          firsts:[],
+          seconds:[],
+          thrids:[],
+          first:"",
+          second:"",
+          thrid:""
+        }
+      },
+      created(){
+        this.postContry();
+        console.log(localStorage.getItem('id'))
+      },
+      methods:{
+        postStudentInfo(){
+          const that = this;
+          this.baseAxios.put('/api/v1/student/1',{
+            'name':that.name,
+            'gender':that.sex,
+            'read_country':that.contury1,
+            'parent_mobile':that.parent_mobile
+          }).then(function (data) {
+            console.log(data)
+          }) .catch(function (error) {
+            alert(error);
+          });
+        },
+        //t提交国家年级等
+        postContry(){
+          const that = this;
+          this.baseAxios1.post('/student/subject',{
+            "page_limit": 1000,
+            "page_no": 1,
+          }).then(function (data) {
+            that.firsts = data.data.objects;
+          })
+        },
+        addSubject(){
+          const that = this;
+          if(this.first!= ""){
+            this.baseAxios.put('/api/v1/student_subject/'+this.first.id,{
+              "subject_name":that.thrid,
+              "subject_type":1
+            }).then(function (data) {
+              console.log(data)
+            }) .catch(function (error) {
+              alert(error);
+            });
+          }else{
+            return ""
+          }
+        },
+        execute(){
+          const that = this;
+          that.addSubject();
+          that.postStudentInfo();
+          setTimeout(function () {
+            that.$router.push('/center/personal');
+          },250)
+        }
+      },
+      watch:{
+        first:function (val) {
+          this.seconds = [];
+          this.seconds.push(val.subject_category_zh);
+          console.log(this.first)
+
+        },
+        second:function (val) {
+          this.thrids = [];
+          this.thrids.push(this.first.subject_name?this.first.subject_name:this.first.subject_name_zh)
+        }
+      }
     }
 </script>
 
@@ -82,7 +186,7 @@
         height: 1053px;
     }
     .chenggong{
-        padding-top: 54px; 
+        padding-top: 54px;
     }
     .chenggong img{
         margin: 0 auto;

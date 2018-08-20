@@ -46,7 +46,8 @@
       <div class="forms-contain">
         <div class="lef">
           <img class="time" src="../../assets/time.png" alt="">
-          <span class="time-de">{{formatTime(item.start)}}---{{formatTime(item.end)}}</span>
+          <span class="time-de" v-if="item.start === null"></span>
+          <span class="time-de" v-else>{{formatTime(item.start)}}---{{formatTime(item.end)}}</span>
           <div class="teache">
             <img :src="item.teacher_avatar" alt="">
             <span>{{item.nickname}}</span>
@@ -55,7 +56,7 @@
         <div class="rig">
           <img src="../../assets/chakanzuoye.png" alt="">
           <span>
-            <router-link :to="{ path:'/course/finished', query: { id: item.id} }">
+            <router-link :to="{ path:'/course/finished', query: { id: item.course_id} }">
             查看详情
             </router-link>
           </span>
@@ -142,8 +143,12 @@
       },
       //格式化时间
       formatTime(time){
-        var findT = time.indexOf('T');
-        return time.slice(0,findT);
+        if(time == null){
+          return "";
+        }else{
+          var findT = time.indexOf('T');
+          return time.slice(0,findT);
+        }
       },
       //获取课表
       getCourse(page) {

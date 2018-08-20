@@ -6,7 +6,7 @@
                     账号注册
                 </div>
                 <router-link to="/useEmail"><div class="use-phone">
-                   使用邮箱注册 
+                   使用邮箱注册
                 </div></router-link>
             </div>
             <div class="form">
@@ -34,13 +34,13 @@
                    <div class="phone-left">
                        设置密码
                    </div>
-                   <input type="text" class="inps" v-model="secrtone" placeholder="请设置登录密码（6-20位字符）">
+                   <input type="password" class="inps" v-model="secrtone" placeholder="请设置登录密码（6-20位字符）">
                </div>
                <div class="phone">
                    <div class="phone-left">
                        确认密码
                    </div>
-                   <input type="text" class="inps" v-model="secrtAgain" placeholder="请再次输入密码">
+                   <input type="password" class="inps" v-model="secrtAgain" placeholder="请再次输入密码">
                </div>
                <div class="checkbox">
                   <input type="checkbox" checked>
@@ -121,7 +121,11 @@
                         "verify_code": that.code
                     })
                     .then(function(res){
-                        console.log(res)
+                      localStorage.setItem('Authorization',res.data.Authorization);
+                      localStorage.setItem('id',res.data.id);
+                      setTimeout(function () {
+                        that.$router.push('/perfect')
+                      },200)
                     })
                     .catch(function(res){
 
@@ -154,7 +158,7 @@
         padding: 33px 0 20px 0;
         margin-left: 51px;
         float: left;
-        border-bottom: 3px solid #FF8200; 
+        border-bottom: 3px solid #FF8200;
         font-size: 22px;
         color: #333333;
     }

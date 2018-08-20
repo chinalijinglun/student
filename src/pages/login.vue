@@ -52,9 +52,9 @@
 //                           console.log(res)
                              localStorage.setItem('Authorization',res.data.Authorization);
                              localStorage.setItem('id',res.data.id);
-                             that.$router.push({
-                                path:'/center/personal'
-                             })
+                             setTimeout(function () {
+                               that.$router.push('/center/personal');
+                             },200)
                          })
                          .catch(function(res){
                             alert('账号或密码错误，请重新输入')
