@@ -49,8 +49,8 @@
           <span class="time-de" v-if="item.start === null"></span>
           <span class="time-de" v-else>{{formatTime(item.start)}}---{{formatTime(item.end)}}</span>
           <div class="teache">
-            <img :src="item.teacher_avatar" alt="">
-            <span>{{item.nickname}}</span>
+            <!--<img :src="item.teacher_avatar" alt="">-->
+            <span>{{item.teacher_name}}</span>
           </div>
         </div>
         <div class="rig">
@@ -253,7 +253,7 @@
   .teache {
     float: left;
     overflow: hidden;
-    margin-left: 134px;
+    margin-left: 15px;
   }
 
   .teache img {
