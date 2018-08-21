@@ -25,15 +25,19 @@
                     </div>
                 </div>
                 <div class="course-main">
-                    <div class="contains">
-                      {{homework.question_text}}
+                    <div class="contains" v-html="homework.question_text">
+                      <!--{{homework.question_text}}-->
                     </div>
                     <div class="down">
-                        <div class="box" v-for="item in homework.question_attachment_url">
+                        <div class="box" v-for="item in homewordList">
                             <img src="../../assets/fujian.png" alt="">
                             <div class="wenzi">
-                                <p>Alex and I practiced writing </p>
-                                <p class="download">下载附件</p>
+                                <p>{{item.name}}</p>
+                                <p class="download">
+                                  <a :href="item.url">
+                                    下载附件
+                                  </a>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -94,7 +98,8 @@
           homework:{},
           teacher:{},
           files:[],
-          btnStatue:true
+          btnStatue:true,
+          homewordList:[]
         }
       },
       created(){
@@ -122,6 +127,7 @@
             "page_no":1
           }).then(function (data) {
             that.teacher = data.data.objects[0];
+            that.homewordList = JSON.parse(that.teacher.question_attachment_url);
           })
         },
         showBgF(){
@@ -133,6 +139,7 @@
         writeHomework(){
           const that = this;
           const sendObj = {
+            "homework_id":that.id,
             "study_schedule_id": that.schedul,//课节id
           };
           if(that.files != ''){
