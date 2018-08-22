@@ -24,7 +24,7 @@
                     <ul class="detail-les">
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            <a :href="item.question_attachment_url">查看作业</a>
+                            <a @click="lookHomework(item.id)">查看作业</a>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/xiugaizuoye.png" alt="">
@@ -152,6 +152,10 @@
             const that = this;
             that.finish = [];
             that.gethomework(val)
+          },
+          lookHomework(id){
+            this.$router.push('/course/check?id='+id)
+            //course/check?id=62&schedul=96
           }
         }
     }

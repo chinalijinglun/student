@@ -40,7 +40,7 @@
           </div>
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{item.created_at}}</span>
+            <span>{{item.start}}</span>
           </div>
         </div>
         <div class="course-main">
@@ -50,7 +50,7 @@
             </div>
             <div class="teacher">
               <img :src="item.avatar?item.avatar:''" alt="">
-              <span>{{item.nickname}}</span>
+              <span>{{item.teacher_name}}</span>
             </div>
           </div>
           <ul class="detail-les">
@@ -90,9 +90,9 @@
 
             <div class="check-homework">
               <img src="../../assets/chakanzuoye.png" alt="">
-              <router-link :to="item.question_attachment_url">
+              <span @click="lookHomework(item.id)">
                 查看作业
-              </router-link>
+              </span>
             </div>
           </ul>
         </div>
@@ -202,9 +202,35 @@
           "study_schedule_id": id
         })
           .then(function (data) {
-            console.log(data.data.objects)
+            const ware_id = data.data.objects;
+            if(ware_id.length!=0){
+              ware_id.map(function (val,index) {
+//              that.livePreview_doc(val.ware_uid);
+                that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+              })
+            }else{
+              alert('暂无课件')
+            }
+
           })
+      },
+      lookHomework(id){
+       this.$router.push('/course/check?id='+id)
       }
+//      livePreview_doc(ware_id){
+//        const that = this;
+//        this.baseAxios1.post('/live/preview_doc',{
+//          "username": localStorage.getItem('name'),
+//          "ware_uid": ware_id
+//        }).then(function (data) {
+//            that.$router.push({path:'/iframe',query:{ url : data.data.ware_url}});
+////          window.location.href= data.data.ware_url;
+////          window.open(data.data.ware_url)
+////          var win = window.open('', '运行窗口');
+////          win.document.open();
+////          win.document.write(`<iframe src=${data.data.ware_url} frameborder="0"></iframe>`);
+//        })
+//      }
     }
   }
 </script>

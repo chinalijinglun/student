@@ -18,6 +18,8 @@ import order from './order';
 import report from './report';
 import schedule from './schedule';
 
+import iframe from '@/pages/iframe';
+
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +41,12 @@ export default new Router({
       path: '/useEmail',
       name: 'useEmail',
       component: useEmail
+    },
+    {
+      title:'iframe',
+      path: '/iframe',
+      name: 'iframe',
+      component: iframe
     },
     //手机注册
     {

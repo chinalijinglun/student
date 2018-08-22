@@ -332,7 +332,7 @@
         line-height: 30px;
     }
     .process .state{
-        margin-left: 100px;
+        float: right;
         font-size: 14px;
         color: #999999;
     }

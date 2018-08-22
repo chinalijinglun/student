@@ -19,11 +19,11 @@
                     <div class="contains" v-html="item.answer_text">
                     </div>
                     <div class="down">
-                      <div class="box box1" v-for="fujian in forMate(item.answer_attachment_url)">
+                      <div class="box box1" v-for="fujian1 in fujian">
                       <img src="../../assets/fujian.png" alt="">
                       <div class="wenzi">
-                      <a :href="fujian.download_file">
-                      <p>Alex and I practiced writing </p>
+                      <a :href="fujian1.url">
+                      <p>{{fujian1.name}}</p>
                       <p class="download">下载附件</p>
                       </a>
                       </div>
@@ -115,7 +115,8 @@
               content: '请输入内容',
               title:'',
               btnStatue:true,
-              homeworkFinish:[]
+              homeworkFinish:[],
+              fujian:[]
             }
         },
         components: {
@@ -131,6 +132,9 @@
               'page_limit':1000
             }).then(function (data) {
               that.homeworkFinish = data.data.objects;
+              that.fujian = JSON.parse(data.data.objects[0].question_attachment_url);
+
+              console.log(that.fujian)
 //              console.log(typeof(data.data.objects[0].homework_type))
             })
           },
@@ -352,6 +356,7 @@
         color: #333333;
         margin-bottom: 20px;
         line-height: 30px;
+        margin-left: 0px;
     }
     .process .state{
         font-size: 14px;

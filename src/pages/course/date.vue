@@ -172,7 +172,14 @@
           "study_schedule_id": id
         })
           .then(function (data) {
-            console.log(data.data.objects)
+            const ware_id = data.data.objects;
+            if(ware_id.length!=0){
+              ware_id.map(function (val,index) {
+                that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+              })
+            }else{
+              alert('暂无课件')
+            }
           })
       }
     },

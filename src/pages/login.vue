@@ -50,6 +50,7 @@
                          .then(function(res){
                             //  存储token
 //                           console.log(res)
+                             localStorage.clear();
                              localStorage.setItem('Authorization',res.data.Authorization);
                              localStorage.setItem('id',res.data.id);
                              setTimeout(function () {
