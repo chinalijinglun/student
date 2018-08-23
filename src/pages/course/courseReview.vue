@@ -63,6 +63,9 @@
             }).then(function (data) {
               if(data.status == 200){
                 that.open3()
+                setTimeout(function () {
+                  that.$router.go(-1)
+                },500)
               }else{
                 that.open6()
               }
