@@ -138,11 +138,15 @@
           //提交作业
           submitHomework(){
             const that = this;
-            that.baseAxios.put("/api/v1/homework/"+that.id,{
-              "answer_attachment_url": that.url,
-              "answer_text":that.fujian.title
+            that.baseAxios.put("/api/v1/homework/"+that.id,{ //homework的id
+              "answer_attachment_url": that.url, // 学生上传附件
+              "answer_text":that.fujian.title,  //作业描述
+              "question_name":that.fujian.textarea //标题
             }).then((data)=>{
-              console.log(data)
+              if(data.data.id){
+                alert('提交成功')
+                this.$refs.alert.style.display='none'
+              }
             })
           },
           handleSizeChange(val) {
@@ -273,6 +277,7 @@
       display: none;
       overflow: hidden;
       background-color: rgba(0,0,0,.6);
+      z-index: 99;
     }
     .homework_all{
       padding: 15px;

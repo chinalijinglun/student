@@ -138,6 +138,15 @@
         },
         writeHomework(){
           const that = this;
+          if(that.id && that.schedul){
+            that.writeHomework1()
+          }else{
+            that.writeHomework2()
+          }
+        },
+        writeHomework1(){
+          console.log(1)
+          const that = this;
           const sendObj = {
             "homework_id":that.id,
             "study_schedule_id": that.schedul,//课节id
@@ -164,6 +173,27 @@
             that.open4('文件上传中');
           }
 
+        },
+        writeHomework2(){
+          console.log(2)
+          const that = this;
+          const sendObj = {
+          };
+          if(that.files != ''){
+            sendObj.answer_attachment_url = JSON.stringify(that.files)//附件
+          }
+          if(that.content != ''){
+            sendObj.answer_text = that.content
+          }
+          if(that.title != ''){
+            sendObj.question_name = that.title
+          }
+          that.baseAxios.put("/api/v1/homework/"+that.id,sendObj).then((data)=>{
+            if(data.data.id){
+              that.showBg =!that.showBg;
+              that.open2('提交成功');
+            }
+          })
         },
         //上传附件e
         updateFile(e){
