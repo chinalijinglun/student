@@ -210,7 +210,7 @@
         }else if(id ===7){
           return '退款'
         }else if(id ===8){
-          return '已经使'
+          return '已经使用'
         }
       }
     }
