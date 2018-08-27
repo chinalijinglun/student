@@ -31,6 +31,7 @@
           </div>
         </div>
         <div class="lists">
+          <!--no是课程，summary是总结，achievement是成绩单-->
           <template v-if="item.result_type == 'SUMMARY'">
             <div class="list">
               <div class="list-lef">
@@ -47,38 +48,8 @@
                 <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item.id}}">查看课程总结</router-link>
               </div>
             </div>
-            <div class="list">
-              <div class="list-lef">
-                <div class='list-lef-top'>
-                  <img src="../../assets/dian_01.png" alt="">
-                  成绩单
-                </div>
-                <div class="btm">
-                  时间
-                </div>
-              </div>
-              <div class="list-rig">
-                <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="item.report_card_url?item.report_card_url:''">查看成绩单</router-link>
-              </div>
-            </div>
           </template>
           <template v-else-if="item.result_type == 'NO'">
-            <div class="list">
-              <div class="list-lef">
-                <div class='list-lef-top'>
-                  <img src="../../assets/dian_01.png" alt="">
-                  成绩单
-                </div>
-                <div class="btm">
-                  时间
-                </div>
-              </div>
-              <div class="list-rig">
-                <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="item.report_card_url?item.report_card_url:''">查看成绩单</router-link>
-              </div>
-            </div>
             <div class="list">
               <div class="list-lef">
                 <div class='list-lef-top'>
@@ -92,6 +63,23 @@
               <div class="list-rig">
                 <img src="../../assets/chengzhang_h.png" alt="">
                 <router-link :to="{path:'/report/reportDetail',query:{studyscheduleId:item.id}}">查看课节报告</router-link>
+              </div>
+            </div>
+          </template>
+          <template v-else-if="item.result_type == 'ACHIEVEMENT'">
+            <div class="list">
+              <div class="list-lef">
+                <div class='list-lef-top'>
+                  <img src="../../assets/dian_01.png" alt="">
+                  成绩单
+                </div>
+                <div class="btm">
+                  时间
+                </div>
+              </div>
+              <div class="list-rig">
+                <img src="../../assets/chengzhang_h.png" alt="">
+                <router-link :to="item.report_card_url ? item.report_card_url:''">查看成绩单</router-link>
               </div>
             </div>
           </template>

@@ -1,7 +1,7 @@
 <template>
     <div class="finish">
         <div class="mid-tit">
-            <div class="tit-lef">{{teacher.course_name}}</div>
+            <div class="tit-lef">{{teacher.name}}</div>
         </div>
         <div class="process">
             <span>
@@ -17,7 +17,7 @@
                 <div class="course-tit">
                     <div class="les-name">
                         <img src="../../assets/dian_01.png" alt="">
-                          {{homework.question_name}}
+                          {{homework.homework_type == 1 ? homework.question_name : homework.answer_text}}
                     </div>
 
                     <div class="times">
@@ -25,7 +25,8 @@
                     </div>
                 </div>
                 <div class="course-main">
-                    <div class="contains" v-html="homework.question_text">
+                    <div class="contains"
+                         v-html="homework.homework_type == 1 ? homework.question_text : homework.answer_text">
                       <!--{{homework.question_text}}-->
                     </div>
                     <div class="down">
@@ -141,7 +142,8 @@
           if(that.id && that.schedul){
             that.writeHomework1()
           }else{
-            that.writeHomework2()
+//            that.writeHomework2()
+            alert('缺少参数')
           }
         },
         writeHomework1(){

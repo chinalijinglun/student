@@ -43,10 +43,10 @@
             <span>{{item.start}}</span>
           </div>
         </div>
-        <div class="course-main">
+        <div class="course-main" v-for="ini in xiaoke">
           <div class="lesson">
             <div class="lesson-name">
-              {{item.course_desc}}
+              {{ini.name}}
             </div>
             <div class="teacher">
               <img :src="item.avatar?item.avatar:''" alt="">
@@ -54,10 +54,10 @@
             </div>
           </div>
           <ul class="detail-les">
-            <li v-for="ini in xiaoke">
+            <li v-for="inii in xiaoke.kejian">
               <div class="les-lef">
                 <img src="../../assets/dian_01.png" alt="">
-                <span>{{ini.name}}</span>
+                <span>{{inii.ware_name}}</span>
               </div>
               <div class="les-rig">
                 <img src="../../assets/yulan.png" alt="">
@@ -71,12 +71,14 @@
     <div class="mid">
       <div class="mid-tit">
         <div class="tit-lef">待完成的作业</div>
+        <router-link to="/homework/willCompleted">
         <div class="more">更多 >></div>
+        </router-link>
       </div>
       <div class="course-details" v-for="item in homework">
         <div class="course-tit">
           <div class="les-name">
-            {{item.course_name}}
+            {{item.question_name}}
           </div>
 
           <div class="times">
@@ -116,6 +118,7 @@
       this.getMycourse();
       this.willHomework();
       this.allTime();
+//      this.getCourseware();
     },
     data() {
       return {
@@ -151,7 +154,6 @@
               }
             })
             that.numberAll = len.length;
-            console.log(that.numberAll)
           })
       },
 
@@ -169,7 +171,34 @@
               page_limit:1000,
               page_no:1
             }).then(function (data) {
-              that.xiaoke = data.data.objects;
+              const data1 = data.data.objects;
+              var date = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000);
+              data1.map(function (item,index) {
+                if(item.start>=dateFmt(new Date) && item.start<=dateFmt(date) ){
+                  that.xiaoke.push(item);
+//                  console.log(that.xiaoke);
+//                  console.log(that.subject);
+//                  console.log(item)
+                  if(item!=null){
+                    that.baseAxios1.post('/student/get_courseware',{
+                      "page_limit": 10,
+                      "page_no": 1,
+                      "study_schedule_id": item.id
+                    }).then(function (dataa) {
+//                      that.xiaoke[item].kejian = dataa.data.objects;
+                        that.xiaoke.map(function (itm,idx) {
+                          itm.kejian = dataa.data.objects;
+                        })
+//                      console.log(dataa)
+//                      console.log(that.xiaoke)
+                    })
+                  }else{
+                    return ''
+                  }
+                }
+
+              })
+
             })
         })
       },
@@ -216,6 +245,17 @@
       },
       lookHomework(id){
        this.$router.push('/course/check?id='+id)
+      },
+      getCourseware(id){
+        ///student/get_courseware
+        const that =this;
+        this.baseAxios1.post('/student/get_courseware',{
+          "page_limit": 10,
+          "page_no": 1,
+          "study_schedule_id": id
+        }).then(function (data) {
+          console.log(data)
+        })
       }
 //      livePreview_doc(ware_id){
 //        const that = this;

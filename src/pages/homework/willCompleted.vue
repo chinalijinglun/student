@@ -12,7 +12,7 @@
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
-                       {{item.course_name}}
+                       {{item.question_name}}
                     </div>
 
                     <div class="times">
@@ -26,7 +26,7 @@
 
                         <div class="check-homework">
                           <img src="../../assets/chakanzuoye.png" alt="">
-                          <a @click="lookHomework(item.id)">查看作业</a>
+                          <a @click="lookHomework(item.id,item.study_schedule_id)">查看作业</a>
                         </div>
                     </ul>
                 </div>
@@ -57,18 +57,20 @@
       gethomework(page){
         const that = this;
         this.baseAxios1.post('/student/my_homework',{
+          'homework_state':"2",
           "page_limit": 10,
           "page_no": page
         })
           .then((data)=>{
             const finsh = data.data.objects;
-            finsh.map((val)=>{
-              //查找未完成为1的
-              if(val.homework_type == 1){
-                that.finish.push(val);
-                console.log(that.finish)
-              }
-            })
+            that.finish = finsh;
+//            finsh.map((val)=>{
+//              //查找未完成为1的
+//              if(val.homework_type == 1){
+//                that.finish.push(val);
+//                console.log(that.finish)
+//              }
+//            })
           })
       },
       handleSizeChange(val) {
@@ -79,8 +81,8 @@
         that.finish = [];
         that.gethomework(val)
       },
-      lookHomework(id){
-        this.$router.push('/course/check?id='+id)
+      lookHomework(id,study_schedule_id){
+        this.$router.push('/course/check?id='+id+"&schedul="+study_schedule_id)
       }
     }
   }

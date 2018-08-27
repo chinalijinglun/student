@@ -16,8 +16,8 @@
               <span>{{item.created_at}}</span>
             </div>
           </div>
-          <div class="contains">
-            {{item.answer_text}}
+          <div class="contains" v-html="item.student_evaluation">
+
           </div>
           <div class="down">
 
@@ -43,6 +43,17 @@
                 </a>
               </div>
             </div>
+
+              <!--<div class="box" v-for="fujian in JSON.parse(item.answer_attachment_url)">-->
+                <!--{{fujian}}-->
+              <!--<img src="../../assets/fujian.png" alt="">-->
+              <!--<div class="wenzi">-->
+              <!--<a :href="fujian.url">-->
+              <!--<p>Alex and I practiced writing </p>-->
+              <!--<p class="download">下载附件</p>-->
+              <!--</a>-->
+              <!--</div>-->
+              <!--</div>-->
             </template>
           </div>
 
@@ -63,20 +74,9 @@
             </div>
           </div>
           <div class="course-main colors">
-            <div class="contains">
-             {{item.teacher_evaluation}}
+            <div class="contains" v-html="realEvlution(item.teacher_evaluation)">
             </div>
           </div>
-          <!--<ul class="detail-les">-->
-
-          <!--<div class="check-homework center">-->
-          <!--提交-->
-          <!--</div>-->
-          <!--<div class="check-homework" @click="backRouter">-->
-          <!--<img src="../../assets/fanhui.png" alt="">-->
-          <!--返回-->
-          <!--</div>-->
-          <!--</ul>-->
         </div>
       </div>
     </div>
@@ -111,7 +111,16 @@
         }).then(function (data) {
           that.homework = data.data.objects;
         })
+      },
+      realEvlution(val){
+        if(val!=null){
+          var val1 = JSON.parse(val);
+          return val1.lesson_objective
+        }else{
+         return ""
+        }
       }
+
     }
   }
 </script>

@@ -12,10 +12,15 @@
         <span class="calendar-item-date-span">{{item.date.date}}</span>
         <span>{{item.date.day | weekDay_EN}}</span>
       </div>
+
       <div class="agenda-container" v-for="(item, index) in item.data[0]" :key="index">
+        <!--{{item}}-->
+        <router-link :to="{path:'/course/finished',query:{id:item.name_id}}">
         <span class="agenda-item">{{item.title}}</span>
         <span class="time agenda-item">{{item.time}}</span>
+        </router-link>
       </div>
+
     </div>
   </Calendar>
 </template>
@@ -59,6 +64,7 @@
               const schedules = data.data.objects;
               const ArrayData = schedules.map(item => ({
                 title: item.name,
+                name_id:item.course_id,
                 time:  $dateFmt(new Date(item.start), 'hh:mm') + '-' +  $dateFmt(new Date(item.end), 'hh:mm'),
                 date:  $dateFmt(new Date(item.start), 'yyyy-MM-dd')
               }))

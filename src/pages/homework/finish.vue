@@ -12,7 +12,7 @@
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
-                       {{item.course_name}}
+                       {{item.question_name}}
                     </div>
 
                     <div class="times">
@@ -24,7 +24,7 @@
                     <ul class="detail-les">
                         <div class="check-homework">
                             <img src="../../assets/chakanzuoye.png" alt="">
-                            <a @click="lookHomework(item.id)">查看作业</a>
+                            <a @click="lookHomework(item.id,item.study_schedule_id)">查看作业</a>
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/xiugaizuoye.png" alt="">
@@ -32,7 +32,7 @@
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/dianping.png" alt="">
-                            查看点评
+                            <span @click="lookdianping(item.id,item.study_schedule_id)">查看点评</span>
                         </div>
                     </ul>
                 </div>
@@ -94,17 +94,19 @@
           gethomework(page){
             const that = this;
               this.baseAxios1.post(`/student/my_homework`,{
+                'homework_state':"1",
                 "page_limit": 10,
                 "page_no": page
               })
               .then((data)=>{
                 const finsh = data.data.objects;
+                that.finish = finsh;
 //                that.paginations.totalPage = finsh.total_pages;
-                finsh.map((val)=>{
-                  if(val.homework_type == 1){
-                    that.finish.push(val);
-                  }
-                })
+//                finsh.map((val)=>{
+//                  if(val.homework_type == 1){
+//                    that.finish.push(val);
+//                  }
+//                })
               })
           },
           //打开弹窗
@@ -157,9 +159,12 @@
             that.finish = [];
             that.gethomework(val)
           },
-          lookHomework(id){
-            this.$router.push('/course/check?id='+id)
+          lookHomework(id,study_schedule_id){
+            this.$router.push('/course/check?id='+id+"&schedul="+study_schedule_id)
             //course/check?id=62&schedul=96
+          },
+          lookdianping(id,study_schedule_id){
+            this.$router.push('/course/review?id='+id+"&schedul="+study_schedule_id)
           }
         }
     }

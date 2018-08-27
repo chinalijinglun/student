@@ -43,6 +43,7 @@
    */
     export default {
         created(){
+          this.getEvaluation();
         },
         data(){
             return{
@@ -53,6 +54,17 @@
             }
         },
         methods:{
+          getEvaluation(){
+            const that = this;
+            this.baseAxios.get('/api/v1/study_schedule/'+that.id,{
+            }).then(function (data) {
+              var data1= data.data;
+//              console.log(data)
+              that.value1 = data1.teacher_score;
+              that.value2 = data1.student_score;
+              that.opinion = data1.teacher_result;
+            })
+          },
           putEvaluation(){
             const that = this;
             this.baseAxios.put('/api/v1/study_schedule/'+that.id,{
@@ -76,7 +88,10 @@
             const that = this;
             that.value1 = 0;
             that.value2 = 0;
-            that.opinion = ''
+            that.opinion = '';
+            setTimeout(function () {
+              that.$router.go(-1)
+            },500)
           },
           open3() {
             this.$notify({
