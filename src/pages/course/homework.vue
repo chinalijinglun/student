@@ -18,7 +18,11 @@
         </div>
 
         <div class="mid">
-            <div class="course-details" v-for="item in homework">
+            <div v-if="homework.length == 0" style="text-align: center">
+              <img src="../../assets/zanwukecheng.png" alt="">
+              <div>暂无数据</div>
+            </div>
+            <div v-else class="course-details" v-for="item in homework">
                 <div class="course-tit">
                     <div class="les-name">
                         <img src="../../assets/dian_01.png" alt="">
@@ -67,7 +71,8 @@
           }
         },
         created(){
-          this.getHomework()
+          this.getHomework();
+          console.log(this.homework)
         },
         methods:{
           //获取小课的homework

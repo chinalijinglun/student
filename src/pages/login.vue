@@ -17,8 +17,10 @@
             </div>
             <button class="btn" @click="login">登录</button>
             <div class="regist-now">
+              <router-link to="/usePhone">
                 立即注册，免费领取试听课
                 <img src="../assets/jian.png" alt="">
+              </router-link>
             </div>
         </div>
     </div>

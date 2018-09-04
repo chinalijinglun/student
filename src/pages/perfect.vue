@@ -113,7 +113,6 @@
       },
       created(){
         this.postContry();
-        console.log(localStorage.getItem('id'))
       },
       methods:{
         postStudentInfo(){

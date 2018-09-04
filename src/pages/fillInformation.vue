@@ -9,79 +9,80 @@
             </div>
             <div class="pic">
                 <div class="img">
-                    <img src="../assets/logo.png" alt="">
+                    <img :src="avatar" alt="">
                 </div>
-                <div class="img">
-                    <img src="../assets/logo.png" alt="">
-                    <div class="make">编辑头像</div>
+                <div class="img" @click="runUpload">
+                    <img :src="avatar" alt="">
+                    <div class="make" >编辑头像</div>
+                  <input type="file" ref="input1" value="上传" @change="uploadImg" style="display: none">
                 </div>
             </div>
         </div>
         <div class="student">
             <div class="zh-name">
                 <div class="zhname"><span class="xing">*</span>学生姓名（中文）</div>
-                <input type="text" class="inps">
+                <input type="text" class="inps" v-model="chinaName">
             </div>
             <div class="zh-name">
                 <div class="zhname">学生姓名（英文）</div>
-                <input type="text" class="inps">
+                <input type="text" class="inps" v-model="englishName">
             </div>
         </div>
         <div class="sex">
             <div class="sex-tit">
                 <span class="xing">*</span>性别
             </div>
-            <span class="span"><input type="radio" name="sex"> 男</span>
-            <span class="span"><input type="radio" name="sex"> 女</span>
-            <span class="span"><input type="radio" name="sex"> 保密</span>
+          <el-radio v-model="gender" label="男">男</el-radio>
+          <el-radio v-model="gender" label="女">女</el-radio>
+          <el-radio v-model="gender" label="未知">未知</el-radio>
         </div>
         <div class="birth">
             <div class="births">
                 <span class="xing">*</span>出生年月日
             </div>
-            <select class="select" name="" id="">
-                <option value=""></option>
-            </select>
+          <el-date-picker
+            v-model="birth"
+            type="date"
+            placeholder="出生年月日">
+          </el-date-picker>
         </div>
         <div class="place">
             <div class="country">
                 <div class="births">
                     <span class="xing">*</span>国家
                 </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
+                <select class="select" name="" v-model="c1" @change="getSelected()">
+                  <option v-for="(item,index) in country" :value="item.id">{{ item.name_zh }}</option>
                 </select>
             </div>
-            <div class="area">
-                <div class="births">
-                    <span class="xing">*</span>地区
-                </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
-            </div>
+            <!--<div class="area">-->
+                <!--<div class="births">-->
+                    <!--<span class="xing">*</span>地区-->
+                <!--</div>-->
+                <!--<select class="select" name="" id="">-->
+                    <!--<option value=""></option>-->
+                <!--</select>-->
+            <!--</div>-->
             <div class="city">
                 <div class="births">
                     <span class="xing">*</span>城市
                 </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
+              <select class="select" name="" v-model="c2">
+                <option v-for="(item,index) in country_seond" :value="item.id">{{ item.name_zh }}</option>
+              </select>
             </div>
         </div>
         <div class="school">
             <div class="births">
                 <span class="xing">*</span>所在学校
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="read_school">
         </div>
         <div class="grade">
             <div class="births">
                 <span class="xing">*</span>所在年级
             </div>
-            <select class="select" name="" id="">
-                <option value=""></option>
-            </select>
+          <input type="text" class="inp" v-model="grade">
         </div>
         <div class="aim">
             <div class="births">
@@ -100,87 +101,73 @@
             <div class="births">
                 学习目标
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="learning_goals_zh">
         </div>
         <div class="school">
             <div class="births">
                 兴趣爱好
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="interest_zh">
         </div>
         <div class="school">
             <div class="births">
                 所获奖项
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="award_zh">
         </div>
         <div class="sex">
             <div class="sex-tit">
                 是否意向出国留学
             </div>
-            <span class="span"><input type="radio" name="go"> 是</span>
-            <span class="span"><input type="radio" name="go"> 否</span>
+          <el-radio v-model="go_abroad" label="是">是</el-radio>
+          <el-radio v-model="go_abroad" label="否">否</el-radio>
         </div>
-        <div class="place">
+        <div class="place width200">
             <div class="country">
                 <div class="births">
                     预计出国留学时间
                 </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
+              <input type="text" class="inp" v-model="go_abroad_at">
             </div>
             <div class="area">
                 <div class="births">
                     预计出国留学国家
                 </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
+              <input type="text" class="inp" v-model="go_abroad_country">
             </div>
             <div class="city">
                 <div class="births">
                     期望出国就读地区
                 </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
-            </div>
-            <div class="city">
-                <div class="births">
-                    期望出国就读地区
-                </div>
-                <select class="select" name="" id="">
-                    <option value=""></option>
-                </select>
+              <input type="text" class="inp" v-model="go_abroad_province">
             </div>
         </div>
         <div class="school">
             <div class="births">
                 海外经历
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="overseas_zh">
         </div>
         <div class="school">
             <div class="births">
                 英语学习经历
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="english_zh">
         </div>
         <div class="school">
             <div class="births">
                 标化考试成绩
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="exam_results_zh">
         </div>
         <div class="student">
             <div class="zh-name">
                 <div class="zhname">家长姓名</div>
-                <input type="text" class="inps">
+                <input type="text" class="inps" v-model="parent">
             </div>
             <div class="zh-name">
                 <div class="zhname"><span class="xing">*</span>家长称谓</div>
-                <input type="text" class="inps">
+                <input type="text" class="inps" v-model="parent_role">
             </div>
         </div>
         <div class="school">
@@ -189,9 +176,9 @@
             </div>
             <div class="parent">
                 <select>
-                    <option value=""></option>
+                    <option value="">+86</option>
                 </select>
-                <input type="text" class="tel">
+                <input type="text" class="tel" v-model="parent_mobile">
             </div>
         </div>
         <div class="school">
@@ -200,17 +187,139 @@
             </div>
             <input type="text" class="inp">
         </div>
-        <button>保存</button>
+        <button @click="putPersonal">保存</button>
     </div>
 </template>
 
 <script>
     export default {
-        
+        data(){
+          return{
+            chinaName:"",
+            englishName:"",
+            gender:'',
+            birth:'',
+            read_school:'',
+            grade:'',
+            learning_goals_zh:"",
+            interest_zh:'',
+            award_zh:'',
+            go_abroad:"",
+            overseas_zh:"",
+            english_zh:"",
+            exam_results_zh:"",
+            parent:"",
+            parent_role:"",
+            parent_mobile:'',
+            parent_email:"",
+            avatar:"",
+            go_abroad_at:'',
+            go_abroad_country:'',
+            go_abroad_province:'',
+            c1:"",
+            c2:'',
+            c3:"",
+            country:[],//yiji
+            country_seond:[],//erji
+            country_third:[],
+            allcountry:[]
+          }
+        }
+      ,created(){
+        this.getPersonal();
+        this.getCountry();
+      },
+      methods:{
+        getPersonal(){
+          const that = this;
+          this.baseAxios.get('/api/v1/student/'+localStorage.getItem('id')).then(function (data) {
+            that.avatar = window.location.origin+ data.data.avatar;
+          })
+        },
+        putPersonal(){
+          const that =this;
+          this.baseAxios.put('/api/v1/student/'+localStorage.getItem('id'),{
+            "name":that.chinaName,
+            "first_name":that.englishName,
+            "gender":that.gender,
+            "birth":that.birth,
+            "read_school":that.read_school,
+            "grade":that.grade,
+            "learning_goals_zh":that.learning_goals_zh,
+            "interest_zh":that.interest_zh,
+            "award_zh":that.award_zh,
+            "go_abroad":that.go_abroad,
+            "overseas_zh":that.overseas_zh,
+            "english_zh":that.english_zh,
+            "exam_results_zh":that.exam_results_zh,
+            "parent":that.parent,
+            "parent_role":that.parent_role,
+            "parent_mobile":that.parent_mobile,
+            "parent_email":that.parent_email,
+            "avatar":that.avatar,
+            "go_abroad_at":that.go_abroad_at,
+            "go_abroad_country":that.go_abroad_country,
+            "go_abroad_province":that.go_abroad_province
+
+          }).then(function (data) {
+            console.log(data)
+          })
+        },
+        uploadImg(e){
+            const that = this,
+              file = e.target.files[0];
+            that.avatar = new FormData();
+            that.avatar.append('file',file);
+            this.baseAxios1.post('/upload',that.avatar).then((data)=>{
+              if(data.status == 200){
+                that.avatar = '';
+                that.avatar = window.location.origin+data.data[0].download_file;
+                that.$message({
+                  message: msg,
+                  type: '上传成功'
+                });
+              }else{
+                that.$message.error('上传失败');
+              }
+            })
+        },
+        runUpload(){
+          this.$refs.input1.click();
+        },
+        getCountry(){
+          const that = this;
+          this.baseAxios.get('/api/v1/region?page=1&results_per_page=10000').then(function (data) {
+//            that.country
+            const allcountry = data.data.objects;
+            that.allcountry = allcountry;
+            allcountry.map((item,index)=>{
+              if(item.level == 2){
+                that.country.push(item)
+              }
+            })
+          })
+        },
+        getSelected(){
+//          console.log(this.c1);
+          const that = this;
+          that.allcountry.map((item,index)=>{
+            if(item.pid == this.c1){
+//              console.log(item)
+              that.country_seond.push(item)
+            }
+          })
+        }
+      }
     }
 </script>
 
 <style scoped>
+  input{
+    outline: none;
+  }
+  .width200 input{
+    width: 200px;
+  }
     .fill-information{
         width: 1000px;
         height: 2142px;
@@ -228,7 +337,7 @@
         font-size: 14px;
         color: #151515;
         line-height: 16px;
-        margin: 23px 0 0 74px;    
+        margin: 23px 0 0 74px;
     }
     .xing{
         font-size: 14px;
@@ -282,12 +391,13 @@
         color: #333333;
     }
     .inps{
-        width: 196px;
+        width: 191px;
         height: 38px;
         border: 1px solid #D8D8D8;
         border-radius: 3px;
         margin-top: 8px;
         outline: none;
+        padding-left: 5px;
     }
     .sex{
         margin-top: 28px;

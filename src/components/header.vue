@@ -22,27 +22,40 @@
             </div>
         </div>
         <div class="header-bottom">
+          <router-link to="/index">
             <img src="@/assets/logo1.png" alt="" class="logo">
+          </router-link>
             <ul class="nav">
                 <li>
+                  <router-link to="/sztd">
                     <p>School Staff</p>
                     <p>师资团队</p>
+                  </router-link>
                 </li>
                 <li>
+                  <router-link to="/kctx">
                     <p>Course System</p>
                     <p>课程体系</p>
+                  </router-link>
                 </li>
                 <li>
+                  <router-link to="/jxfw">
                     <p>Service System</p>
                     <p>教学服务</p>
+                  </router-link>
                 </li>
-                <li class="mouserover" v-on:mouseover="mouserover()" v-on:mouseout="mouseout()">
+                <!--<li class="mouserover" v-on:mouseover="mouserover()" v-on:mouseout="mouseout()">-->
+                <li class="mouserover">
+                  <router-link to="/zsrx">
                     <p>Admissions</p>
                     <p>招生入学</p>
+                  </router-link>
                 </li>
                 <li>
+                  <router-link to="/gywm">
                     <p>About US</p>
                     <p>关于我们</p>
+                  </router-link>
                 </li>
             </ul>
             <div class="btn-box">
@@ -53,7 +66,7 @@
                     </router-link>
                   </div>
                   <div class="regist">
-                    <router-link to="/useEmail">
+                    <router-link to="/usePhone">
                       注册
                     </router-link>
                   </div>

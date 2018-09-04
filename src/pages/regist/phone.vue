@@ -5,9 +5,9 @@
                 <div class="account-registration">
                     账号注册
                 </div>
-                <router-link to="/useEmail"><div class="use-phone">
-                   使用邮箱注册
-                </div></router-link>
+                <!--<router-link to="/useEmail"><div class="use-phone">-->
+                   <!--使用邮箱注册-->
+                <!--</div></router-link>-->
             </div>
             <div class="form">
                <div class="phone">

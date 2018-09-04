@@ -6,7 +6,12 @@ import login from '@/pages/login'
 import main from '@/pages/main';
 import perfect from '@/pages/perfect';
 import fillInformation from '@/pages/fillInformation';
-import index from '@/pages/index';
+import index from '@/pages/static/index';
+import sztd from '@/pages/static/sztd';
+import kctx from '@/pages/static/kctx';
+import jxfw from '@/pages/static/jxfw';
+import zsrx from '@/pages/static/zsrx';
+import gywm from '@/pages/static/gywm';
 
 import center from './center';
 import data from './data';
@@ -33,6 +38,36 @@ export default new Router({
       path: '/index',
       name: 'index',
       component: index
+    },
+    {
+      title: '师资团队',
+      path: '/sztd',
+      name: 'sztd',
+      component: sztd
+    },
+    {
+      title: '课程体系',
+      path: '/kctx',
+      name: 'kctx',
+      component: kctx
+    },
+    {
+      title: '教学服务',
+      path: '/jxfw',
+      name: 'jxfw',
+      component: jxfw
+    },
+    {
+      title: '招生入学',
+      path: '/zsrx',
+      name: 'zsrx',
+      component: zsrx
+    },
+    {
+      title: '招生入学',
+      path: '/gywm',
+      name: 'gywm',
+      component: gywm
     },
     //注册
     //邮箱注册

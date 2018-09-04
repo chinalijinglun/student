@@ -42,7 +42,7 @@
                             <img src="../../assets/chakanzuoye.png" alt="">
                             <router-link :to="{ path:'/course/homework', query:{id:item.id}}">查看作业</router-link>
                         </div>
-                        <div class="check-homework">
+                        <div class="check-homework" @click="test2(item.id)">
                             <img src="../../assets/huifang.png" alt="">
                             回放
                         </div>
@@ -52,6 +52,10 @@
                             课程评价
                           </router-link>
                         </div>
+                      <div class="check-homework" @click="previewCourse(item.id)">
+                        <img src="../../assets/huifang.png" alt="">
+                        预览课件
+                      </div>
                     </ul>
                 </div>
             </div>
@@ -146,6 +150,29 @@
               result.push(array.slice(start, end));
             }
             return result;
+          },
+          //预览课件
+          previewCourse(id){
+            const that = this;
+            this.baseAxios1.post('/student/get_preview_doc',{
+              "page_limit": 10,
+              "page_no": 1,
+              "study_schedule_id": id
+            })
+              .then(function (data) {
+                const ware_id = data.data.objects;
+                if(ware_id.length!=0){
+                  ware_id.map(function (val,index) {
+                    that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+                  })
+                }else{
+                  alert('暂无课件')
+                }
+              })
+          },
+          test2(id) {
+            const that = this;
+            that.$router.push({path: '/iframe', query: {id: id}})
           }
 //          ,test1(){
 //            this.baseAxios1.post('/student/schedule',{
@@ -235,7 +262,7 @@
         padding-bottom: 27px;
         overflow: hidden;
         margin: 0 auto;
-        max-width: 426px;
+      max-width: 570px;
     }
     .detail-les li{
         height: 40px;

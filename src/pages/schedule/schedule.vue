@@ -14,11 +14,16 @@
       </div>
 
       <div class="agenda-container" v-for="(item, index) in item.data[0]" :key="index">
-        <!--{{item}}-->
-        <router-link :to="{path:'/course/finished',query:{id:item.name_id}}">
-        <span class="agenda-item">{{item.title}}</span>
-        <span class="time agenda-item">{{item.time}}</span>
-        </router-link>
+        <!--<router-link :to="{path:'/course/finished',query:{id:item.name_id}}">-->
+          <div v-if="tody > item.date" style="background-color: #ff3b00" @click="test2(item.id)">
+            <span class="agenda-item">{{item.title}}</span>
+            <span class="time agenda-item">{{item.time}}</span>
+          </div>
+          <div v-else style="background-color: #F5A623;" @click="test2(item.id)">
+            <span class="agenda-item">{{item.title}}</span>
+            <span class="time agenda-item">{{item.time}}</span>
+          </div>
+        <!--</router-link>-->
       </div>
 
     </div>
@@ -33,6 +38,7 @@
               dateData: {},
               fcEvents : [],
               startDate: new Date(),
+              tody:$dateFmt(new Date()),
               data11:[{title:'123',time:new Date()}]
             }
         },
@@ -42,47 +48,50 @@
         }
       },
       created(){
-  this.getSchedule();
+        console.log( $dateFmt(new Date()) >= "2018-08-31")
       },
       methods: {
         isToday(day) {
-          return  $dateFmt(new Date(day), 'yyyy-MM-dd') ===  $dateFmt(new Date(), 'yyyy-MM-dd');
+          return $dateFmt(new Date(day), 'yyyy-MM-dd') === $dateFmt(new Date(), 'yyyy-MM-dd');
         },
         getSchedule({startDay, endDay}) {
           this.query(new Date(startDay.full), new Date(endDay.full))
         },
         //获取课程表
-        query(start,end){
-          const that =this;
-          this.baseAxios1.post('/student/schedule',{
+        query(start, end) {
+          const that = this;
+          this.baseAxios1.post('/student/schedule', {
             start,
             end,
             page_no: 1,
             page_limit: 1000
           })
-            .then((data)=>{
+            .then((data) => {
               const schedules = data.data.objects;
               const ArrayData = schedules.map(item => ({
                 title: item.name,
-                name_id:item.course_id,
-                time:  $dateFmt(new Date(item.start), 'hh:mm') + '-' +  $dateFmt(new Date(item.end), 'hh:mm'),
-                date:  $dateFmt(new Date(item.start), 'yyyy-MM-dd')
+                name_id: item.course_id,
+                id:item.id,
+                time: $dateFmt(new Date(item.start), 'hh:mm') + '-' + $dateFmt(new Date(item.end), 'hh:mm'),
+                date: $dateFmt(new Date(item.start), 'yyyy-MM-dd')
               }))
               let ObjectData = {}
               ArrayData.forEach(item => {
-                if(ObjectData[item.date]) {
-                  ObjectData[item.date].push({ ...item })
+                if (ObjectData[item.date]) {
+                  ObjectData[item.date].push({...item})
                 } else {
-                  ObjectData[item.date] = [{ ...item }]
+                  ObjectData[item.date] = [{...item}]
                 }
               })
               this.dateData = {
                 Array: ArrayData,
                 Object: ObjectData
               }
-
-              console.log(this.dateData)
             })
+        },
+        test2(id) {
+          const that = this;
+          that.$router.push({path: '/iframe', query: {id: id}})
         }
       }
     }
@@ -126,7 +135,7 @@
     }
     .agenda-container .agenda-item {
       padding: 5px;
-      background: #F5A623;
+      /*background: #F5A623;*/
       color: #333;
       display: block;
       cursor: pointer;

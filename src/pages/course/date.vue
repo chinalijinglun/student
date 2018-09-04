@@ -150,18 +150,19 @@
       //进入教室获取教师地址
       ,test2(id){
         const that = this;
-        this.baseAxios1.post('/student/get_enter_room_url',{
-//          41
-          'study_schedule_id': id == 40 ? 41: id
-        }).then(function (data) {
-          if(data.status == 200){
-            window.location.href = data.data.url;
-//            window.open(data.data.url)
-          }else{
-            alert('无法进入教室，请稍后再试')
-          }
-
-        })
+        that.$router.push({path:'/iframe',query:{id:id}})
+//        this.baseAxios1.post('/student/get_enter_room_url',{
+////          41
+//          'study_schedule_id': id == 40 ? 41: id
+//        }).then(function (data) {
+//          if(data.status == 200){
+//            window.location.href = data.data.url;
+////            window.open(data.data.url)
+//          }else{
+//            alert('无法进入教室，请稍后再试')
+//          }
+//
+//        })
       },
       //预览课件
       previewCourse(id){

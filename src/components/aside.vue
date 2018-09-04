@@ -2,8 +2,8 @@
   <div class="aside">
     <div class="select-bar">
       <ul class="bars">
-        <li class="active" v-for="(items, index) in bars">
-          <router-link :to=items.path>
+        <li v-for="(items, index) in bars" @click="selectStyle(index)" :key="index">
+          <router-link :to="items.path" class="a_color">
             <img class="imgs center" :src=items.img alt="">
             <span>{{items.name}}</span>
           </router-link>
@@ -54,22 +54,22 @@
           img: require('@/assets/chengzhang_h.png'),
           path: '/report/report'
         }]
+        ,  num:"1"
       }
     },
-    watch: {},
-    created() {
-
-    },
     methods: {
-//            activity(){
-//                var arr = ['me01.png','kechengbiao_h.png','yuxi_h.png','zuoye_h.png','kecheng_h.png','dingdan_h.png','chengzhang_h.png']
-//                var arr2 = ['me02.png','kechengbiao_r.png','yuxi_r.png','zuoye_r.png','kecheng_r.png','dingdan_r.png','chengzhang_r.png']
-//            }
+      selectStyle (index) {
+        this.num = index;
+      },
     }
+
   }
 </script>
 
 <style scoped>
+  .router-link-active{
+    color: #ff3b00;
+  }
   .aside {
     width: 180px;
     float: left;
@@ -94,8 +94,10 @@
   }
 
   .bars li a {
-    color: #333333;
     text-decoration: none;
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 
   .imgs {

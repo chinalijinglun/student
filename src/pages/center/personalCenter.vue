@@ -8,10 +8,12 @@
         <div class="student-mess">
           <div class="bans">
             <div class="names">{{userName}}</div>
+            <router-link to="/fillInformation">
             <img src="../../assets/bianji.png" alt="">
+            </router-link>
           </div>
           <div class="student-num">
-            <span class="student-id">学生ID：{{id}}</span>
+            <span class="student-id">年级：{{id}}</span>
             <span class="student-age" v-text="birtht()"></span>
           </div>
         </div>

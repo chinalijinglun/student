@@ -20,6 +20,8 @@ Vue.config.productionTip = false;
 
 //路由配置和拦截
 
+let requestCount = 0;
+
 const baseAxios = axios.create({
   baseURL: 'http://39.106.143.18:5000',
   headers: {
@@ -34,6 +36,46 @@ const baseAxios1 = axios.create({
     'Authorization': localStorage.getItem('Authorization')
   }
 });
+
+baseAxios.interceptors.request.use(config => {
+  requestCount++;
+  ElementUI.Loading.service({ fullscreen: true })
+  return config;
+}, error => {
+  console.log(error)
+})
+
+baseAxios.interceptors.response.use(resp => {
+  // setTimeout(_ => {
+    requestCount--;
+    if (requestCount <= 0) {
+      ElementUI.Loading.service().close()
+    }
+  return resp;
+  // }, 50)
+}, error => {
+  console.log(error)
+})
+
+baseAxios1.interceptors.request.use(config => {
+  requestCount++;
+  ElementUI.Loading.service({ fullscreen: true })
+  return config;
+}, error => {
+  console.log(error)
+})
+
+baseAxios1.interceptors.response.use(resp => {
+  // setTimeout(_ => {
+  requestCount--;
+  if (requestCount <= 0) {
+    ElementUI.Loading.service().close()
+  }
+  return resp;
+  // }, 50)
+}, error => {
+  console.log(error)
+})
 
 Vue.prototype.baseAxios = baseAxios;
 Vue.prototype.baseAxios1 = baseAxios1;
