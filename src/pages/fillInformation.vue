@@ -32,9 +32,9 @@
             <div class="sex-tit">
                 <span class="xing">*</span>性别
             </div>
-          <el-radio v-model="gender" label="男">男</el-radio>
-          <el-radio v-model="gender" label="女">女</el-radio>
-          <el-radio v-model="gender" label="未知">未知</el-radio>
+          <el-radio v-model="gender" label="male">男</el-radio>
+          <el-radio v-model="gender" label="female">女</el-radio>
+          <el-radio v-model="gender" label="unkown">保密</el-radio>
         </div>
         <div class="birth">
             <div class="births">
@@ -49,26 +49,27 @@
         <div class="place">
             <div class="country">
                 <div class="births">
-                    <span class="xing">*</span>国家
+                    <span class="xing">*</span>在读国家
                 </div>
-                <select class="select" name="" v-model="c1" @change="getSelected()">
-                  <option v-for="(item,index) in country" :value="item.id">{{ item.name_zh }}</option>
+
+              <select class="select" name="" v-model="c1" @change="getSelected1()">
+                <option v-for="(item,index) in COUNTRY_CODE" :value="item.id">{{ item.name_zh }}</option>
+              </select>
+            </div>
+            <div class="area">
+                <div class="births">
+                    <span class="xing">*</span>在读地区
+                </div>
+                <select class="select" name="" v-model="c2" @change="getSelected2()">
+                    <option v-for="(item,index) in country_seond" :value="item.id">{{ item.name_zh }}</option>
                 </select>
             </div>
-            <!--<div class="area">-->
-                <!--<div class="births">-->
-                    <!--<span class="xing">*</span>地区-->
-                <!--</div>-->
-                <!--<select class="select" name="" id="">-->
-                    <!--<option value=""></option>-->
-                <!--</select>-->
-            <!--</div>-->
             <div class="city">
                 <div class="births">
-                    <span class="xing">*</span>城市
+                    <span class="xing">*</span>在读城市
                 </div>
-              <select class="select" name="" v-model="c2">
-                <option v-for="(item,index) in country_seond" :value="item.id">{{ item.name_zh }}</option>
+              <select class="select" name="" v-model="c3">
+                <option v-for="(item,index) in country_third" :value="item.id">{{ item.name_zh }}</option>
               </select>
             </div>
         </div>
@@ -82,19 +83,37 @@
             <div class="births">
                 <span class="xing">*</span>所在年级
             </div>
-          <input type="text" class="inp" v-model="grade">
+          <!--<input type="text" class="inp" v-model="grade">-->
+          <select name="" v-model="grade" class="select">
+            <option :value="item" v-for="item in subject">
+              {{item}}
+            </option>
+          </select>
         </div>
         <div class="aim">
             <div class="births">
                 <span class="xing">*</span>意向学习科目
             </div>
             <div class="checks">
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;U.S. History 美国历史</span>
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;World History 世界历史</span>
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;Geography and World Cultures 地理和世界文化</span>
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;Biology 生物</span>
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;Mathematics III 数学3</span>
-                <span><input type="checkbox" name="" id="">&nbsp;&nbsp;其他 <input type="text" class="inps"></span>
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;U.S. History 美国历史</span>-->
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;World History 世界历史</span>-->
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;Geography and World Cultures 地理和世界文化</span>-->
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;Biology 生物</span>-->
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;Mathematics III 数学3</span>-->
+                <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;其他 <input type="text" class="inps"></span>-->
+              <select name="" v-model="first" class="select">
+                <option :value="item" v-for="item in firsts">
+                  {{item.full_name_zh}}
+                </option>
+              </select>
+
+              <select name="" v-model="second" class="select">
+                <option :value="item" v-for="item in seconds">{{item}}</option>
+              </select>
+
+              <select name="" v-model="thrid" class="select">
+                <option :value="item" v-for="item in thrids">{{item}}</option>
+              </select>
             </div>
         </div>
         <div class="school">
@@ -127,19 +146,32 @@
                 <div class="births">
                     预计出国留学时间
                 </div>
-              <input type="text" class="inp" v-model="go_abroad_at">
+              <!--<input type="text" class="inp" v-model="go_abroad_at">-->
+              <el-date-picker
+                v-model="go_abroad_at"
+                type="year"
+                placeholder="预计出国留学时间"
+                class="cgsj"
+              >
+              </el-date-picker>
             </div>
             <div class="area">
                 <div class="births">
                     预计出国留学国家
                 </div>
-              <input type="text" class="inp" v-model="go_abroad_country">
+              <!--<input type="text" class="inp" v-model="go_abroad_country">-->
+              <select class="select" name="" id="aaa" v-model="go_abroad_country" @change="getSelected3()">
+                <option v-for="(item,index) in COUNTRY_CODE" :value="item.name_zh">{{ item.name_zh }}</option>
+              </select>
             </div>
             <div class="city">
                 <div class="births">
                     期望出国就读地区
                 </div>
-              <input type="text" class="inp" v-model="go_abroad_province">
+              <!--<input type="text" class="inp" v-model="go_abroad_province">-->
+              <select class="select" name="" v-model="go_abroad_province">
+                <option v-for="(item,index) in COUNTRY_CODE1" :value="item.id">{{ item.name_zh }}</option>
+              </select>
             </div>
         </div>
         <div class="school">
@@ -175,8 +207,8 @@
                 <span class="xing">*</span>家长电话
             </div>
             <div class="parent">
-                <select>
-                    <option value="">+86</option>
+                <select v-model="nation">
+                    <option :value="item.code" v-for="item in NATIONAL_CODE">{{item.code}}  {{item.name_zh}}</option>
                 </select>
                 <input type="text" class="tel" v-model="parent_mobile">
             </div>
@@ -192,9 +224,11 @@
 </template>
 
 <script>
+  import {NATIONAL_CODE,COUNTRY_CODE} from '../utils/enum'
     export default {
         data(){
           return{
+            nation:'',
             chinaName:"",
             englishName:"",
             gender:'',
@@ -222,12 +256,36 @@
             country:[],//yiji
             country_seond:[],//erji
             country_third:[],
-            allcountry:[]
+            allcountry:[],
+            subject:[
+              '1',
+              "2",
+              "3",
+              "4",
+              "5",
+              "6","7",
+              "8",
+              "9",
+              "10",
+              "11",
+              "12",
+              "大学"
+            ],
+            NATIONAL_CODE:NATIONAL_CODE,
+            COUNTRY_CODE:COUNTRY_CODE,
+            COUNTRY_CODE1:[],
+            firsts:[],
+            seconds:[],
+            thrids:[],
+            first:"",
+            second:"",
+            thrid:"",
           }
         }
       ,created(){
         this.getPersonal();
-        this.getCountry();
+//        this.getCountry();
+        this.postContry();
       },
       methods:{
         getPersonal(){
@@ -259,8 +317,10 @@
             "avatar":that.avatar,
             "go_abroad_at":that.go_abroad_at,
             "go_abroad_country":that.go_abroad_country,
-            "go_abroad_province":that.go_abroad_province
-
+            "go_abroad_province":that.go_abroad_province,
+            "nation":that.nation,
+            "read_country":that.c1,
+            "read_province":that.c2
           }).then(function (data) {
             console.log(data)
           })
@@ -275,8 +335,8 @@
                 that.avatar = '';
                 that.avatar = window.location.origin+data.data[0].download_file;
                 that.$message({
-                  message: msg,
-                  type: '上传成功'
+                  message: '图片上传成功',
+                  type: 'success'
                 });
               }else{
                 that.$message.error('上传失败');
@@ -286,34 +346,78 @@
         runUpload(){
           this.$refs.input1.click();
         },
-        getCountry(){
-          const that = this;
-          this.baseAxios.get('/api/v1/region?page=1&results_per_page=10000').then(function (data) {
-//            that.country
-            const allcountry = data.data.objects;
-            that.allcountry = allcountry;
-            allcountry.map((item,index)=>{
-              if(item.level == 2){
-                that.country.push(item)
-              }
-            })
-          })
-        },
-        getSelected(){
-//          console.log(this.c1);
-          const that = this;
-          that.allcountry.map((item,index)=>{
+//        getCountry(){
+//          const that = this;
+//          this.baseAxios.get('/api/v1/region?page=1&results_per_page=99999',{
+//            page:"1",
+//            pagelimt:"1000000"
+//          }).then(function (data) {
+//  console.log(data)
+//            const allcountry = data.data.objects;
+//            that.allcountry = allcountry;
+//            allcountry.map((item,index)=>{
+//              if(item.level == 2){
+//                that.country.push(item)
+//              }
+//            })
+//          })
+//        },
+        getSelected1(){
+          this.country_seond =[];
+          this.COUNTRY_CODE.map((item)=>{
             if(item.pid == this.c1){
-//              console.log(item)
-              that.country_seond.push(item)
+              this.country_seond.push(item);
+              this.country_third=[]
             }
           })
+        },
+        getSelected2(){
+          this.country_third=[];
+          this.COUNTRY_CODE.map((item)=>{
+            if(item.pid == this.c2){
+              this.country_third.push(item)
+            }
+          })
+        },
+        getSelected3(){
+          this.COUNTRY_CODE1=[];
+          this.COUNTRY_CODE.map((item)=>{
+            if(item.pid == this.go_abroad_country){
+              this.COUNTRY_CODE1.push(item)
+            }
+          })
+        },
+        postContry(){
+          const that = this;
+          this.baseAxios1.post('/student/subject',{
+            "page_limit": 1000,
+            "page_no": 1,
+          }).then(function (data) {
+            that.firsts = data.data.objects;
+          })
+        },
+      },
+      watch:{
+        first:function (val) {
+          this.seconds = [];
+          this.seconds.push(val.subject_category_zh);
+          this.thrid = '';
+          console.log(this.first)
+
+        },
+        second:function (val) {
+          this.thrids = [];
+          this.thrids.push(this.first.subject_name?this.first.subject_name:this.first.subject_name_zh)
         }
       }
     }
 </script>
 
 <style scoped>
+  .cgsj{
+    width: 200px;
+    margin-top: 10px;
+  }
   input{
     outline: none;
   }

@@ -39,15 +39,30 @@
         this.baseAxios1.post('/student/get_enter_room_url', {
           'study_schedule_id': id == 40 ? 41 : id
         }).then(function (data) {
-          if (data.status == 200) {
-            that.url = data.data.url;
+          if(data!=undefined){
+            if (data.status == 200) {
+              that.url = data.data.url;
 //            window.location.href = data.data.url;
 //            window.open(data.data.url)
-          } else {
-            alert('无法进入教室，请稍后再试')
+            }
+          }else{
+            alert('study schedule has locked')
           }
 
         })
+        .catch(function (error) {
+//          alert(error.response.data.error);
+          that.open3(error.response.data.error)
+          that.$router.go(-1);
+//          console.log(that.$router.push(course/date))
+//          that.$router.push('course/date')
+        })
+      },
+      open3(err) {
+        this.$message({
+          message: err,
+          type: 'warning'
+        });
       },
       useFunction(){
         if(this.$route.query.id){

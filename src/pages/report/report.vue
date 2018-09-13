@@ -22,7 +22,70 @@
       </el-form-item>
     </el-form>
     <div class="forms">
-      <div class="ji" v-for="item in course">
+      <!--<div class="ji" v-for="item in course">-->
+        <!--<div class="title">-->
+          <!--<div class="lef-esl">{{item.course_name}}</div>-->
+          <!--<div class="teacger">-->
+            <!--<img :src="item.teacher_avatar" alt="">-->
+            <!--{{item.teacher_name}}-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="lists">-->
+          <!--&lt;!&ndash;no是课程，summary是总结，achievement是成绩单&ndash;&gt;-->
+          <!--<template v-if="item.result_type == 'SUMMARY'">-->
+            <!--<div class="list">-->
+              <!--<div class="list-lef">-->
+                <!--<div class='list-lef-top'>-->
+                  <!--<img src="../../assets/dian_01.png" alt="">-->
+                  <!--课程总结-->
+                <!--</div>-->
+                <!--<div class="btm">-->
+                  <!--时间-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="list-rig">-->
+                <!--<img src="../../assets/chengzhang_h.png" alt="">-->
+                <!--<router-link :to="{path:'/report/reportDetail',query:{studyresultId:item.id}}">查看课程总结</router-link>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</template>-->
+          <!--<template v-else-if="item.result_type == 'NO'">-->
+            <!--<div class="list">-->
+              <!--<div class="list-lef">-->
+                <!--<div class='list-lef-top'>-->
+                  <!--<img src="../../assets/dian_01.png" alt="">-->
+                  <!--{{item.class_name}}-->
+                <!--</div>-->
+                <!--<div class="btm">-->
+                  <!--&lt;!&ndash;{{xiaoke.start}}&#45;&#45;{{xiaoke.end}}&ndash;&gt;-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="list-rig">-->
+                <!--<img src="../../assets/chengzhang_h.png" alt="">-->
+                <!--<router-link :to="{path:'/report/reportDetail',query:{studyscheduleId:item.id}}">查看课节报告</router-link>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</template>-->
+          <!--<template v-else-if="item.result_type == 'ACHIEVEMENT'">-->
+            <!--<div class="list">-->
+              <!--<div class="list-lef">-->
+                <!--<div class='list-lef-top'>-->
+                  <!--<img src="../../assets/dian_01.png" alt="">-->
+                  <!--成绩单-->
+                <!--</div>-->
+                <!--<div class="btm">-->
+                  <!--时间-->
+                <!--</div>-->
+              <!--</div>-->
+              <!--<div class="list-rig">-->
+                <!--<img src="../../assets/chengzhang_h.png" alt="">-->
+                <!--<router-link :to="item.report_card_url ? item.report_card_url:''">查看成绩单</router-link>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</template>-->
+        <!--</div>-->
+      <!--</div>-->
+      <div class="ji" v-for="item in dest">
         <div class="title">
           <div class="lef-esl">{{item.course_name}}</div>
           <div class="teacger">
@@ -30,9 +93,9 @@
             {{item.teacher_name}}
           </div>
         </div>
-        <div class="lists">
+        <div class="lists" v-for="item2 in item.data">
           <!--no是课程，summary是总结，achievement是成绩单-->
-          <template v-if="item.result_type == 'SUMMARY'">
+          <template v-if="item2.result_type == 'SUMMARY'">
             <div class="list">
               <div class="list-lef">
                 <div class='list-lef-top'>
@@ -40,21 +103,21 @@
                   课程总结
                 </div>
                 <div class="btm">
-                  时间
+                  {{ftmTime(item2.start)}} -- {{ftmTime(item2.end)}}
                 </div>
               </div>
               <div class="list-rig">
                 <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item.id}}">查看课程总结</router-link>
+                <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item2.id}}">查看课程总结</router-link>
               </div>
             </div>
           </template>
-          <template v-else-if="item.result_type == 'NO'">
+          <template v-else-if="item2.result_type == 'NO'">
             <div class="list">
               <div class="list-lef">
                 <div class='list-lef-top'>
                   <img src="../../assets/dian_01.png" alt="">
-                  {{item.class_name}}
+                  {{item2.class_name}}
                 </div>
                 <div class="btm">
                   <!--{{xiaoke.start}}&#45;&#45;{{xiaoke.end}}-->
@@ -62,24 +125,25 @@
               </div>
               <div class="list-rig">
                 <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="{path:'/report/reportDetail',query:{studyscheduleId:item.id}}">查看课节报告</router-link>
+                <router-link :to="{path:'/report/reportDetail',query:{studyscheduleId:item2.id}}">查看课节报告</router-link>
               </div>
             </div>
           </template>
-          <template v-else-if="item.result_type == 'ACHIEVEMENT'">
+          <template v-else-if="item2.result_type == 'ACHIEVEMENT'">
             <div class="list">
               <div class="list-lef">
                 <div class='list-lef-top'>
                   <img src="../../assets/dian_01.png" alt="">
                   成绩单
                 </div>
-                <div class="btm">
-                  时间
-                </div>
+                <!--<div class="btm">-->
+                  <!--时间-->
+                <!--</div>-->
               </div>
-              <div class="list-rig">
+              <div class="list-rig" @click="fmtUrl(item2.report_card_url)">
                 <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="item.report_card_url ? item.report_card_url:''">查看成绩单</router-link>
+                <!--<router-link :to="item2.report_card_url ? item2.report_card_url:''">查看成绩单</router-link>-->
+                查看成绩单
               </div>
             </div>
           </template>
@@ -104,7 +168,8 @@
           teacherName:"",
           value6:''
         },
-        course: []
+        course: [],
+        dest:[]
       }
     },
     created() {
@@ -149,6 +214,36 @@
         this.baseAxios1.post('/student/growth_report', data)
           .then(function (data) {
             that.course = data.data.objects;
+            var arr = data.data.objects;
+
+            var map = {},
+              dest = [];
+            for(var i = 0; i < arr.length; i++){
+              var ai = arr[i];
+              if(!map[ai.course_name]){
+                dest.push({
+//                  id: ai.id,
+                  course_name: ai.course_name,
+                  course_name_zh:ai.course_name_zh,
+                  teacher_name:ai.teacher_name,
+                  class_name:ai.class_name,
+                  data: [ai]
+                });
+                map[ai.course_name] = ai;
+              }else{
+                for(var j = 0; j < dest.length; j++){
+                  var dj = dest[j];
+                  if(dj.course_name == ai.course_name){
+                    dj.data.push(ai);
+                    break;
+                  }
+                }
+              }
+            }
+
+            that.dest= dest;
+            console.log(that.dest)
+
           })
       },
       searchResult(){
@@ -166,6 +261,17 @@
 //        this.baseAxios1.post('/student/growth_report',searchData).then(function (data) {
 //          console.log(data)
 //        })
+      },
+      fmtUrl(data){
+        const that = this;
+        const url = JSON.parse(data);
+        that.$router.push(url.url);
+//        console.log(url)
+      },
+      ftmTime(time){
+        var fullTime = time.indexOf('T'),
+            timeNum = time.slice(0,fullTime);
+        return timeNum;
       }
     }
   }

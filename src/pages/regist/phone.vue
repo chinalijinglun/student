@@ -14,7 +14,20 @@
                    <div class="phone-left">
                        手机号
                    </div>
-                   <input type="text" v-model="mobile_no" class="inps" placeholder="请输入您的手机号码">
+                 <el-input placeholder="请输入手机账号" v-model="mobile_no" class="input-with-select">
+                   <el-select v-model="value" slot="prepend" placeholder="请选择">
+                     <el-option
+                       v-for="(item,index) in NATIONAL_CODE"
+                       :key="index"
+                       :label="item.name"
+                       :value="item.code">
+                     </el-option>
+                   </el-select>
+                 </el-input>
+
+                     </el-input>
+
+                   <!--<input type="text" v-model="mobile_no" class="inps" placeholder="请输入您的手机号码">-->
                </div>
                <div class="phone">
                    <div class="phone-left">
@@ -56,10 +69,29 @@
 </template>
 
 <script>
+  import { NATIONAL_CODE } from '../../utils/enum'
     export default {
         name: 'phone',
         data() {
             return{
+                options: [{
+                  value: '选项1',
+                  label: '黄金糕'
+                }, {
+                  value: '选项2',
+                  label: '双皮奶'
+                }, {
+                  value: '选项3',
+                  label: '蚵仔煎'
+                }, {
+                  value: '选项4',
+                  label: '龙须面'
+                }, {
+                  value: '选项5',
+                  label: '北京烤鸭'
+                }],
+                value: '',
+                input: '',
                 mobile_no: '',
                 yzm:'获取验证码',
                 sendNum: true,
@@ -67,22 +99,26 @@
                 numbers: 60,
                 secrtone: '',
                 secrtAgain: '',
-                code: ''
+                code: '',
+                NATIONAL_CODE:NATIONAL_CODE
             }
         },
+      created(){
+//          console.log(NATIONAL_CODE)
+      },
         methods:{
             // 获取验证码
             sendAjax(){
                var that = this;
                 //验证手机格式是否正确
-               var filter  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
-                if (!filter.test(that.mobile_no)){
-                     alert('您的电子邮件格式不正确');
-                     return false;
-                }
+//               var filter  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+//                if (!filter.test(that.mobile_no)){
+//                     alert('您的手机号码格式不正确');
+//                     return false;
+//                }
                 //获取验证码（手机）
                this.baseAxios.post('auth/smsverify',{
-                    "country_code": "86",
+                    "country_code": that.value,
                     "mobile_no": that.mobile_no
                 })
                .then(function(response) {
@@ -115,6 +151,7 @@
                 if (that.secrtone.length>0&&(that.secrtone == that.secrtAgain)) {
                     //提交注册
                     this.baseAxios.post('auth/register',{
+                        'code':that.value,
                         "password": that.secrtone,
                         "username": that.mobile_no,
                         "usertype": "Student",
@@ -127,18 +164,34 @@
                         that.$router.push('/perfect')
                       },200)
                     })
-                    .catch(function(res){
-
+                    .catch(function(error){
+                      that.open3(error.response.data.error)
                     })
                 }else{
                     alert('密码长度不正确或者密码前后不一致，请重新输入！');
                 }
-            }
+            },
+          open3(err) {
+            this.$message({
+              message: err,
+              type: 'warning'
+            });
+          }
         }
     }
 </script>
 
 <style scoped>
+  .input-with-select{
+    width: 396px;
+    margin-left: 18px;
+  }
+  .input-with-select .el-input-group__prepend .el-select{
+    width: 120px;
+  }
+  .el-select .el-input {
+    width: 130px;
+  }
     a{
         text-decoration: none;
     }
@@ -181,7 +234,7 @@
         border: 1px solid #DCDCDC;
         border-radius: 5px;
         width: 392px;
-        height: 52px;
+        height: 42px;
         float: left;
         margin-left: 20px;
         text-indent: 30px;
@@ -194,7 +247,7 @@
     .yan-num{
         float: left;
         border: none;
-        height: 50px;
+        height: 42px;
         width: 278px;
         text-indent: 30px;
         outline:none;
@@ -202,7 +255,7 @@
     .click-btn{
         float: right;
         width: 108px;
-        height: 44px;
+        height: 36px;
         background: #F5F5F5;
         font-size: 14px;
         color: #666666;
@@ -235,6 +288,7 @@
         color: #FFFFFF;
         outline:none;
         cursor: pointer;
+        border:none;
     }
     .login{
         font-size: 14px;

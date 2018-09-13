@@ -8,7 +8,11 @@
               <router-link to="/homework/finish">已完成作业</router-link>
             </div>
         </div>
-        <div class="mid" v-for="item in finish">
+      <div v-if="finish.length == 0" style="text-align: center">
+        <img src="../../assets/zanwukecheng.png" alt="">
+        <div>暂无数据</div>
+      </div>
+        <div v-else="" class="mid" v-for="item in finish">
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">

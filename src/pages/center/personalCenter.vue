@@ -13,7 +13,7 @@
             </router-link>
           </div>
           <div class="student-num">
-            <span class="student-id">年级：{{id}}</span>
+            <span class="student-id">年级：{{grade}}</span>
             <span class="student-age" v-text="birtht()"></span>
           </div>
         </div>
@@ -132,7 +132,8 @@
         birth:'',
         homework:[],//作业
         numberAll:"",
-        xiaoke:[]
+        xiaoke:[],
+        grade:""
       }
     },
     methods: {
@@ -146,6 +147,7 @@
             that.id = dataUser.id;
             that.birth = dataUser.birth;
             that.avatar = dataUser.avatar;
+            that.grade = dataUser.grade;
 
             localStorage.setItem('name',dataUser.name);
 

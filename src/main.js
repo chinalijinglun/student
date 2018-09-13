@@ -42,7 +42,8 @@ baseAxios.interceptors.request.use(config => {
   ElementUI.Loading.service({ fullscreen: true })
   return config;
 }, error => {
-  console.log(error)
+  console.log(error);
+  return Promise.reject(error);
 })
 
 baseAxios.interceptors.response.use(resp => {
@@ -54,7 +55,12 @@ baseAxios.interceptors.response.use(resp => {
   return resp;
   // }, 50)
 }, error => {
-  console.log(error)
+  requestCount--;
+  if (requestCount <= 0) {
+    ElementUI.Loading.service().close()
+  }
+  console.log(error);
+  return Promise.reject(error);
 })
 
 baseAxios1.interceptors.request.use(config => {
@@ -62,6 +68,7 @@ baseAxios1.interceptors.request.use(config => {
   ElementUI.Loading.service({ fullscreen: true })
   return config;
 }, error => {
+  return Promise.reject(error);
   console.log(error)
 })
 
@@ -74,6 +81,11 @@ baseAxios1.interceptors.response.use(resp => {
   return resp;
   // }, 50)
 }, error => {
+  requestCount--;
+  if (requestCount <= 0) {
+    ElementUI.Loading.service().close()
+  }
+  return Promise.reject(error);
   console.log(error)
 })
 
