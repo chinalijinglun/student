@@ -30,7 +30,7 @@
                         <span>*</span>在读国家
                     </div>
                   <select name="" v-model="contury1">
-                    <option v-for="(item,index) in contury" :value="item">{{item}}</option>
+                    <option v-for="(item,index) in contury" :value="item">{{item.name_zh}}</option>
                   </select>
                 </div>
                 <div class="grade">
@@ -57,26 +57,30 @@
               <!--<select name="" v-model="thrid">-->
                 <!--<option :value="item" v-for="item in thrids">{{item}}</option>-->
               <!--</select>-->
-                <select name="" v-model="first">
-                <option :value="item" v-for="item in firsts">
-                {{item.full_name_zh}}
+              <select name="" v-model="first" class="select">
+                <option :value="item" v-for="item in test1">
+                  {{item.full_name_zh}}
                 </option>
-                </select>
+              </select>
+              <select name="" v-model="second" class="select">
+                <option :value="item" v-for="item in seconds">
+                  {{item.data[0].subject_category_zh}}
+                </option>
+              </select>
 
-                <select name="" v-model="second">
-                <option :value="item" v-for="item in seconds">{{item}}</option>
-                </select>
+              <select name="" v-model="thrid" class="select">
+                <option :value="item" v-for="item in thrids[0]">
+                  {{item.subject_name_zh}}
+                </option>
+              </select>
 
-                <select name="" v-model="thrid">
-                <option :value="item" v-for="item in thrids">{{item}}</option>
-                </select>
               </div>
               <div class="parent-tele">
                   <div class="name">
                       <span>*</span>家长电话
                   </div>
                   <select name="" class="code">
-                      <option value="">+86</option>
+                      <option :value="items.code" v-for="items in contury">{{items.name_zh}}</option>
                   </select>
                   <input type="text" class="tele" v-model="parent_mobile">
               </div>
@@ -86,19 +90,14 @@
   </template>
 
   <script>
+    import {NATIONAL_CODE} from '../utils/enum'
       export default {
         data(){
           return {
             name:'',
             sex:'男',
             contury1:"",
-            contury:[
-              '中国',
-              '美国',
-              '加拿大',
-              '澳大利亚',
-              '其他'
-            ],
+            contury:NATIONAL_CODE,
             nianji:"",
             kemu:[1,2,3],
             parent_mobile:'',
@@ -114,7 +113,8 @@
               "9",
               "10",
               "11",
-              "12"
+              "12",
+              '大学'
             ],
             firsts:[],
             seconds:[],
@@ -122,7 +122,8 @@
             first:"",
             second:"",
             thrid:"",
-            sss:[]
+            sss:[],
+            test1:[]
           }
         },
         created(){
@@ -165,8 +166,37 @@
               "page_limit": 1000,
               "page_no": 1,
             }).then(function (data) {
-              console.log(data)
               that.firsts = data.data.objects;
+              const arr = data.data.objects;
+              var map = {},
+                dest = [];
+              for(var i = 0; i < arr.length; i++){
+                var ai = arr[i];
+                if(!map[ai.curriculum_id]){
+                  dest.push({
+                    curriculum_id: ai.curriculum_id,
+                    name: ai.name,
+                    data: [ai],
+                    full_name_zh:ai.full_name_zh,
+                    subject_category_zh:ai.subject_category_zh,
+                    subject_name_zh:ai.subject_name_zh,
+                    subject_id:ai.subject_id,
+                    id:ai.id
+                  });
+                  map[ai.curriculum_id] = ai;
+                }else{
+                  for(var j = 0; j < dest.length; j++){
+                    var dj = dest[j];
+                    if(dj.curriculum_id == ai.curriculum_id){
+                      dj.data.push(ai);
+                      break;
+                    }
+                  }
+                }
+              }
+
+              that.test1 = dest;
+              console.log(that.test1)
             })
           },
           addSubject(){
@@ -174,7 +204,7 @@
             if(this.first!= ""){
               this.baseAxios.put('/api/v1/student_subject/'+this.first.id,{
                 "subject_name":that.thrid,
-                "subject_type":1
+                "subject_type":2
               }).then(function (data) {
                 console.log(data)
               }) .catch(function (error) {
@@ -221,14 +251,12 @@
 //          }
           first:function (val) {
             this.seconds = [];
-            this.seconds.push(val.subject_category_zh);
+            this.seconds.push(val);
             this.thrid = '';
-            console.log(this.first)
-
           },
           second:function (val) {
             this.thrids = [];
-            this.thrids.push(this.first.subject_name?this.first.subject_name:this.first.subject_name_zh)
+            this.thrids.push(val.data);
           }
         }
       }

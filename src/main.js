@@ -10,13 +10,21 @@ import selfComponents from './components';
 import fullCalendar from 'vue-fullcalendar';
 import './style/default.css';
 import Calendar from 'vue2-event-calendar';
+import {vueAccordion} from 'vue-accordion';
+import other from './utils/other';
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);
-Vue.component('Calendar', Calendar)
-Vue.component('full-calendar', fullCalendar)
+Vue.use(other);
+Vue.component('Calendar', Calendar);
+Vue.component('full-calendar', fullCalendar);
+Vue.component('vue-accordion', vueAccordion);
 
-Vue.config.productionTip = false;
+
+function getLocalStorage(key) {
+  return localStorage.getItem(key);
+}
+
 
 //路由配置和拦截
 
@@ -29,11 +37,12 @@ const baseAxios = axios.create({
   }
 });
 
+
 const baseAxios1 = axios.create({
   baseURL: 'http://39.106.143.18:5000',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': localStorage.getItem('Authorization')
+    'Authorization': getLocalStorage('Authorization')
   }
 });
 
@@ -42,7 +51,6 @@ baseAxios.interceptors.request.use(config => {
   ElementUI.Loading.service({ fullscreen: true })
   return config;
 }, error => {
-  console.log(error);
   return Promise.reject(error);
 })
 
@@ -59,19 +67,22 @@ baseAxios.interceptors.response.use(resp => {
   if (requestCount <= 0) {
     ElementUI.Loading.service().close()
   }
-  console.log(error);
   return Promise.reject(error);
 })
 
 baseAxios1.interceptors.request.use(config => {
   requestCount++;
-  ElementUI.Loading.service({ fullscreen: true })
+  ElementUI.Loading.service({ fullscreen: true });
+  config.headers['Authorization'] = getLocalStorage('Authorization');
   return config;
 }, error => {
+  requestCount--;
+  if (requestCount <= 0) {
+    ElementUI.Loading.service().close()
+  }
   return Promise.reject(error);
-  console.log(error)
 })
-
+//
 baseAxios1.interceptors.response.use(resp => {
   // setTimeout(_ => {
   requestCount--;
@@ -86,11 +97,13 @@ baseAxios1.interceptors.response.use(resp => {
     ElementUI.Loading.service().close()
   }
   return Promise.reject(error);
-  console.log(error)
 })
 
 Vue.prototype.baseAxios = baseAxios;
 Vue.prototype.baseAxios1 = baseAxios1;
+
+
+Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
 

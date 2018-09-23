@@ -79,6 +79,7 @@
           getHomework(){
             const that = this;
             this.baseAxios1.post('/student/my_homework',{
+              "homework_state":"2",
               "study_schedule_id": this.$route.query.id,
               "page_limit": 1000,
               "page_no": 1

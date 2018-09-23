@@ -29,7 +29,7 @@
 <script>
     export default {
         data(){
-            return{
+            return {
                 mobile_no: '',
                 passwd: ''
             }
@@ -52,12 +52,20 @@
                          .then(function(res){
                             //  存储token
 //                           console.log(res)
+                           if(res.status == 200){
                              localStorage.clear();
                              localStorage.setItem('Authorization',res.data.Authorization);
                              localStorage.setItem('id',res.data.id);
                              setTimeout(function () {
                                that.$router.push('/center/personal');
                              },200)
+//                            that.$router.push({ path: '/center/personal'})
+                           }
+                           else{
+                             localStorage.clear();
+                             alert('账号或密码错误，请重新输入')
+                           }
+
                          })
                          .catch(function(res){
                             alert('账号或密码错误，请重新输入')

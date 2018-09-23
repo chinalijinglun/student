@@ -415,6 +415,7 @@
       height: 600px;
       border-radius: 10px;
       background: #fff;
+      overflow-y: scroll;
     }
     .alert_title{
       margin-left: 55px;

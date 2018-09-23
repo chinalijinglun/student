@@ -9,10 +9,10 @@
             </div>
             <div class="pic">
                 <div class="img">
-                    <img :src="avatar" alt="">
+                    <img :src="devUrl+avatar" alt="">
                 </div>
                 <div class="img" @click="runUpload">
-                    <img :src="avatar" alt="">
+                    <img :src="devUrl+avatar" alt="">
                     <div class="make" >编辑头像</div>
                   <input type="file" ref="input1" value="上传" @change="uploadImg" style="display: none">
                 </div>
@@ -101,19 +101,41 @@
                 <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;Biology 生物</span>-->
                 <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;Mathematics III 数学3</span>-->
                 <!--<span><input type="checkbox" name="" id="">&nbsp;&nbsp;其他 <input type="text" class="inps"></span>-->
+
+
+
+              <!--<select name="" v-model="first" class="select">-->
+                <!--<option :value="item" v-for="item in firsts">-->
+                  <!--{{item.full_name_zh}}-->
+                <!--</option>-->
+              <!--</select>-->
+
+              <!--<select name="" v-model="second" class="select">-->
+                <!--<option :value="item" v-for="item in seconds">{{item}}</option>-->
+              <!--</select>-->
+
+              <!--<select name="" v-model="thrid" class="select">-->
+                <!--<option :value="item" v-for="item in thrids">{{item}}</option>-->
+              <!--</select>-->
+
               <select name="" v-model="first" class="select">
-                <option :value="item" v-for="item in firsts">
+                <option :value="item" v-for="item in test1">
                   {{item.full_name_zh}}
                 </option>
               </select>
-
               <select name="" v-model="second" class="select">
-                <option :value="item" v-for="item in seconds">{{item}}</option>
+                <option :value="item" v-for="item in seconds">
+                  {{item.data[0].subject_category_zh}}
+                </option>
               </select>
 
               <select name="" v-model="thrid" class="select">
-                <option :value="item" v-for="item in thrids">{{item}}</option>
+                <option :value="item" v-for="item in thrids[0]">
+                  {{item.subject_name_zh}}
+                </option>
               </select>
+
+
             </div>
         </div>
         <div class="school">
@@ -161,7 +183,7 @@
                 </div>
               <!--<input type="text" class="inp" v-model="go_abroad_country">-->
               <select class="select" name="" id="aaa" v-model="go_abroad_country" @change="getSelected3()">
-                <option v-for="(item,index) in COUNTRY_CODE" :value="item.name_zh">{{ item.name_zh }}</option>
+                <option v-for="(item,index) in COUNTRY_CODE" :value="item.id">{{ item.name_zh }}</option>
               </select>
             </div>
             <div class="city">
@@ -280,6 +302,7 @@
             first:"",
             second:"",
             thrid:"",
+            test1:[]
           }
         }
       ,created(){
@@ -394,20 +417,48 @@
             "page_no": 1,
           }).then(function (data) {
             that.firsts = data.data.objects;
+            const arr = data.data.objects;
+            var map = {},
+              dest = [];
+            for(var i = 0; i < arr.length; i++){
+              var ai = arr[i];
+              if(!map[ai.curriculum_id]){
+                dest.push({
+                  curriculum_id: ai.curriculum_id,
+                  name: ai.name,
+                  data: [ai],
+                  full_name_zh:ai.full_name_zh,
+                  subject_category_zh:ai.subject_category_zh,
+                  subject_name_zh:ai.subject_name_zh,
+                  subject_id:ai.subject_id,
+                  id:ai.id
+                });
+                map[ai.curriculum_id] = ai;
+              }else{
+                for(var j = 0; j < dest.length; j++){
+                  var dj = dest[j];
+                  if(dj.curriculum_id == ai.curriculum_id){
+                    dj.data.push(ai);
+                    break;
+                  }
+                }
+              }
+            }
+
+            that.test1 = dest;
+            console.log(that.test1)
           })
         },
       },
       watch:{
         first:function (val) {
           this.seconds = [];
-          this.seconds.push(val.subject_category_zh);
+          this.seconds.push(val);
           this.thrid = '';
-          console.log(this.first)
-
         },
         second:function (val) {
           this.thrids = [];
-          this.thrids.push(this.first.subject_name?this.first.subject_name:this.first.subject_name_zh)
+          this.thrids.push(val.data);
         }
       }
     }

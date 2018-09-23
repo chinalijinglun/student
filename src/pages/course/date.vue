@@ -31,7 +31,7 @@
 
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{item.end}}</span>
+            <span>{{guyuTime(item.start,item.end)}}</span>
           </div>
         </div>
         <div class="course-main">
@@ -63,7 +63,7 @@
    *
    */
   import fmtDate from '../../utils/time';
-
+  import { fmtTime } from '../../utils/time'
   export default {
     data(){
       return {
@@ -93,6 +93,14 @@
 
     },
     methods:{
+      fmtTime,
+      guyuTime(start,end){
+        var year = start.slice(0,start.indexOf('T'));
+        var mouth = start.slice(start.indexOf('T')+1,start.indexOf('T')+6);
+        var hour = end.slice(end.indexOf('T')+1,end.indexOf('T')+6);
+
+        return year+" "+mouth+"-"+hour;
+      },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
       },
@@ -150,7 +158,8 @@
       //进入教室获取教师地址
       ,test2(id){
         const that = this;
-        that.$router.push({path:'/iframe',query:{id:id}})
+//        that.$router.push({path:'/iframe',query:{id:id}});
+        window.open(`#/iframe?id=${id}`);
 //        this.baseAxios1.post('/student/get_enter_room_url',{
 ////          41
 //          'study_schedule_id': id == 40 ? 41: id
@@ -176,7 +185,8 @@
             const ware_id = data.data.objects;
             if(ware_id.length!=0){
               ware_id.map(function (val,index) {
-                that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+//                that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+                window.open(`#/iframe?ware_uid=${val.ware_uid}`);
               })
             }else{
               alert('暂无课件')

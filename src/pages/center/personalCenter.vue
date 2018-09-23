@@ -42,7 +42,7 @@
           </div>
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{item.start}}</span>
+            <span>{{guyuTime(item.start,item.end)}}</span>
           </div>
         </div>
         <div class="course-main" v-for="ini in xiaoke">
@@ -85,7 +85,7 @@
 
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{item.created_at}}</span>
+            <span>{{formatTime(item.created_at)}}</span>
           </div>
         </div>
         <div class="course-main">
@@ -120,7 +120,6 @@
       this.getMycourse();
       this.willHomework();
       this.allTime();
-//      this.getCourseware();
     },
     data() {
       return {

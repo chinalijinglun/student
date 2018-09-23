@@ -1,3 +1,9 @@
+import moment from 'moment';
+import 'moment-timezone';
+window.moment = moment;
+moment.locale('zh-cn');
+
+
 const DATE_FMT_DEFAULT = 'yyyy-MM-ddThh:mm:ss';
 const DATE_NO_TIME_FMT = 'yyyy-MM-dd';
 
@@ -85,4 +91,11 @@ function dateFactory() {
   return date;
 }
 
+
+//格式化时间
+function fmtTime(time) {
+  return window.moment(time).tz('Asia/Shanghai').format('LL');
+}
+
+export {fmtTime};
 export default dateFmt;

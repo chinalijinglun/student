@@ -265,7 +265,8 @@
       fmtUrl(data){
         const that = this;
         const url = JSON.parse(data);
-        that.$router.push(url.url);
+        window.location.href=this.devUrl+url.url;
+//        that.$router.push(this.devUrl+url.url);
 //        console.log(url)
       },
       ftmTime(time){

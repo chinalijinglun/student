@@ -13,48 +13,21 @@
               {{item.question_name}}
             </div>
             <div class="times">
-              <span>{{item.created_at}}</span>
+              <span>{{formatTime(item.created_at)}}</span>
             </div>
           </div>
-          <div class="contains" v-html="item.student_evaluation">
+          <div class="contains" v-html="item.answer_text">
 
           </div>
-          <div class="down">
+          <div class="down" v-for="iii in toJson(item.answer_attachment_url)">
 
-            <template v-if="item.answer_attachment_url == 'string'">
             <div class="box">
               <img src="../../assets/fujian.png" alt="">
-              <div class="wenzi">
-                <a :href="item.answer_attachment_url">
-                <p>Alex and I practiced writing </p>
+              <a :href="devUrl+iii.download_file">
+                <p>{{iii.upload_file}}</p>
                 <p class="download">下载附件</p>
-                </a>
-              </div>
+              </a>
             </div>
-            </template>
-
-            <template v-if="item.answer_attachment_url != 'string'">
-            <div class="box" v-for="fujian in item.answer_attachment_url">
-              <img src="../../assets/fujian.png" alt="">
-              <div class="wenzi">
-                <a :href="fujian.url">
-                <p>Alex and I practiced writing </p>
-                <p class="download">下载附件</p>
-                </a>
-              </div>
-            </div>
-
-              <!--<div class="box" v-for="fujian in JSON.parse(item.answer_attachment_url)">-->
-                <!--{{fujian}}-->
-              <!--<img src="../../assets/fujian.png" alt="">-->
-              <!--<div class="wenzi">-->
-              <!--<a :href="fujian.url">-->
-              <!--<p>Alex and I practiced writing </p>-->
-              <!--<p class="download">下载附件</p>-->
-              <!--</a>-->
-              <!--</div>-->
-              <!--</div>-->
-            </template>
           </div>
 
         </div>
@@ -65,7 +38,7 @@
           </div>
           <div class="course-tit colo">
             <div class="les-name">
-              <img :src="item.teacher_avatar" alt="" class="teacherHead">
+              <img :src="devUrl+item.teacher_avatar" alt="" class="teacherHead">
               {{item.teacher_name}}
             </div>
 
@@ -74,7 +47,8 @@
             </div>
           </div>
           <div class="course-main colors">
-            <div class="contains" v-html="realEvlution(item.teacher_evaluation)">
+            <div class="contains" v-for="iii in toJson(item.evaluation)">
+              <span v-html="iii.evaluation"></span>
             </div>
           </div>
         </div>
@@ -119,8 +93,28 @@
         }else{
          return ""
         }
-      }
-
+      },
+      toJson(str){
+        var _str =(new Function("","return "+ str))();
+  //            console.log(_str);
+        return _str;
+      },
+      guyuTime(start,end){
+        var year = start.slice(0,start.indexOf('T'));
+        var mouth = start.slice(start.indexOf('T')+1,start.indexOf('T')+6);
+        var hour = end.slice(end.indexOf('T')+1,end.indexOf('T')+6);
+//
+        return year+" "+mouth+"-"+hour;
+      },
+      //格式化时间
+      formatTime(time){
+        if(time == null){
+          return "";
+        }else{
+          var findT = time.indexOf('T');
+          return time.slice(0,findT);
+        }
+      },
     }
   }
 </script>
@@ -129,6 +123,8 @@
   .teacherHead{
     height: 30px;
     width: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
   }
   .finish {
     width: 800px;

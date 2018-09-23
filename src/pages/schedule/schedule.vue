@@ -91,7 +91,8 @@
         },
         test2(id) {
           const that = this;
-          that.$router.push({path: '/iframe', query: {id: id}})
+//          that.$router.push({path: '/iframe', query: {id: id}})
+          window.open(`#/iframe?id=${id}`);
         }
       }
     }

@@ -92,16 +92,16 @@
 
              <div class="evaluate" v-if="toJson(studyschedule.teacher_evaluation)">
                <div>
-                 <h3>lesson_objective:</h3>
+                 <h3>Lesson Objective (key points, vocabulary, skills, etc.):</h3>
                  <span v-html="toJson(studyschedule.teacher_evaluation).lesson_objective"></span>
                </div>
                <div>
-                 <h3>completion_status:</h3>
+                 <h3>Completion status:</h3>
                  <span v-html="toJson(studyschedule.teacher_evaluation).completion_status.status"></span>
                  <span v-html="toJson(studyschedule.teacher_evaluation).completion_status.text"></span>
                </div>
                <div>
-                 <h3>performace:</h3>
+                 <h3>Performance in class:</h3>
                  overall:<span v-html="toJson(studyschedule.teacher_evaluation).performace.overall"></span><br/>
                  onTime:<span v-html="toJson(studyschedule.teacher_evaluation).performace.onTime"></span><br/>
                  missTime:<span v-html="toJson(studyschedule.teacher_evaluation).performace.missTime"></span><br/>
@@ -109,16 +109,16 @@
                  interaction:<span v-html="toJson(studyschedule.teacher_evaluation).performace.interaction"></span>
                </div>
                <div>
-                 <h3>improved:</h3><span v-html="toJson(studyschedule.teacher_evaluation).improved"></span>
+                 <h3>Areas to be improved:</h3><span v-html="toJson(studyschedule.teacher_evaluation).improved"></span>
                </div>
                <div>
                  <h3>suggest:</h3><span v-html="toJson(studyschedule.teacher_evaluation).suggest"></span>
                </div>
                <div>
-                 <h3>skills:</h3><span v-html="toJson(studyschedule.teacher_evaluation).skills"></span>
+                 <h3>Skills the student exhibited well:</h3><span v-html="toJson(studyschedule.teacher_evaluation).skills"></span>
                </div>
                <div>
-                 <h3>summary:</h3><span v-html="toJson(studyschedule.teacher_evaluation).summary"></span>
+                 <h3>Summary of the class:</h3><span v-html="toJson(studyschedule.teacher_evaluation).summary"></span>
                </div>
              </div>
            </div>

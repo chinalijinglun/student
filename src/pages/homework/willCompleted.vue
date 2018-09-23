@@ -21,7 +21,7 @@
 
                     <div class="times">
                         <img src="../../assets/time.png" alt="">
-                        <span>{{item.created_at}}</span>
+                        <span>{{formatTime(item.created_at)}}</span>
                     </div>
                 </div>
                 <div class="course-main">

@@ -8,7 +8,7 @@
                 <img :src="teacher.teacher_avatar" alt="">
                {{teacher.teacher_name}}
             </span>
-            <span class="state">{{teacher.created_at}}</span>
+            <span class="state">{{formatTime(teacher.created_at)}}</span>
         </div>
 
         <div class="mid">
@@ -17,7 +17,8 @@
                 <div class="course-tit">
                     <div class="les-name">
                         <img src="../../assets/dian_01.png" alt="">
-                          {{homework.homework_type == 1 ? homework.question_name : homework.answer_text}}
+                          <!--{{homework.homework_type == 1 ? question_name.question_name : homework.answer_text}}-->
+                      {{homework.question_name}}
                     </div>
 
                     <div class="times">
@@ -224,7 +225,16 @@
         },
         open4(msg) {
           this.$message.error(msg);
-        }
+        },
+        //格式化时间
+        formatTime(time){
+          if(time == null){
+            return "";
+          }else{
+            var findT = time.indexOf('T');
+            return time.slice(0,findT);
+          }
+        },
       }
     }
 </script>
@@ -422,6 +432,7 @@
     height: 600px;
     border-radius: 10px;
     background: #fff;
+    overflow-y: scroll;
   }
   .alert_title{
     margin-left: 55px;
@@ -462,6 +473,7 @@
   .alert_content{
     width: 640px;
     vertical-align: text-top;
+    overflow-y: scroll;
   }
   .submit{
     padding-left: 300px;

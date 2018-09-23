@@ -23,8 +23,14 @@ export const CLASS_TYPE = {
 // 手机区号
 export const NATIONAL_CODE = [
   {
-    name_zh: "美国/加拿大",
-    name: "U.S.A/Canada",
+    name_zh: "美国",
+    name: "U.S.A",
+    code: "1",
+    time: "-13.00"
+  },
+  {
+    name_zh: "加拿大",
+    name: "Canada",
     code: "1",
     time: "-13.00"
   },

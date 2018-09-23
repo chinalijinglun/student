@@ -69,31 +69,17 @@
 </template>
 
 <script>
-  import { NATIONAL_CODE } from '../../utils/enum'
+  import { NATIONAL_CODE } from '../../utils/enum';
+
     export default {
         name: 'phone',
         data() {
             return{
-                options: [{
-                  value: '选项1',
-                  label: '黄金糕'
-                }, {
-                  value: '选项2',
-                  label: '双皮奶'
-                }, {
-                  value: '选项3',
-                  label: '蚵仔煎'
-                }, {
-                  value: '选项4',
-                  label: '龙须面'
-                }, {
-                  value: '选项5',
-                  label: '北京烤鸭'
-                }],
                 value: '',
                 input: '',
                 mobile_no: '',
                 yzm:'获取验证码',
+                countryCode:"",
                 sendNum: true,
                 seconde: false,
                 numbers: 60,
@@ -104,7 +90,7 @@
             }
         },
       created(){
-//          console.log(NATIONAL_CODE)
+//          console.log(fmtTime.fmtTime(1534927854000))
       },
         methods:{
             // 获取验证码
@@ -151,6 +137,7 @@
                 if (that.secrtone.length>0&&(that.secrtone == that.secrtAgain)) {
                     //提交注册
                     this.baseAxios.post('auth/register',{
+//                        'countryCode':that.value,
                         'code':that.value,
                         "password": that.secrtone,
                         "username": that.mobile_no,
