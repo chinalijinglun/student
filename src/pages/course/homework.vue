@@ -11,7 +11,7 @@
         </div>
         <div class="process">
             <span>
-                <img :src="homework[0]?homework[0].teacher_avatar:''" alt="">
+                <img :src="homework[0]?devUrl+homework[0].teacher_avatar:''" alt="">
                 {{homework[0]?homework[0].teacher_name:""}}
             </span>
             <!--<span class="state">2018.04.30 13:00 - 13:50</span>-->

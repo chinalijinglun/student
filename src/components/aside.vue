@@ -37,28 +37,28 @@
 //          img: require('@/assets/yuxi_h.png'),
 //          path: '/preview/preview'
 //        }
-        , {
-          name: '课后作业',
-          img: require('@/assets/zuoye_h.png'),
-          path: '/homework/willCompleted'
-        }, {
-          name: '我的课程',
-          img: require('@/assets/kecheng_h.png'),
-          path: '/timetable/timetable'
-        }, {
-          name: '我的订单',
-          img: require('@/assets/dingdan_h.png'),
-          path: '/order/order'
-        }, {
-          name: '成长报告',
-          img: require('@/assets/chengzhang_h.png'),
-          path: '/report/report'
-        }]
-        ,  num:"1"
+          , {
+            name: '我的课程',
+            img: require('@/assets/kecheng_h.png'),
+            path: '/timetable/timetable'
+          }, {
+            name: '课后作业',
+            img: require('@/assets/zuoye_h.png'),
+            path: '/homework/willCompleted'
+          }, {
+            name: '成长报告',
+            img: require('@/assets/chengzhang_h.png'),
+            path: '/report/report'
+          }, {
+            name: '我的订单',
+            img: require('@/assets/dingdan_h.png'),
+            path: '/order/order'
+          }]
+        , num: "1"
       }
     },
     methods: {
-      selectStyle (index) {
+      selectStyle(index) {
         this.num = index;
       },
     }
@@ -67,9 +67,10 @@
 </script>
 
 <style scoped>
-  .router-link-active{
+  .router-link-active {
     color: #ff3b00;
   }
+
   .aside {
     width: 180px;
     float: left;

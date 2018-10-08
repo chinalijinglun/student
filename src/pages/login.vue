@@ -9,10 +9,14 @@
                 <input type="password" v-model="passwd" placeholder="请输入登录密码">
             </div>
             <div class="remember-num">
-                <input type="checkbox" class="check">
+                <input type="checkbox" class="check" @click="autoLogin" v-model="auto">
                 <div class="text">
                     <span>下次自动登录</span>
-                    <span class="forget">忘记密码？</span>
+                    <span class="forget">
+                      <router-link :to="{ path:'/usePhone', query: { forget:  1} }">
+                      忘记密码？
+                      </router-link>
+                    </span>
                 </div>
             </div>
             <button class="btn" @click="login">登录</button>
@@ -31,12 +35,16 @@
         data(){
             return {
                 mobile_no: '',
-                passwd: ''
+                passwd: '',
+                auto:""
             }
 
         },
+      created(){
+          this.create()
+      },
         methods:{
-            login(){
+          login(){
                var that = this;
                 //验证手机格式是否正确
                var filter1  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
@@ -53,9 +61,13 @@
                             //  存储token
 //                           console.log(res)
                            if(res.status == 200){
-                             localStorage.clear();
+//                             localStorage.clear();
                              localStorage.setItem('Authorization',res.data.Authorization);
                              localStorage.setItem('id',res.data.id);
+                             if(that.auto == '2'){
+                               localStorage.setItem('username',that.mobile_no);
+                               localStorage.setItem('password',that.passwd);
+                             }
                              setTimeout(function () {
                                that.$router.push('/center/personal');
                              },200)
@@ -75,7 +87,23 @@
                     alert('您的邮件或者手机号码格式不正确');
                     return false;
                 }
+            },
+          autoLogin(){
+              const that = this;
+              localStorage.setItem('username',that.mobile_no);
+              localStorage.setItem('password',that.passwd);
+
+              that.auto='2'
+          },
+          create(){
+            const that=this;
+            if(localStorage.getItem('username')){
+              that.mobile_no = localStorage.getItem('username')
             }
+            if(localStorage.getItem('password')){
+              that.passwd = localStorage.getItem('password')
+            }
+          }
         }
     }
 </script>

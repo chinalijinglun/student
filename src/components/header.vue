@@ -3,14 +3,22 @@
         <div class="header-top">
             <div class="centers">
                 <div class="left">
-                    <span class="zh click">中文 </span> |
-                    <span class="en"> English</span>
+                    <!--<span class="zh click">中文 </span> |-->
+                    <!--<span class="en"> English</span>-->
                 </div>
                 <div class="right_01">
                     <img src="@/assets/dianhua_s.png" class="tel" alt="">
                     <span class="user">
-                        <span>Hi，{{name}}</span>
-                        <span>账户设置 </span>
+                        <span>
+                          <router-link to="/center/personal">
+                          Hi，{{name}}
+                          </router-link>
+                        </span>
+                        <span>
+                          <router-link to="/fillInformation">
+                          账户设置
+                          </router-link>
+                        </span>
                         <span>|</span>
                         <span @click="quit">退出</span>
                     </span>
@@ -191,6 +199,7 @@
         left: 0;
         top: 33px;
         display: none;
+        z-index: 2;
     }
     .mouseenter:hover .erweima{
         display: block;

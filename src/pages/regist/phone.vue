@@ -3,7 +3,7 @@
         <div class="main-contain">
             <div class="title">
                 <div class="account-registration">
-                    账号注册
+                  {{forget?'重置密码':'账号注册'}}
                 </div>
                 <!--<router-link to="/useEmail"><div class="use-phone">-->
                    <!--使用邮箱注册-->
@@ -19,7 +19,7 @@
                      <el-option
                        v-for="(item,index) in NATIONAL_CODE"
                        :key="index"
-                       :label="item.name"
+                       :label="item.code +' '+ item.name_zh"
                        :value="item.code">
                      </el-option>
                    </el-select>
@@ -59,7 +59,7 @@
                   <input type="checkbox" checked>
                   <span>我已阅读并同意<span class="instructor">《UStutor用户注册协议》</span></span>
                </div>
-               <button class="regist-now" @click="regists">立即注册</button>
+               <button class="regist-now" @click="regists"> {{forget?'重置密码':'立即注册'}}</button>
                <div class="login">
                    <span>已有账号？<router-link to="/login"><span class="instructor">请登录</span></router-link></span>
                </div>
@@ -86,11 +86,13 @@
                 secrtone: '',
                 secrtAgain: '',
                 code: '',
-                NATIONAL_CODE:NATIONAL_CODE
+                NATIONAL_CODE:NATIONAL_CODE,
+                forget:this.$route.query.forget
             }
         },
       created(){
 //          console.log(fmtTime.fmtTime(1534927854000))
+//        console.log(this.$route.query.forget)
       },
         methods:{
             // 获取验证码

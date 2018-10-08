@@ -3,7 +3,7 @@
     mode="week"
     class="schedule"
     :startDate="startDate"
-    :firstDay="1"
+    :firstDay="0"
     :dateData="dateData.Object"
     :onMonthChange="getSchedule"
   >
@@ -15,11 +15,11 @@
 
       <div class="agenda-container" v-for="(item, index) in item.data[0]" :key="index">
         <!--<router-link :to="{path:'/course/finished',query:{id:item.name_id}}">-->
-          <div v-if="tody > item.date" style="background-color: #ff3b00" @click="test2(item.id)">
+          <div v-if="tody > item.date" style="background-color: #F5A623" @click="test2(item.id)">
             <span class="agenda-item">{{item.title}}</span>
             <span class="time agenda-item">{{item.time}}</span>
           </div>
-          <div v-else style="background-color: #F5A623;" @click="test2(item.id)">
+          <div v-else style="background-color: #7ED321;" @click="test2(item.id)">
             <span class="agenda-item">{{item.title}}</span>
             <span class="time agenda-item">{{item.time}}</span>
           </div>

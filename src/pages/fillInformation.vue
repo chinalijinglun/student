@@ -52,7 +52,7 @@
                     <span class="xing">*</span>在读国家
                 </div>
 
-              <select class="select" name="" v-model="c1" @change="getSelected1()">
+              <select class="select" name="" v-model="c1" @change="getSelected1()" ref="cc1">
                 <option v-for="(item,index) in COUNTRY_CODE" :value="item.id">{{ item.name_zh }}</option>
               </select>
             </div>
@@ -314,7 +314,8 @@
         getPersonal(){
           const that = this;
           this.baseAxios.get('/api/v1/student/'+localStorage.getItem('id')).then(function (data) {
-            that.avatar = window.location.origin+ data.data.avatar;
+//            that.avatar = window.location.origin+ data.data.avatar;
+            that.avatar = data.data.avatar;
           })
         },
         putPersonal(){
@@ -342,8 +343,9 @@
             "go_abroad_country":that.go_abroad_country,
             "go_abroad_province":that.go_abroad_province,
             "nation":that.nation,
-            "read_country":that.c1,
-            "read_province":that.c2
+            'read_city':that.c1,
+            "read_country":that.c2,
+            "read_province":that.c3
           }).then(function (data) {
             console.log(data)
           })
@@ -386,6 +388,7 @@
 //          })
 //        },
         getSelected1(){
+          console.log(this.$refs.cc1[this.$refs.cc1.selectedIndex].text)
           this.country_seond =[];
           this.COUNTRY_CODE.map((item)=>{
             if(item.pid == this.c1){
