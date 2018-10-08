@@ -230,7 +230,7 @@
             </div>
             <div class="parent">
                 <select v-model="nation">
-                    <option :value="item.code" v-for="item in NATIONAL_CODE">{{item.code}}  {{item.name_zh}}</option>
+                    <option :value="item.code" v-for="item in NATIONAL_CODE">{{item.name_zh}}  {{item.code}}</option>
                 </select>
                 <input type="text" class="tel" v-model="parent_mobile">
             </div>
@@ -626,10 +626,11 @@
         height: 38px;
     }
     .parent select{
-        background: #F3F3F3;
-        border: none;
-        width: 150px;
-        height: 38px;
+      background: #ffffff;
+      border: none;
+      width: 150px;
+      height: 37px;
+      border-right: 1px solid #D8D8D8;
     }
     .parent .tel{
         width: 264px;
