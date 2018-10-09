@@ -32,9 +32,9 @@
             <div class="sex-tit">
                 <span class="xing">*</span>性别
             </div>
-          <el-radio v-model="gender" label="male">男</el-radio>
-          <el-radio v-model="gender" label="female">女</el-radio>
-          <el-radio v-model="gender" label="unkown">保密</el-radio>
+          <el-radio v-model="gender" label="男">男</el-radio>
+          <el-radio v-model="gender" label="女">女</el-radio>
+          <el-radio v-model="gender" label="保密">保密</el-radio>
         </div>
         <div class="birth">
             <div class="births">
@@ -239,7 +239,7 @@
             <div class="births">
                 家长邮箱
             </div>
-            <input type="text" class="inp">
+            <input type="text" class="inp" v-model="parent_email">
         </div>
         <button @click="putPersonal">保存</button>
     </div>
@@ -315,7 +315,34 @@
           const that = this;
           this.baseAxios.get('/api/v1/student/'+localStorage.getItem('id')).then(function (data) {
 //            that.avatar = window.location.origin+ data.data.avatar;
-            that.avatar = data.data.avatar;
+            const persol = data.data;
+            that.avatar = persol.avatar;
+            that.chinaName = persol.name;
+            that.englishName = persol.first_name;
+            that.gender = persol.gender;
+            that.birth = persol.birth;
+            that.c1 = persol.read_country;
+            that.c2 = persol.read_province;
+            that.c3 = persol.read_city;
+            that.read_school = persol.read_school;
+            that.grade = persol.grade;
+
+            that.learning_goals_zh= persol.learning_goals_zh;
+            that.interest_zh = persol.interest_zh;
+            that.award_zh = persol.award_zh;
+            that.go_abroad = persol.go_abroad;
+            that.go_abroad_at = persol.go_abroad_at;
+            that.go_abroad_country = persol.go_abroad_country;
+            that.go_abroad_province = persol.go_abroad_province;
+            that.overseas_zh = persol.overseas_zh;
+            that.english_zh = persol.english_zh;
+            that.exam_results_zh = persol.exam_results_zh;
+            that.parent = persol.parent;
+            that.parent_role = persol.parent_role;
+            that.parent_mobile = persol.parent_mobile;
+            that.parent_email = persol.parent_email;
+            that.nation = persol.nation;
+            console.log(persol.read_country)
           })
         },
         putPersonal(){
@@ -388,7 +415,7 @@
 //          })
 //        },
         getSelected1(){
-          console.log(this.$refs.cc1[this.$refs.cc1.selectedIndex].text)
+//          console.log(this.$refs.cc1[this.$refs.cc1.selectedIndex].text)
           this.country_seond =[];
           this.COUNTRY_CODE.map((item)=>{
             if(item.pid == this.c1){
@@ -462,6 +489,15 @@
         second:function (val) {
           this.thrids = [];
           this.thrids.push(val.data);
+        },
+        go_abroad_country:function (val) {
+          this.getSelected3();
+        },
+        c1:function (val) {
+          this.getSelected1();
+        },
+        c2:function (val) {
+          this.getSelected2();
         }
       }
     }

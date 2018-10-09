@@ -59,7 +59,8 @@
                   <input type="checkbox" checked>
                   <span>我已阅读并同意<span class="instructor">《UStutor用户注册协议》</span></span>
                </div>
-               <button class="regist-now" @click="regists"> {{forget?'重置密码':'立即注册'}}</button>
+               <button class="regist-now" @click="resetsPass" v-if="forget"> 重置密码</button>
+               <button class="regist-now" @click="regists" v-else>立即注册</button>
                <div class="login">
                    <span>已有账号？<router-link to="/login"><span class="instructor">请登录</span></router-link></span>
                </div>
@@ -165,6 +166,21 @@
               message: err,
               type: 'warning'
             });
+          },
+          resetsPass(){
+              const that = this;
+              this.baseAxios1.post('/auth/resetpassword',{
+                "password": that.secrtone,
+                "username": that.mobile_no,
+                "verify_code": that.code
+              }).then(function (data) {
+                if(data.status == 200){
+                  open3('密码重置成功')
+                  that.$router.push('/login');
+                }else{
+                  open3('密码修改失败')
+                }
+              })
           }
         }
     }
