@@ -14,7 +14,7 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="教师名">
-        <el-input v-model="search.teachername" placeholder="课程名"></el-input>
+        <el-input v-model="search.teachername" placeholder="教师名"></el-input>
       </el-form-item>
       <el-select v-model="search.value" placeholder="课程状态" @change="changeStatue">
         <el-option

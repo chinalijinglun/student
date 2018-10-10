@@ -15,7 +15,7 @@
                        手机号
                    </div>
                  <el-input placeholder="请输入手机账号" v-model="mobile_no" class="input-with-select">
-                   <el-select v-model="value" slot="prepend" placeholder="请选择" >
+                   <el-select v-model="value" slot="prepend" placeholder="选择国家" >
                      <el-option
                        v-for="(item,index) in NATIONAL_CODE"
                        :key="index"

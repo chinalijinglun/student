@@ -83,10 +83,24 @@
                   ObjectData[item.date] = [{...item}]
                 }
               })
+
+              for(let k in ObjectData) {
+                ObjectData[k] = ObjectData[k].sort(function(t1, t2) {
+                  if(t1.time>t2.time) {
+                    return 1
+                  } else if(t1.time<t2.time) {
+                    return -1
+                  } else {
+                    return 0
+                  }
+                })
+              }
+
               this.dateData = {
                 Array: ArrayData,
                 Object: ObjectData
               }
+
             })
         },
         test2(id) {

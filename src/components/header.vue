@@ -14,10 +14,10 @@
                           Hi，{{name}}
                           </router-link>
                         </span>
-                        <span>
-                          <router-link to="/fillInformation">
+                        <span @click="account">
+                          <!--<router-link to="/fillInformation">-->
                           账户设置
-                          </router-link>
+                          <!--</router-link>-->
                         </span>
                         <span>|</span>
                         <span @click="quit">退出</span>
@@ -68,16 +68,15 @@
             </ul>
             <div class="btn-box">
                 <template v-if="token === null">
+                  <router-link to="/login">
                   <div class="login">
-                    <router-link to="/login">
                       登录
-                    </router-link>
-                  </div>
+                  </div></router-link>
+                  <router-link to="/usePhone">
                   <div class="regist">
-                    <router-link to="/usePhone">
                       注册
-                    </router-link>
                   </div>
+                  </router-link>
                 </template>
             </div>
             <div class="tels" v-if="show">
@@ -128,6 +127,20 @@
               localStorage.clear();
               this.name = '';
               this.$router.push('/login')
+            },
+            account(){
+              if(this.$getLocalStorage('Authorization')){
+                this.$router.push('/fillInformation')
+              }else{
+                this.open3('请登录');
+                this.$router.push('/login')
+              }
+            },
+            open3(err) {
+              this.$message({
+                message: err,
+                type: 'warning'
+              });
             }
         }
     }

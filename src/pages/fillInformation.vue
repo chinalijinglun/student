@@ -385,7 +385,8 @@
             this.baseAxios1.post('/upload',that.avatar).then((data)=>{
               if(data.status == 200){
                 that.avatar = '';
-                that.avatar = window.location.origin+data.data[0].download_file;
+//                that.avatar = window.location.origin+data.data[0].download_file;
+                that.avatar = data.data[0].download_file;
                 that.$message({
                   message: '图片上传成功',
                   type: 'success'

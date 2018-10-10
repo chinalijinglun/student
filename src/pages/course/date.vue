@@ -38,7 +38,7 @@
 
           <ul class="detail-les">
 
-            <div class="check-homework" @click="test2(item.id)">
+            <div class="check-homework" @click="test2(item.id,item.start)">
               <img src="../../assets/chakanzuoye.png" alt="">
               进入教室
             </div>
@@ -117,7 +117,12 @@
           "page_no": 1
         }).then((data)=>{
           const overDate = data.data.objects;
-          overDate.map((val)=>{
+           const bbb = overDate.sort(function (a,b) {
+              return a.start > b.start;
+            });
+
+//          console.log(bbb)
+          bbb.map((val)=>{
             if(fmtDate(new Date())< val.end){
               that.finish.push(val);
               that.paginations.totalPage = that.finish.length;
@@ -135,7 +140,6 @@
           "page_limit": 1,
           "page_no": 1
         }).then((data)=>{
-          console.log(data)
           const data1 = data.data.objects;
           data1.map(function (val) {
               that.course.teacherName = val.teacher_name;
@@ -156,22 +160,18 @@
         return result;
       }
       //进入教室获取教师地址
-      ,test2(id){
+      ,test2(id,time){
         const that = this;
-//        that.$router.push({path:'/iframe',query:{id:id}});
-        window.open(`#/iframe?id=${id}`);
-//        this.baseAxios1.post('/student/get_enter_room_url',{
-////          41
-//          'study_schedule_id': id == 40 ? 41: id
-//        }).then(function (data) {
-//          if(data.status == 200){
-//            window.location.href = data.data.url;
-////            window.open(data.data.url)
-//          }else{
-//            alert('无法进入教室，请稍后再试')
-//          }
-//
-//        })
+
+        const date = new Date();
+        const nowTime = moment(date).add(15, 'm').format();
+        const backTime = moment(time).subtract(15, 'm').format();
+
+        if(nowTime >= backTime){
+          window.open(`#/iframe?id=${id}`);
+        }else{
+          this.open3('请在课程开始前15分钟进入教师')
+        }
       },
       //预览课件
       previewCourse(id){
@@ -192,7 +192,13 @@
               alert('暂无课件')
             }
           })
-      }
+      },
+      open3(err) {
+        this.$message({
+          message: err,
+          type: 'warning'
+        });
+      },
     },
     watch: {
       // 如果路由有变化，会再次执行该方法
