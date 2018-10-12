@@ -25,13 +25,14 @@ function getLocalStorage(key) {
   return localStorage.getItem(key);
 }
 
+const devUrl = Vue.prototype.devUrl;
 
 //路由配置和拦截
 
 let requestCount = 0;
 
 const baseAxios = axios.create({
-  baseURL: 'http://39.106.143.18:5000',
+  baseURL: devUrl,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -39,7 +40,7 @@ const baseAxios = axios.create({
 
 
 const baseAxios1 = axios.create({
-  baseURL: 'http://39.106.143.18:5000',
+  baseURL: devUrl,
   headers: {
     'Content-Type': 'application/json',
     'Authorization': getLocalStorage('Authorization')

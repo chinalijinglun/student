@@ -25,8 +25,8 @@ export function toJson(str){
   return _str;
 }
 
-export const devUrl = 'http://39.106.143.18:5000';
-
+// export const devUrl = 'http://39.106.143.18:5000';
+export const devUrl = 'http://47.94.45.196:5000';
 
 const install = (Vue) => {
   Vue.prototype.formatTime = formatTime;

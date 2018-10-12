@@ -60,8 +60,8 @@
             }).then(function (data) {
               var data1= data.data;
 //              console.log(data)
-              that.value1 = data1.teacher_score;
-              that.value2 = data1.student_score;
+              that.value1 = data1.teacher_score == null?"0":data1.teacher_score;
+              that.value2 = data1.student_score == null?"0":data1.student_score;
               that.opinion = data1.teacher_result;
             })
           },
@@ -69,8 +69,8 @@
             const that = this;
             this.baseAxios.put('/api/v1/study_schedule/'+that.id,{
               'student_evaluation':'123',
-              'teacher_score':this.value1,
-              'student_score':this.value2,
+              'teacher_score':this.value1 == null ? "0":this.value1,
+              'student_score':this.value2 == null ? "0":this.value2,
               'teacher_result':this.opinion,
             }).then(function (data) {
               if(data.status == 200){
