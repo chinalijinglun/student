@@ -31,7 +31,7 @@
 
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{guyuTime(item.start,item.end)}}</span>
+            <span>{{guyuTime(fmtTime1(item.start),fmtTime1(item.end))}}</span>
           </div>
         </div>
         <div class="course-main">
@@ -63,7 +63,7 @@
    *
    */
   import fmtDate from '../../utils/time';
-  import { fmtTime } from '../../utils/time'
+  import { fmtTime,fmtTime1} from '../../utils/time';
   export default {
     data(){
       return {
@@ -94,6 +94,7 @@
     },
     methods:{
       fmtTime,
+      fmtTime1,
       guyuTime(start,end){
         var year = start.slice(0,start.indexOf('T'));
         var mouth = start.slice(start.indexOf('T')+1,start.indexOf('T')+6);

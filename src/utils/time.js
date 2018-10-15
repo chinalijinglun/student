@@ -97,5 +97,10 @@ function fmtTime(time) {
   return window.moment(time).tz('Asia/Shanghai').format('LL');
 }
 
-export {fmtTime};
+function fmtTime1(time) {
+  return window.moment(time).tz('Asia/Shanghai').format();
+}
+
+
+export {fmtTime,fmtTime1};
 export default dateFmt;

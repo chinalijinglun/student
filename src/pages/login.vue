@@ -47,10 +47,10 @@
           login(){
                var that = this;
                 //验证手机格式是否正确
-               var filter1  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+//               var filter1  = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
                //验证邮箱格式是否正确
-               var filter2  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-                if (filter1.test(that.mobile_no)||filter2.test(that.mobile_no)){
+//               var filter2  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+//                if (filter1.test(that.mobile_no)||filter2.test(that.mobile_no)){
                      if(that.passwd){
                          this.baseAxios.post('auth/login',{
                             "password": that.passwd,
@@ -68,9 +68,9 @@
                                localStorage.setItem('username',that.mobile_no);
                                localStorage.setItem('password',that.passwd);
                              }
-                             setTimeout(function () {
+//                             setTimeout(function () {
                                that.$router.push('/center/personal');
-                             },200)
+//                             },200)
 //                            that.$router.push({ path: '/center/personal'})
                            }
                            else{
@@ -83,10 +83,10 @@
                             alert('账号或密码错误，请重新输入')
                          })
                      }
-                }else{
-                    alert('您的邮件或者手机号码格式不正确');
-                    return false;
-                }
+//                }else{
+//                    alert('您的邮件或者手机号码格式不正确');
+//                    return false;
+//                }
             },
           autoLogin(){
               const that = this;

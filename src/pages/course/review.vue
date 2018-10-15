@@ -81,7 +81,8 @@
         this.baseAxios1.post('/student/my_homework', {
           'study_schedule_id': (this.$route.query.schedul).toString(),
           'page_no': 1,
-          'page_limit': 10
+          'page_limit': 10,
+          "homework_state": '1'
         }).then(function (data) {
           that.homework = data.data.objects;
         })

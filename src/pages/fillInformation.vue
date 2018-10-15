@@ -321,9 +321,9 @@
             that.englishName = persol.first_name;
             that.gender = persol.gender;
             that.birth = persol.birth;
-            that.c1 = persol.read_country;
-            that.c2 = persol.read_province;
-            that.c3 = persol.read_city;
+            that.c1 = persol.read_city;
+            that.c2 = persol.read_country;
+            that.c3 = persol.read_province;
             that.read_school = persol.read_school;
             that.grade = persol.grade;
 

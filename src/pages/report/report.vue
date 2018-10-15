@@ -89,7 +89,7 @@
         <div class="title">
           <div class="lef-esl">{{item.course_name}}</div>
           <div class="teacger">
-            <img :src="item.teacher_avatar" alt="">
+            <!--<img :src="item.teacher_avatar" alt="">-->
             {{item.teacher_name}}
           </div>
         </div>

@@ -11,7 +11,9 @@
                     <span class="user">
                         <span>
                           <router-link to="/center/personal">
-                          Hi，{{name}}
+                            Hi，
+                          <!--{{name}}-->
+                            {{count}}
                           </router-link>
                         </span>
                         <span @click="account">
@@ -104,7 +106,7 @@
     </div>
 </template>
 <script>
-    // import $ from 'jquery'
+  import store from '@/store/index';
     export default {
         name: 'headers',
         data(){
@@ -116,6 +118,13 @@
             }
 
         },
+      created(){
+      },
+      computed: {
+        count () {
+          return store.state.person.name
+        }
+      },
         methods:{
             mouserover(){
                 this.showAdmissions =true;
@@ -126,7 +135,8 @@
             quit(){
               localStorage.clear();
               this.name = '';
-              this.$router.push('/login')
+              this.$router.push('/login');
+              store.commit('test','')
             },
             account(){
               if(this.$getLocalStorage('Authorization')){
@@ -141,9 +151,23 @@
                 message: err,
                 type: 'warning'
               });
+            },
+            local(){
+              window.addEventListener('storage', function () {
+                console.log(1)
+              }, false)
             }
-        }
+        },
+      mounted(){
+//        console.log(this.$getLocalStorage('name'))
+      }
     }
+
+//    window.localStorage.setItem = function(k, v) {
+//      if (k === 'name') {
+//        console.log(123)
+//      }
+//    }
 </script>
 
 <style scoped>

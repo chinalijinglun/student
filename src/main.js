@@ -12,6 +12,7 @@ import './style/default.css';
 import Calendar from 'vue2-event-calendar';
 import {vueAccordion} from 'vue-accordion';
 import other from './utils/other';
+import store from './store';
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);
@@ -110,6 +111,7 @@ Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

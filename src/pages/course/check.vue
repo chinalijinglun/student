@@ -34,9 +34,9 @@
                         <div class="box" v-for="item in homewordList">
                             <img src="../../assets/fujian.png" alt="">
                             <div class="wenzi">
-                                <p>{{item.name}}</p>
+                                <p>{{item.upload_file}}</p>
                                 <p class="download">
-                                  <a :href="item.url">
+                                  <a :href="devUrl+item.download_file">
                                     下载附件
                                   </a>
                                 </p>
@@ -128,8 +128,11 @@
             "page_limit":1,
             "page_no":1
           }).then(function (data) {
+            console.log(data)
             that.teacher = data.data.objects[0];
-            that.homewordList = JSON.parse(that.teacher.question_attachment_url);
+            that.homewordList = JSON.parse(that.teacher.answer_attachment_url);
+
+            console.log(that.homewordList)
           })
         },
         showBgF(){

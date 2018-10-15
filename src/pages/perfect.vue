@@ -139,15 +139,17 @@
               alert('请填写必填字段');
               return false;
             }else{
-              this.baseAxios.put('/api/v1/student/1',
+              this.baseAxios.put('/api/v1/student/'+localStorage.getItem('id'),
               {
                 'name':that.name,
                 'gender':that.sex,
-                'read_country':that.contury1,
+                'read_country':that.contury1.name_zh,
                 'parent_mobile':that.parent_mobile
               }
               ).then(function (data) {
-                console.log(data)
+                if(data.status == 200){
+                  that.open3('提交成功')
+                }
               }) .catch(function (error) {
                 alert(error);
               });
@@ -163,6 +165,8 @@
           postContry(){
             const that = this;
             this.baseAxios1.post('/student/subject',{
+//              "student_id":localStorage.getItem('id'),
+//              "type":'2',
               "page_limit": 1000,
               "page_no": 1,
             }).then(function (data) {
@@ -196,17 +200,20 @@
               }
 
               that.test1 = dest;
-              console.log(that.test1)
+              console.log(dest)
             })
           },
           addSubject(){
             const that = this;
             if(this.first!= ""){
-              this.baseAxios.put('/api/v1/student_subject/'+this.first.id,{
-                "subject_name":that.thrid,
-                "subject_type":2
+              this.baseAxios.post('/api/v1/student_subject',{
+                "optional":2,
+                "subject_id":that.thrid.subject_id,
+                "subject_type":2,
+                "student_id":localStorage.getItem('id')
               }).then(function (data) {
                 console.log(data)
+
               }) .catch(function (error) {
                 alert(error);
               });
@@ -235,6 +242,12 @@
               (data) {
               that.sss = data.data.objects;
             })
+          },
+          open3(err) {
+            this.$message({
+              message: err,
+              type: 'warning'
+            });
           }
         },
         watch:{

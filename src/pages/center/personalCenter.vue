@@ -2,7 +2,7 @@
   <div class="personal">
     <div class="top">
       <div class="top-lef">
-        <img :src="avatar" alt="">
+        <img :src="devUrl+avatar" alt="">
       </div>
       <div class="top-rig">
         <div class="student-mess">
@@ -14,7 +14,7 @@
           </div>
           <div class="student-num">
             <span class="student-id">年级：{{grade}}</span>
-            <span class="student-age" v-text="birtht()"></span>
+            <!--<span class="student-age" v-text="birtht()"></span>-->
           </div>
         </div>
         <div class="rest">
@@ -106,7 +106,8 @@
 </template>
 
 <script>
-  import dateFmt from '../../utils/time'
+  import dateFmt from '../../utils/time';
+  import store from '@/store/index';
   /**
    * homework_type,1：教师留作业，2：学生完成作业
    * study_state'学习状态，1：进行中，2：已经学完'
@@ -148,7 +149,8 @@
             that.avatar = dataUser.avatar;
             that.grade = dataUser.grade;
 
-            localStorage.setItem('name',dataUser.name);
+//            localStorage.setItem('name',dataUser.name);
+            store.commit('test',dataUser.name)
 
             const len = [];
             dataUser.study_courses.map(function (item,index) {
