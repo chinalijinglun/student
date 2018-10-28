@@ -126,8 +126,8 @@
                     },1000)
                     // console.log(response)
                 })
-                .catch(function(response) {
-                    console.log(response);
+                .catch(function(error) {
+                  that.open3(error.response.data.message)
                 });
             },
             // 注册
@@ -148,11 +148,14 @@
                         "verify_code": that.code
                     })
                     .then(function(res){
-                      localStorage.setItem('Authorization',res.data.Authorization);
-                      localStorage.setItem('id',res.data.id);
-                      setTimeout(function () {
-                        that.$router.push('/perfect')
-                      },200)
+                      if(res.status == 200){
+                        that.open3('注册成功');
+                        localStorage.setItem('Authorization',res.data.Authorization);
+                        localStorage.setItem('id',res.data.id);
+                        setTimeout(function () {
+                          that.$router.push('/perfect')
+                        },200)
+                      }
                     })
                     .catch(function(error){
                       that.open3(error.response.data.error)

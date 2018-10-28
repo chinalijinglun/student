@@ -190,6 +190,7 @@
                       "page_no": 1,
                       "study_schedule_id": item.id
                     }).then(function (dataa) {
+
 //                      that.xiaoke[item].kejian = dataa.data.objects;
                         that.xiaoke.map(function (itm,idx) {
                           itm.kejian = dataa.data.objects;

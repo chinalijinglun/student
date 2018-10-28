@@ -100,7 +100,7 @@
               <div class="list-lef">
                 <div class='list-lef-top'>
                   <img src="../../assets/dian_01.png" alt="">
-                  课程总结
+                  阶段测评
                 </div>
                 <div class="btm">
                   {{ftmTime(item2.start)}} -- {{ftmTime(item2.end)}}
@@ -108,7 +108,7 @@
               </div>
               <div class="list-rig">
                 <img src="../../assets/chengzhang_h.png" alt="">
-                <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item2.id}}">查看课程总结</router-link>
+                <router-link :to="{path:'/report/reportDetail',query:{studyresultId:item2.id}}">阶段评测</router-link>
               </div>
             </div>
           </template>

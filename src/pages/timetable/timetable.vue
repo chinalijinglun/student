@@ -39,7 +39,7 @@
             {{item.finish}}/{{item.classes_number}}
           </div>
           <div class="run-state">
-            {{times>item.end ?'完成':'未完成'}}
+            {{times>item.end ?'已结课':'进行中'}}
           </div>
         </div>
       </div>

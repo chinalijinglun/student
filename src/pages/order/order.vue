@@ -108,22 +108,26 @@
           totalPage: 10,
           page_size: 10,
         },
-        region:[{
-          id: 1,
-          name:'下订单'
-        },{
-          id:2,
-          name:'已经付款'
-        },{
-          id:3,
-          name:'取消'
-        },{
-          id:4,
-          name:'申请退款'
-        },{
-          id:5,
-          name:'退款'
-        }],
+        region:[
+          {
+            id:0,
+            name:'所有状态'
+          },{
+            id: 1,
+            name:'待付款'
+          },{
+            id:2,
+            name:'已付款'
+          },{
+            id:3,
+            name:'订单取消'
+          },{
+            id:4,
+            name:'退款中'
+          },{
+            id:5,
+            name:'已退款'
+          }],
         formInline: {
           classname: '',
           teachername:'',

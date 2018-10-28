@@ -36,7 +36,7 @@
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/dianping.png" alt="">
-                            <span @click="lookdianping(item.id,item.study_schedule_id)">查看点评</span>
+                            <span @click="lookdianping(item.id,item.study_schedule_id)">教师点评</span>
                         </div>
                     </ul>
                 </div>
@@ -146,8 +146,8 @@
             const that = this;
             that.baseAxios.put("/api/v1/homework/"+that.id,{ //homework的id
               "answer_attachment_url": that.url, // 学生上传附件
-              "answer_text":that.fujian.title,  //作业描述
-              "question_name":that.fujian.textarea //标题
+              "answer_text":that.fujian.textarea,  //作业描述
+              "question_name":that.fujian.title //标题
             }).then((data)=>{
               if(data.data.id){
                 alert('提交成功')

@@ -9,18 +9,18 @@
                 <div class="right_01">
                     <img src="@/assets/dianhua_s.png" class="tel" alt="">
                     <span class="user">
-                        <span>
-                          <router-link to="/center/personal">
+                        <span @click="account">
+                          <!--<router-link to="/center/personal">-->
                             Hi，
                           <!--{{name}}-->
                             {{count}}
-                          </router-link>
-                        </span>
-                        <span @click="account">
-                          <!--<router-link to="/fillInformation">-->
-                          账户设置
                           <!--</router-link>-->
                         </span>
+                        <!--<span @click="account">-->
+                          <!--&lt;!&ndash;<router-link to="/fillInformation">&ndash;&gt;-->
+                          <!--账户设置-->
+                          <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
+                        <!--</span>-->
                         <span>|</span>
                         <span @click="quit">退出</span>
                     </span>
@@ -140,7 +140,7 @@
             },
             account(){
               if(this.$getLocalStorage('Authorization')){
-                this.$router.push('/fillInformation')
+                this.$router.push('/center/personal')
               }else{
                 this.open3('请登录');
                 this.$router.push('/login')

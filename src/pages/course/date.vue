@@ -13,11 +13,11 @@
     </div>
     <div class="tab">
       <div class="completed click">
-          已约课程
+        未完成课程
       </div>
       <div class="finishs">
         <router-link :to="{ path:'/course/finished', query: { 'id': id }}">
-        已上课程
+          已完成课程
         </router-link>
       </div>
     </div>
@@ -114,6 +114,7 @@
         const that = this;
         this.baseAxios1.post('/student/schedule',{
           "course_id": that.id,
+          "course_schedule_state":'2',
           "page_limit": 1000,
           "page_no": 1
         }).then((data)=>{
@@ -121,14 +122,11 @@
            const bbb = overDate.sort(function (a,b) {
               return a.start > b.start;
             });
-
-//          console.log(bbb)
           bbb.map((val)=>{
-            if(fmtDate(new Date())< val.end){
+//            if(fmtDate(new Date())< val.end){
               that.finish.push(val);
               that.paginations.totalPage = that.finish.length;
-
-            }
+//            }
           })
           that.fenye = that.sliceArray(that.finish,10);
         })
@@ -171,7 +169,7 @@
         if(nowTime >= backTime){
           window.open(`#/iframe?id=${id}`);
         }else{
-          this.open3('请在课程开始前15分钟进入教师')
+          this.open3('请在课程开始前15分钟进入教室')
         }
       },
       //预览课件

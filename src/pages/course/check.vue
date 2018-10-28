@@ -12,7 +12,7 @@
         </div>
 
         <div class="mid">
-
+            <div style="font-size: 14px;float: right">{{courseName}}</div>
             <div class="course-details">
                 <div class="course-tit">
                     <div class="les-name">
@@ -31,12 +31,12 @@
                       <!--{{homework.question_text}}-->
                     </div>
                     <div class="down">
-                        <div class="box" v-for="item in homewordList">
+                        <div class="box" v-for="item in fujian">
                             <img src="../../assets/fujian.png" alt="">
                             <div class="wenzi">
-                                <p>{{item.upload_file}}</p>
+                                <p>{{item.name}}</p>
                                 <p class="download">
-                                  <a :href="devUrl+item.download_file">
+                                  <a :href="devUrl+item.url">
                                     下载附件
                                   </a>
                                 </p>
@@ -101,7 +101,9 @@
           teacher:{},
           files:[],
           btnStatue:true,
-          homewordList:[]
+          homewordList:[],
+          fujian:[],
+          courseName:''
         }
       },
       created(){
@@ -131,8 +133,9 @@
             console.log(data)
             that.teacher = data.data.objects[0];
             that.homewordList = JSON.parse(that.teacher.answer_attachment_url);
-
-            console.log(that.homewordList)
+            that.fujian = JSON.parse(that.teacher.question_attachment_url);
+            that.courseName = that.teacher.course_name
+            console.log(that.fujian)
           })
         },
         showBgF(){

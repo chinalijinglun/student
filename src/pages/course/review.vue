@@ -1,7 +1,7 @@
 <template>
   <div class="finish">
     <div class="mid-tit">
-      <div class="tit-lef">我完成的作业</div>
+      <div class="tit-lef">已完成作业</div>
     </div>
 
     <div class="mid" v-for="item in homework">
@@ -34,7 +34,7 @@
 
         <div class="course-main">
           <div class="mid-tit">
-            <div class="tit-lef">老师点评</div>
+            <div class="tit-lef">教师点评</div>
           </div>
           <div class="course-tit colo">
             <div class="les-name">

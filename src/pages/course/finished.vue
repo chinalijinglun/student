@@ -14,11 +14,11 @@
         <div class="tab">
             <div class="completed">
               <router-link :to="{ path:'/course/date', query: { 'id': id }}">
-                已约课程
+                未完成课程
               </router-link>
             </div>
             <div class="finishs click">
-                已上课程
+              已完成课程
             </div>
         </div>
         <div class="mid">
@@ -48,8 +48,9 @@
                         </div>
                         <div class="check-homework">
                             <img src="../../assets/pingjialaoshi.png" alt="">
-                          <router-link :to="{ path:'/course/courseReview', query:{id:item.id}}">
-                            课程评价
+                          <!--<router-link :to="{ path:'/course/courseReview', query:{id:item.id}}">-->
+                          <router-link :to="{ path:'/report/reportDetail', query:{studyscheduleId:item.id}}">
+                            课程反馈
                           </router-link>
                         </div>
                       <div class="check-homework" @click="previewCourse(item.id)">
@@ -121,16 +122,18 @@
             const that = this;
             this.baseAxios1.post('/student/schedule',{
               "course_id": this.$route.query.id,
+              "course_schedule_state":'1',
               "page_limit": 1000,
               "page_no": 1
             }).then((data)=>{
               const overDate = data.data.objects;
+//              console.log(overDate)
               overDate.map((val)=>{
-                if(fmtDate(new Date())> val.end){
+//                if(fmtDate(new Date())> val.end){
                   that.finish.push(val);
                   that.paginations.totalPage = that.finish.length;
-
-                }
+//
+//                }
               })
               that.fenye = that.sliceArray(that.finish,10);
             })

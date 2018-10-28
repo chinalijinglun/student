@@ -118,23 +118,40 @@
                 <!--<option :value="item" v-for="item in thrids">{{item}}</option>-->
               <!--</select>-->
 
-              <select name="" v-model="first" class="select">
-                <option :value="item" v-for="item in test1">
-                  {{item.full_name_zh}}
-                </option>
-              </select>
-              <select name="" v-model="second" class="select">
-                <option :value="item" v-for="item in seconds">
-                  {{item.data[0].subject_category_zh}}
-                </option>
-              </select>
-
-              <select name="" v-model="thrid" class="select">
-                <option :value="item" v-for="item in thrids[0]">
-                  {{item.subject_name_zh}}
-                </option>
-              </select>
-
+              <div v-if="!subjectBool">
+                <select name="" v-model="first" class="select">
+                  <option :value="item" v-for="item in test1">
+                    {{item.full_name_zh}}
+                  </option>
+                </select>
+                <select name="" v-model="second" class="select">
+                  <option :value="item" v-for="item in seconds">
+                    {{item.subject_category_zh}}
+                  </option>
+                </select>
+                <select name="" v-model="thrid" class="select">
+                  <option :value="thrids">
+                    {{thrids}}
+                  </option>
+                </select>
+              </div>
+              <div v-else @click="changeSubject">
+                <select name="" v-model="gfirst" class="select">
+                  <option :value="gfirst">
+                    {{gfirst}}
+                  </option>
+                </select>
+                <select name="" v-model="gsecond" class="select">
+                  <option :value="gsecond">
+                    {{gsecond}}
+                  </option>
+                </select>
+                <select name="" v-model="gthird" class="select">
+                  <option :value="gthird">
+                    {{gthird}}
+                  </option>
+                </select>
+              </div>
 
             </div>
         </div>
@@ -302,13 +319,17 @@
             first:"",
             second:"",
             thrid:"",
-            test1:[]
+            test1:[],
+            subjectBool: false,
+            gfirst:'',
+            gsecond:'',
+            gthird:''
           }
         }
       ,created(){
         this.getPersonal();
-//        this.getCountry();
         this.postContry();
+        this.getSubject();
       },
       methods:{
         getPersonal(){
@@ -342,7 +363,6 @@
             that.parent_mobile = persol.parent_mobile;
             that.parent_email = persol.parent_email;
             that.nation = persol.nation;
-            console.log(persol.read_country)
           })
         },
         putPersonal(){
@@ -374,7 +394,12 @@
             "read_country":that.c2,
             "read_province":that.c3
           }).then(function (data) {
-            console.log(data)
+            if(data.status == 200){
+              that.$message({
+                message: '保存成功',
+                type: 'success'
+              });
+            }
           })
         },
         uploadImg(e){
@@ -399,22 +424,6 @@
         runUpload(){
           this.$refs.input1.click();
         },
-//        getCountry(){
-//          const that = this;
-//          this.baseAxios.get('/api/v1/region?page=1&results_per_page=99999',{
-//            page:"1",
-//            pagelimt:"1000000"
-//          }).then(function (data) {
-//  console.log(data)
-//            const allcountry = data.data.objects;
-//            that.allcountry = allcountry;
-//            allcountry.map((item,index)=>{
-//              if(item.level == 2){
-//                that.country.push(item)
-//              }
-//            })
-//          })
-//        },
         getSelected1(){
 //          console.log(this.$refs.cc1[this.$refs.cc1.selectedIndex].text)
           this.country_seond =[];
@@ -480,16 +489,45 @@
             console.log(that.test1)
           })
         },
+        getSubject(){
+          const that = this;
+          this.baseAxios1.post('/student/subject',{
+            "student_subject_id":"2",
+            "page_limit": 1,
+            "page_no": 1,
+          }).then(function (data) {
+              if(data.status == 200 && data.data.num_results != 0){
+                let subject = data.data.objects[0];
+//                setTimeout(function () {
+//                  const allject = that.test1;
+//                  subject.map(function (item) {
+//                    if(subject.full_name_zh == item.full_name_zh){
+                      that.subjectBool = true;
+                      that.gfirst = subject.full_name_zh;
+                      that.gsecond = subject.subject_category_zh;
+                      that.gthird = subject.subject_name_zh;
+////                      console.log(that.gsecond,that.gthird)
+//                    }
+//                  })
+//                },200)
+              }
+
+          })
+        },
+        changeSubject(){
+          const that = this;
+          that.subjectBool = false;
+        }
       },
       watch:{
         first:function (val) {
           this.seconds = [];
-          this.seconds.push(val);
+          this.seconds= val.data;
           this.thrid = '';
         },
         second:function (val) {
           this.thrids = [];
-          this.thrids.push(val.data);
+          this.thrids = val.subject_name_zh;
         },
         go_abroad_country:function (val) {
           this.getSelected3();

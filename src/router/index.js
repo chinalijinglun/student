@@ -30,12 +30,12 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/login',
       component: login
     },
     {
       title: '首页',
-      path: '/index',
+      path: '/',
       name: 'index',
       component: index
     },
@@ -182,6 +182,6 @@ export default new Router({
       children: schedule
     },
     // 404 page
-    {path: '*', component: login}
+    {path: '*', component: index}
   ]
 })
