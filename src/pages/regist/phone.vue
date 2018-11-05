@@ -56,8 +56,8 @@
                    <input type="password" class="inps" v-model="secrtAgain" placeholder="请再次输入密码">
                </div>
                <div class="checkbox">
-                  <input type="checkbox" checked>
-                  <span>我已阅读并同意<span class="instructor">《UStutor用户注册协议》</span></span>
+                  <!--<input type="checkbox" checked>-->
+                  <!--<span>我已阅读并同意<span class="instructor">《UStutor用户注册协议》</span></span>-->
                </div>
                <button class="regist-now" @click="resetsPass" v-if="forget"> 重置密码</button>
                <button class="regist-now" @click="regists" v-else>立即注册</button>
@@ -164,27 +164,27 @@
                     alert('密码长度不正确或者密码前后不一致，请重新输入！');
                 }
             },
+          resetsPass(){
+              const that = this;
+              this.baseAxios.post('/auth/resetpassword',{
+                "password": that.secrtone,
+                "username": that.mobile_no,
+                "verify_code": that.code
+              }).then(function (data) {
+                if(data.data.message == 'reset password succ!'){
+                  that.open3('密码重置成功，请登录')
+                  that.$router.push('/login');
+                }else{
+                  that.open3('密码修改失败')
+                }
+              })
+          },
           open3(err) {
             this.$message({
               message: err,
               type: 'warning'
             });
           },
-          resetsPass(){
-              const that = this;
-              this.baseAxios1.post('/auth/resetpassword',{
-                "password": that.secrtone,
-                "username": that.mobile_no,
-                "verify_code": that.code
-              }).then(function (data) {
-                if(data.status == 200){
-                  open3('密码重置成功')
-                  that.$router.push('/login');
-                }else{
-                  open3('密码修改失败')
-                }
-              })
-          }
         }
     }
 </script>

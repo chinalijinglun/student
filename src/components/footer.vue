@@ -1,13 +1,11 @@
 <template>
     <div class="footers">
         <div class="center">
-            <span>关于我们</span>
+            <span><router-link to="/gywm">关于我们</router-link></span>
             <span>|</span>
-            <span>联系我们</span>
+            <span><router-link to="/lxwm">联系我们</router-link></span>
             <span>|</span>
-            <span>加入我们</span>
-            <span>|</span>
-            <span>常见问题</span>
+            <span><a href="https://company.zhaopin.com/CZ266702180.htm">加入我们</a></span>
             <div class="right">
                 京ICP备15062105号-1     京公网安备 11010802020457号
             </div>

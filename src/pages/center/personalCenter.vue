@@ -9,7 +9,7 @@
           <div class="bans">
             <div class="names">{{userName}}</div>
             <router-link to="/fillInformation">
-            <img src="../../assets/bianji.png" alt="">
+              <img src="../../assets/bianji.png" alt="">
             </router-link>
           </div>
           <div class="student-num">
@@ -30,9 +30,9 @@
       <div class="mid-tit">
         <div class="tit-lef">即将开课</div>
         <div class="more">
-        <router-link to="/timetable/timetable">
-          更多>>
-        </router-link>
+          <router-link to="/timetable/timetable">
+            更多>>
+          </router-link>
         </div>
       </div>
       <div class="course-details" v-for="item in subject">
@@ -42,7 +42,7 @@
           </div>
           <div class="times">
             <img src="../../assets/time.png" alt="">
-            <span>{{guyuTime(item.start,item.end)}}</span>
+            <span>{{guyuTime(fmtTime1(finalTime.start),fmtTime1(finalTime.end))}}</span>
           </div>
         </div>
         <div class="course-main" v-for="ini in xiaoke">
@@ -74,7 +74,7 @@
       <div class="mid-tit">
         <div class="tit-lef">待完成的作业</div>
         <router-link to="/homework/willCompleted">
-        <div class="more">更多 >></div>
+          <div class="more">更多 >></div>
         </router-link>
       </div>
       <div class="course-details" v-for="item in homework">
@@ -107,7 +107,9 @@
 
 <script>
   import dateFmt from '../../utils/time';
+  import {fmtTime, fmtTime1} from '../../utils/time'
   import store from '@/store/index';
+
   /**
    * homework_type,1：教师留作业，2：学生完成作业
    * study_state'学习状态，1：进行中，2：已经学完'
@@ -129,14 +131,17 @@
         age: "",
         avatar: "",
         subject: [],//课程
-        birth:'',
-        homework:[],//作业
-        numberAll:"",
-        xiaoke:[],
-        grade:""
+        birth: '',
+        homework: [],//作业
+        numberAll: "",
+        xiaoke: [],
+        grade: "",
+        finalTime:[]
       }
     },
     methods: {
+      fmtTime,
+      fmtTime1,
       //获取用户信息
       getUserName() {
         const that = this;
@@ -150,11 +155,11 @@
             that.grade = dataUser.grade;
 
 //            localStorage.setItem('name',dataUser.name);
-            store.commit('test',dataUser.name)
+            store.commit('test', dataUser.name)
 
             const len = [];
-            dataUser.study_courses.map(function (item,index) {
-              if(item.actual_start>dateFmt(new Date())){
+            dataUser.study_courses.map(function (item, index) {
+              if (item.actual_start > dateFmt(new Date())) {
                 len.push(item);
               }
             })
@@ -163,99 +168,115 @@
       },
 
       //获取课程内容
-      getMycourse(){
+      getMycourse() {
         const that = this;
-        this.baseAxios1.post('/student/my_course',{
+        this.baseAxios1.post('/student/my_course', {
           "page_limit": 1,
           "page_no": 1,
           "course_status": "2" //没上完的课
-        }).then((data)=>{
-            that.subject = data.data.objects;
-            that.baseAxios1.post('/student/schedule',{
-              course_id:data.data.objects[0].course_id,
-              page_limit:1000,
-              page_no:1
-            }).then(function (data) {
-              const data1 = data.data.objects;
-              var date = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000);
-              data1.map(function (item,index) {
-                if(item.start>=dateFmt(new Date) && item.start<=dateFmt(date) ){
-                  that.xiaoke.push(item);
-//                  console.log(that.xiaoke);
-//                  console.log(that.subject);
-//                  console.log(item)
-                  if(item!=null){
-                    that.baseAxios1.post('/student/get_courseware',{
-                      "page_limit": 10,
-                      "page_no": 1,
-                      "study_schedule_id": item.id
-                    }).then(function (dataa) {
+        }).then((data) => {
+          that.subject = data.data.objects;
+          that.baseAxios1.post('/student/schedule', {
+            course_id: data.data.objects[0].course_id,
+            page_limit: 1000,
+            page_no: 1
+          }).then(function (data) {
+            const data1 = data.data.objects;
+            var date = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000);
+            data1.map(function (item, index) {
+              if (item.start >= dateFmt(new Date) && item.start <= dateFmt(date)) {
+                console.log(item)
 
+                that.xiaoke.push(item);
+                if (item != null) {
+                  that.baseAxios1.post('/student/get_courseware', {
+                    "page_limit": 10,
+                    "page_no": 1,
+                    "study_schedule_id": item.id
+                  }).then(function (dataa) {
 //                      that.xiaoke[item].kejian = dataa.data.objects;
-                        that.xiaoke.map(function (itm,idx) {
-                          itm.kejian = dataa.data.objects;
-                        })
-//                      console.log(dataa)
-//                      console.log(that.xiaoke)
+                    that.xiaoke.map(function (itm, idx) {
+                      itm.kejian = dataa.data.objects;
                     })
-                  }else{
-                    return ''
-                  }
+                  })
+                } else {
+                  return ''
                 }
-
-              })
+              }
 
             })
+//            console.log(that.xiaoke);
+            const nowTime = Date.parse(new Date());
+            const number = [];
+            that.xiaoke.map((val, index) => {
+              number.push(Date.parse(val.start) - nowTime);
+            })
+
+            var ret = number[0];
+            var distance = Math.abs(ret - 0);
+            for(var i = 1; i < number.length; i++){
+              var newDistance = Math.abs(number[i] - 0);
+              if(newDistance < distance){
+                distance = newDistance;
+                ret = number[i];
+              }
+            }
+
+//            console.log(number.indexOf(ret))
+            that.finalTime = that.xiaoke[number.indexOf(ret)]
+//            console.log(that.finalTime)
+
+          })
         })
       },
       //待做的作业
-      willHomework(){
-        const that =this;
-        this.baseAxios1.post('/student/my_homework',{
+      willHomework() {
+        const that = this;
+        this.baseAxios1.post('/student/my_homework', {
           "page_limit": 1,
           "page_no": 1,
           "homework_state": "0"
-        }).then((data)=>{
+        }).then((data) => {
           that.homework = data.data.objects;
         })
       },
-      birtht(){
-        const that =this;
+      birtht() {
+        const that = this;
         const birthh = new Date().getFullYear() - new Date(that.birth).getFullYear();
-        return "年龄："+birthh+"岁"
+        return "年龄：" + birthh + "岁"
       },
       //综合
-      allTime(){
+      allTime() {
         const that = this;
 
       },
-      previewCourse(id){
+      previewCourse(id) {
         const that = this;
-        this.baseAxios1.post('/student/get_preview_doc',{
+        this.baseAxios1.post('/student/get_preview_doc', {
           "page_limit": 10,
           "page_no": 1,
           "study_schedule_id": id
         })
           .then(function (data) {
             const ware_id = data.data.objects;
-            if(ware_id.length!=0){
-              ware_id.map(function (val,index) {
+            if (ware_id.length != 0) {
+              ware_id.map(function (val, index) {
 //              that.livePreview_doc(val.ware_uid);
-                that.$router.push({path:'/iframe',query:{ware_uid:val.ware_uid}})
+                that.$router.push({path: '/iframe', query: {ware_uid: val.ware_uid}})
               })
-            }else{
+            } else {
               alert('暂无课件')
             }
 
           })
       },
-      lookHomework(id){
-       this.$router.push('/course/check?id='+id)
+      lookHomework(id) {
+        this.$router.push('/course/check?id=' + id)
       },
-      getCourseware(id){
+      getCourseware(id) {
         ///student/get_courseware
-        const that =this;
-        this.baseAxios1.post('/student/get_courseware',{
+        const that = this;
+        this.baseAxios1.post('/student/get_courseware', {
           "page_limit": 10,
           "page_no": 1,
           "study_schedule_id": id

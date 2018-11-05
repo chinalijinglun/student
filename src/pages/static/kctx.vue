@@ -1,9 +1,9 @@
 <template>
   <!-- 首页 -->
   <div class="index">
-    <img src="@/assets/kctx/1.jpg" alt="" class="why-img">
-    <img src="@/assets/kctx/2.jpg" alt="" class="why-img">
-    <img src="@/assets/kctx/3.jpg" alt="" class="why-img">
+    <img src="@/assets/kctx/head.png" alt="" class="why-img">
+    <img src="@/assets/kctx/1.png" alt="" class="why-img center-pic">
+    <img src="@/assets/kctx/2.png" alt="" class="why-img">
   </div>
 </template>
 
@@ -23,5 +23,9 @@
     display: block;
     width: 100vw;
     height: auto;
+  }
+  .center-pic{
+    max-width: 1200px;
+    margin: 0 auto;
   }
 </style>

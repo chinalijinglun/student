@@ -1,11 +1,9 @@
 <template>
   <!-- 首页 -->
   <div class="index">
-      <img src="@/assets/gywm/1.jpg" alt="" class="why-img">
-    <img src="@/assets/gywm/2.jpg" alt="" class="why-img">
-    <img src="@/assets/gywm/3.jpg" alt="" class="why-img">
-    <img src="@/assets/gywm/4.jpg" alt="" class="why-img">
-    <img src="@/assets/gywm/5.jpg" alt="" class="why-img">
+      <img src="@/assets/gywm/head.png" alt="" class="why-img">
+    <img src="@/assets/gywm/main.png" alt="" class="why-img">
+    <img src="@/assets/gywm/footer.png" alt="" class="why-img">
   </div>
 </template>
 

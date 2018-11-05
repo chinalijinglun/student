@@ -30,7 +30,7 @@
                         <span>*</span>在读国家
                     </div>
                   <select name="" v-model="contury1">
-                    <option v-for="(item,index) in contury" :value="item">{{item.name_zh}}</option>
+                    <option v-for="(item,index) in COUNTRY_CODE" :value="item.id">{{item.name_zh}}</option>
                   </select>
                 </div>
                 <div class="grade">
@@ -90,7 +90,7 @@
   </template>
 
   <script>
-    import {NATIONAL_CODE} from '../utils/enum'
+    import {NATIONAL_CODE,COUNTRY_CODE} from '../utils/enum'
       export default {
         data(){
           return {
@@ -98,6 +98,7 @@
             sex:'男',
             contury1:"",
             contury:NATIONAL_CODE,
+            COUNTRY_CODE:COUNTRY_CODE,
             nianji:"",
             kemu:[1,2,3],
             parent_mobile:'',
@@ -131,6 +132,17 @@
           this.studentSubject();
         },
         methods:{
+          putSubject(){
+            const that = this;
+            this.baseAxios1.post('/student/save_subject',{
+              "subject_id":that.subjectId,
+              "subject_type":2,
+              "page_limit": 1,
+              "page_no": 1,
+            }).then(function (data) {
+              console.log(data)
+            })
+          },
           postStudentInfo(){
             const that = this;
             const sendData = {};
@@ -139,11 +151,13 @@
               alert('请填写必填字段');
               return false;
             }else{
+              console.log(that.contury1)
               this.baseAxios.put('/api/v1/student/'+localStorage.getItem('id'),
               {
                 'name':that.name,
                 'gender':that.sex,
-                'read_country':that.contury1.name_zh,
+                'grade':that.selected,
+                'read_city':that.contury1,
                 'parent_mobile':that.parent_mobile
               }
               ).then(function (data) {
@@ -229,6 +243,7 @@
             }else{
               that.addSubject();
               that.postStudentInfo();
+//              that.putSubject();
               setTimeout(function () {
                 that.$router.push('/center/personal');
               },250)

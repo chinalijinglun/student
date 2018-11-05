@@ -10,3 +10,7 @@ a {
 .input-with-select .el-input-group__prepend{
   background-color: #fff!important;
 }
+
+.index1 .el-carousel__button{
+  background-color: #484545;
+}

@@ -1,8 +1,21 @@
 <template>
   <!-- 首页 -->
   <div class="index">
-    <img src="@/assets/index/1.jpg" alt="" class="why-img">
+    <div class="index1">
+      <el-carousel trigger="click" height="858px" :interval="5000">
+        <el-carousel-item v-for="(item,index) in 2" :key="item">
+          <img src="@/assets/index/1.jpg" v-if="index == 0" class="bannerImg" />
+          <img src="@/assets/index/image5.png" v-if="index == 1" class="bannerImg" />
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+
     <div class="second commond">
+      <div class="liaojie">
+        <router-link to="/sztd">
+        <img src="@/assets/liaojie.png" alt="">
+        </router-link>
+      </div>
       <div class="tu11"><img src="@/assets/index/tu11.png" alt=""></div>
       <div class="bule_img">
         <div class="psin psin1" @mouseenter="enters(1)" @mouseleave="outs">
@@ -24,46 +37,36 @@
             <!--<img src="@/assets/index/tu7.png" alt="">-->
             获得美国学校教师资格需要
           </div>
-          <div class="crilie">专业课程</div>
-          <div class="crilie">专业考试</div>
-          <div class="crilie">职业道德
+          <div class="crilie">
+            高等<br />
+            教育背景</div>
+          <div class="crilie">
+            专业课程<br />
+            专业考试
+          </div>
+          <div class="crilie">职业道德<br />
             培训</div>
           <div class="crilie">1年实习</div>
-          <div class="crilie">教学法
+          <div class="crilie">教学法<br />
             考试</div>
           <div class="crilie">多次评估</div>
         </div>
         <div v-else-if="Hoverindex == 2" class="psin-content">
-          <h1>什么样的人<br/>
-            能成为美国在职教师1</h1>
-          <div class="seniority">
-            <!--<img src="@/assets/index/tu7.png" alt="">-->
-            获得美国学校教师资格需要1
+          <div style="margin-top: 350px">
           </div>
-          <div class="crilie">专业课程1</div>
-          <div class="crilie">专业考试1</div>
-          <div class="crilie">职业道德1
-            培训</div>
-          <div class="crilie">1年实习1</div>
-          <div class="crilie">教学法1
-            考试</div>
-          <div class="crilie">多次评估1</div>
+          <div class="seniority qianyan">
+            全员高水准独立课程，设计能力
+          </div>
+          <div class="seniority qianyan">
+            对学生情况及时调控，因材施教能力
+          </div>
+          <div class="seniority qianyan">
+            保护学生独立思考，互动启发式教学能力
+          </div>
+          <!--<img src="@/assets/index/mmm.png" alt="" style="margin-top: 150px">-->
         </div>
         <div v-else-if="Hoverindex == 3" class="psin-content">
-          <h1>什么样的人<br/>
-            能成为美国在职教师2</h1>
-          <div class="seniority">
-            <!--<img src="@/assets/index/tu7.png" alt="">-->
-            获得美国学校教师资格需要2
-          </div>
-          <div class="crilie">专业课程2</div>
-          <div class="crilie">专业考试2</div>
-          <div class="crilie">职业道德2
-            培训</div>
-          <div class="crilie">1年实习1</div>
-          <div class="crilie">教学法1
-            考试</div>
-          <div class="crilie">多次评估1</div>
+          <img src="@/assets/index/mmmm.png" alt="">
         </div>
       </div>
     </div>
@@ -71,7 +74,12 @@
 
     <!--</div>-->
     <!--<img src="@/assets/index/2.jpg" alt="" class="more-png">-->
+    <router-link to="/kctx">
     <img src="@/assets/index/3.jpg" alt="" class="tu11-png" style="margin-top: 100px;">
+    </router-link>
+    <router-link to="/jxfw">
+    <img src="@/assets/index/ss.png" alt="" class="tu11-png">
+    </router-link>
     <img src="@/assets/index/5.jpg" alt="" class="tu11-png">
     <div>
       <vue-accordion :items="items" :styles="styles"></vue-accordion>
@@ -180,7 +188,6 @@
       },
     },
     created() {
-
     },
     methods: {
       enters(ind){
@@ -193,27 +200,46 @@
         that.Hoverindex = '';
         console.log(that.Hoverindex)
       }
-    },
-//    components:{
-//      vueAccordion
-//    }
+    }
   }
 </script>
 
 <style scoped>
+  .index1{
+    width: 100%;
+    height: 100%;
+    min-height: 858px;
+  }
+  .index1 .el-carousel,.index1 .el-carousel__item{
+    width: 100%;
+    height: 100%;
+    min-height: 858px;
+  }
+
+  .bannerImg{
+    width: 100%;
+    height: 100%;
+  }
+
   .crilie{
     width: 146px;
     height: 146px;
     border-radius: 50%;
-    background: #1495C1;
+    background: #064262;
     text-align: center;
     color: #ffffff;
-    line-height: 146px;
     float: left;
     margin: 35px 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
   }
   .psin-content h1{
     color: #ffffff;
+  }
+  .qianyan.seniority{
+    margin: 50px auto;
   }
   .seniority{
     background: url(../../assets/index/tu7.png) no-repeat center;
@@ -323,6 +349,11 @@
     height: auto;
   }
 
+  .tu11-png{
+    display: block;
+    width: 100vw;
+    height: auto;
+  }
   .sqst {
     width: 1225px;
     overflow: hidden;
@@ -368,5 +399,15 @@
     outline: none;
     width: 300px;
     height: 130px;
+  }
+  .liaojie{
+    position: absolute;
+    top: 0;
+    left: 55%;
+    width: 146px;
+    height: 140px;
+  }
+  .liaojie img{
+    width: 100%;
   }
 </style>

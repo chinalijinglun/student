@@ -13,14 +13,18 @@ import Calendar from 'vue2-event-calendar';
 import {vueAccordion} from 'vue-accordion';
 import other from './utils/other';
 import store from './store';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
+import 'swiper/dist/css/swiper.css'
 
 Vue.use(ElementUI);
 Vue.use(selfComponents);
 Vue.use(other);
+Vue.use(VueAwesomeSwiper);
 Vue.component('Calendar', Calendar);
 Vue.component('full-calendar', fullCalendar);
 Vue.component('vue-accordion', vueAccordion);
 
+console.log(vueAccordion)
 
 function getLocalStorage(key) {
   return localStorage.getItem(key);

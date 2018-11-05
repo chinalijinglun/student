@@ -258,7 +258,8 @@
             </div>
             <input type="text" class="inp" v-model="parent_email">
         </div>
-        <button @click="putPersonal">保存</button>
+        <!--<button @click="putPersonal">保存</button>-->
+      <button @click="bothFuc">保存</button>
     </div>
 </template>
 
@@ -323,7 +324,8 @@
             subjectBool: false,
             gfirst:'',
             gsecond:'',
-            gthird:''
+            gthird:'',
+            subjectId:""
           }
         }
       ,created(){
@@ -365,8 +367,14 @@
             that.nation = persol.nation;
           })
         },
+        bothFuc(){
+          const that = this;
+          that.putPersonal();
+          that.putSubject();
+        },
         putPersonal(){
           const that =this;
+          console.log(that.thrid);
           this.baseAxios.put('/api/v1/student/'+localStorage.getItem('id'),{
             "name":that.chinaName,
             "first_name":that.englishName,
@@ -400,6 +408,18 @@
                 type: 'success'
               });
             }
+          })
+        },
+        //提交意向科目，接口不对，
+        putSubject(){
+          const that = this;
+          this.baseAxios1.post('/student/save_subject',{
+            "subject_id":that.subjectId,
+            "subject_type":2,
+            "page_limit": 1,
+            "page_no": 1,
+          }).then(function (data) {
+              console.log(data)
           })
         },
         uploadImg(e){
@@ -492,10 +512,12 @@
         getSubject(){
           const that = this;
           this.baseAxios1.post('/student/subject',{
-            "student_subject_id":"2",
+//            "student_subject_id":"2",
+            "student_id":localStorage.getItem('id'),
             "page_limit": 1,
             "page_no": 1,
           }).then(function (data) {
+//            console.log(data)
               if(data.status == 200 && data.data.num_results != 0){
                 let subject = data.data.objects[0];
 //                setTimeout(function () {
@@ -521,11 +543,13 @@
       },
       watch:{
         first:function (val) {
+          this.subjectId = val.subject_id;
           this.seconds = [];
           this.seconds= val.data;
           this.thrid = '';
         },
         second:function (val) {
+//          console.log(val)
           this.thrids = [];
           this.thrids = val.subject_name_zh;
         },

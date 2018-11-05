@@ -9,20 +9,24 @@
                 <div class="right_01">
                     <img src="@/assets/dianhua_s.png" class="tel" alt="">
                     <span class="user">
+                        <template v-if="count">
                         <span @click="account">
-                          <!--<router-link to="/center/personal">-->
-                            Hi，
-                          <!--{{name}}-->
                             {{count}}
-                          <!--</router-link>-->
                         </span>
-                        <!--<span @click="account">-->
-                          <!--&lt;!&ndash;<router-link to="/fillInformation">&ndash;&gt;-->
-                          <!--账户设置-->
-                          <!--&lt;!&ndash;</router-link>&ndash;&gt;-->
-                        <!--</span>-->
                         <span>|</span>
                         <span @click="quit">退出</span>
+                        </template>
+                        <template v-else>
+                        <router-link to="/login">
+                        <span>
+                           登录
+                        </span>
+                        </router-link>
+                        <span>|</span>
+                        <router-link to="/usePhone">
+                        <span>注册</span>
+                        </router-link>
+                        </template>
                     </span>
                     <span class="mouseenter">
                         <span class="span">关注美师在线</span>
@@ -38,26 +42,26 @@
             <ul class="nav">
                 <li>
                   <router-link to="/sztd">
-                    <p>School Staff</p>
+                    <p>Faculty team</p>
                     <p>师资团队</p>
                   </router-link>
                 </li>
                 <li>
                   <router-link to="/kctx">
-                    <p>Course System</p>
+                    <p>Curriculum system</p>
                     <p>课程体系</p>
                   </router-link>
                 </li>
                 <li>
                   <router-link to="/jxfw">
-                    <p>Service System</p>
+                    <p>Academic Services</p>
                     <p>教学服务</p>
                   </router-link>
                 </li>
                 <!--<li class="mouserover" v-on:mouseover="mouserover()" v-on:mouseout="mouseout()">-->
                 <li class="mouserover">
                   <router-link to="/zsrx">
-                    <p>Admissions</p>
+                    <p>Online appointment</p>
                     <p>招生入学</p>
                   </router-link>
                 </li>
@@ -151,23 +155,9 @@
                 message: err,
                 type: 'warning'
               });
-            },
-            local(){
-              window.addEventListener('storage', function () {
-                console.log(1)
-              }, false)
             }
-        },
-      mounted(){
-//        console.log(this.$getLocalStorage('name'))
-      }
+        }
     }
-
-//    window.localStorage.setItem = function(k, v) {
-//      if (k === 'name') {
-//        console.log(123)
-//      }
-//    }
 </script>
 
 <style scoped>
@@ -181,7 +171,7 @@
         border-bottom: 2px solid #FF8200;
         background: #ffffff;
         position: relative;
-        z-index: 1;
+        z-index: 9;
     }
     .header-top{
         background: #F3F3F3;
@@ -237,6 +227,8 @@
         top: 33px;
         display: none;
         z-index: 2;
+        width: 110px;
+        height: 110px;
     }
     .mouseenter:hover .erweima{
         display: block;

@@ -9,13 +9,17 @@
   export default {
     data() {
       return {
-        frameHeight: window.innerHeight - 197,
+        frameHeight: window.innerHeight,
 //          url:this.$route.query.url
         url: ""
       }
     },
     created() {
+      const that = this;
       this.useFunction();
+      setTimeout(function () {
+        that.routers();
+      },200)
     },
     methods: {
       livePreview_doc() {
@@ -70,11 +74,24 @@
         }else{
           this.livePreview_doc();
         }
+      },
+      routers(){
+        const locHash = location.hash;
+        if(locHash.search("iframe")!= -1){
+          document.querySelector('.headers').style.display = 'none';
+          document.querySelector('.footers').style.display = 'none';
+        }
+
       }
     }
   }
 </script>
 <style scoped>
+  .headers{
+    display: none;
+  }.footers{
+    display: none;
+     }
   .iframe {
     margin-bottom: -180px;
   }

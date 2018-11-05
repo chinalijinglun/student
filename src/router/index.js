@@ -1,17 +1,20 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import useEmail from '@/pages/regist/email'
 import usePhone from '@/pages/regist/phone'
 import login from '@/pages/login'
 import main from '@/pages/main';
 import perfect from '@/pages/perfect';
 import fillInformation from '@/pages/fillInformation';
+
 import index from '@/pages/static/index';
 import sztd from '@/pages/static/sztd';
 import kctx from '@/pages/static/kctx';
 import jxfw from '@/pages/static/jxfw';
 import zsrx from '@/pages/static/zsrx';
 import gywm from '@/pages/static/gywm';
+import lxwm from '@/pages/static/lxwm';
 
 import center from './center';
 import data from './data';
@@ -68,6 +71,12 @@ export default new Router({
       path: '/gywm',
       name: 'gywm',
       component: gywm
+    },
+    {
+      title: '联系我们',
+      path: '/lxwm',
+      name: 'lxwm',
+      component: lxwm
     },
     //注册
     //邮箱注册

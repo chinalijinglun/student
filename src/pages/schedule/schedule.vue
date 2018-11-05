@@ -14,8 +14,7 @@
       </div>
 
       <div class="agenda-container" v-for="(item, index) in item.data[0]" :key="index">
-        <!--<router-link :to="{path:'/course/finished',query:{id:item.name_id}}">-->
-          <div v-if="tody > item.date" style="background-color: #F5A623" @click="test2(item.id)">
+          <div v-if="item.today> item.beginStart" style="background-color: #F5A623" @click="test2(item.id)">
             <span class="agenda-item">{{item.title}}</span>
             <span class="time agenda-item">{{item.time}}</span>
           </div>
@@ -48,7 +47,7 @@
         }
       },
       created(){
-        console.log( $dateFmt(new Date()) >= "2018-08-31")
+//        console.log( $dateFmt(new Date()) >= "2018-08-31")
       },
       methods: {
         isToday(day) {
@@ -73,9 +72,11 @@
                 name_id: item.course_id,
                 id:item.id,
                 time: $dateFmt(new Date(item.start), 'hh:mm') + '-' + $dateFmt(new Date(item.end), 'hh:mm'),
-                date: $dateFmt(new Date(item.start), 'yyyy-MM-dd')
+                date: $dateFmt(new Date(item.start), 'yyyy-MM-dd'),
+                beginStart: $dateFmt(new Date(item.start)),
+                today: $dateFmt(new Date())
               }))
-              let ObjectData = {}
+              let ObjectData = {};
               ArrayData.forEach(item => {
                 if (ObjectData[item.date]) {
                   ObjectData[item.date].push({...item})
@@ -100,7 +101,7 @@
                 Array: ArrayData,
                 Object: ObjectData
               }
-
+              console.log(this.dateData)
             })
         },
         test2(id) {

@@ -1,10 +1,10 @@
 <template>
   <!-- 首页 -->
   <div class="index">
-    <img src="@/assets/jxfw/1.jpg" alt="" class="why-img">
-    <img src="@/assets/jxfw/2.jpg" alt="" class="why-img">
-    <img src="@/assets/jxfw/3.jpg" alt="" class="why-img">
-    <img src="@/assets/jxfw/4.jpg" alt="" class="why-img">
+    <img src="@/assets/jxfw/head.png" alt="" class="why-img">
+    <img src="@/assets/jxfw/main.png" alt="" class="why-img">
+    <img src="@/assets/jxfw/menu.png" alt="" class="why-img">
+    <img src="@/assets/jxfw/footer.png" alt="" class="why-img">
   </div>
 </template>
 
