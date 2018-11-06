@@ -6,6 +6,8 @@
             <span><router-link to="/lxwm">联系我们</router-link></span>
             <span>|</span>
             <span><a href="https://company.zhaopin.com/CZ266702180.htm">加入我们</a></span>
+            <span>|</span>
+            <span><a href="http://www.vipustutor.com/f/">咨询中心</a></span>
             <div class="right">
                 京ICP备15062105号-1     京公网安备 11010802020457号
             </div>
