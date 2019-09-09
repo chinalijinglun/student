@@ -223,7 +223,7 @@
         for (var i = 0; i < file.length; i++) {
           fujian.append('file', file[i]);
         }
-        this.baseAxios1.post('/upload', fujian).then((data) => {
+        this.baseAxios2.post('/upload', fujian).then((data) => {
           if (data.status == 200) {
             that.files = data.data;
             that.btnStatue = true;

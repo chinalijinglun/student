@@ -17,9 +17,7 @@
     created() {
       const that = this;
       this.useFunction();
-      setTimeout(function () {
-        that.routers();
-      },200)
+
     },
     methods: {
       livePreview_doc() {
@@ -75,14 +73,7 @@
           this.livePreview_doc();
         }
       },
-      routers(){
-        const locHash = location.hash;
-        if(locHash.search("iframe")!= -1){
-          document.querySelector('.headers').style.display = 'none';
-          document.querySelector('.footers').style.display = 'none';
-        }
 
-      }
     }
   }
 </script>

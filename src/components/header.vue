@@ -10,21 +10,21 @@
                     <img src="@/assets/dianhua_s.png" class="tel" alt="">
                     <span class="user">
                         <template v-if="count">
-                        <span @click="account">
-                            {{count}}
-                        </span>
-                        <span>|</span>
-                        <span @click="quit">退出</span>
+                          <span @click="account">
+                              {{count}}
+                          </span>
+                          <span>|</span>
+                          <span @click="quit">退出</span>
                         </template>
                         <template v-else>
                         <router-link to="/login">
-                        <span>
-                           登录
-                        </span>
-                        </router-link>
-                        <span>|</span>
-                        <router-link to="/usePhone">
-                        <span>注册</span>
+                          <span>
+                             登录
+                          </span>
+                          </router-link>
+                          <span>|</span>
+                          <router-link to="/usePhone">
+                          <span>注册</span>
                         </router-link>
                         </template>
                     </span>
@@ -36,55 +36,60 @@
             </div>
         </div>
         <div class="header-bottom">
-          <router-link to="/index">
-            <img src="@/assets/logo1.png" alt="" class="logo">
-          </router-link>
+          <a href="/index.html">
+            <template v-if="userPic">
+              <img :src="'http://www.vipustutor.com/'+userPic" alt="userPic" class="logo">
+            </template>
+            <template v-else>
+              <img src="@/assets/logo1.png" alt="" class="logo">
+            </template>
+          </a>
             <ul class="nav">
                 <li>
-                  <router-link to="/sztd">
-                    <p>Faculty team</p>
+                  <a href="/school.html">
+                    <p>Faculty Team</p>
                     <p>师资团队</p>
-                  </router-link>
+                  </a>
                 </li>
                 <li>
-                  <router-link to="/kctx">
-                    <p>Curriculum system</p>
+                  <a href="/course.html">
+                    <p>Curriculum System</p>
                     <p>课程体系</p>
-                  </router-link>
+                  </a>
                 </li>
                 <li>
-                  <router-link to="/jxfw">
+                  <a href="/service.html">
                     <p>Academic Services</p>
                     <p>教学服务</p>
-                  </router-link>
+                  </a>
                 </li>
                 <!--<li class="mouserover" v-on:mouseover="mouserover()" v-on:mouseout="mouseout()">-->
                 <li class="mouserover">
-                  <router-link to="/zsrx">
-                    <p>Online appointment</p>
+                  <a href="/admissions.html">
+                    <p>Online Appointment</p>
                     <p>招生入学</p>
-                  </router-link>
+                  </a>
                 </li>
                 <li>
-                  <router-link to="/gywm">
-                    <p>About US</p>
+                  <a href="/about.html">
+                    <p>About Us</p>
                     <p>关于我们</p>
-                  </router-link>
+                  </a>
                 </li>
             </ul>
-            <div class="btn-box">
-                <template v-if="token === null">
-                  <router-link to="/login">
-                  <div class="login">
-                      登录
-                  </div></router-link>
-                  <router-link to="/usePhone">
-                  <div class="regist">
-                      注册
-                  </div>
-                  </router-link>
-                </template>
-            </div>
+            <!--<div class="btn-box">-->
+                <!--<template v-if="token === null">-->
+                  <!--<router-link to="/login">-->
+                  <!--<div class="login">-->
+                      <!--登录-->
+                  <!--</div></router-link>-->
+                  <!--<router-link to="/usePhone">-->
+                  <!--<div class="regist">-->
+                      <!--注册-->
+                  <!--</div>-->
+                  <!--</router-link>-->
+                <!--</template>-->
+            <!--</div>-->
             <div class="tels" v-if="show">
                 <img src="@/assets/dianhua_b.png" alt="" class="b_dianhua">
             </div>
@@ -118,11 +123,13 @@
                 show: false,
                 showAdmissions: false,
                 name: localStorage.getItem('name'),
-                token: localStorage.getItem('Authorization')
+                token: localStorage.getItem('Authorization'),
+                userPic:''
             }
 
         },
       created(){
+          this.getUserPic();
       },
       computed: {
         count () {
@@ -155,6 +162,12 @@
                 message: err,
                 type: 'warning'
               });
+            },
+            getUserPic(){
+              const that = this;
+              this.baseAxios1.post('/student/student_logo').then((data)=>{
+                that.userPic = data.data.url;
+              })
             }
         }
     }
@@ -244,9 +257,10 @@
         margin: 0 auto;
         height: 104px;
         position: relative;
-        /* overflow: hidden; */
     }
     .logo{
+        width: 242px;
+        height: 71px;
         margin-top: 19px;
         float: left;
     }

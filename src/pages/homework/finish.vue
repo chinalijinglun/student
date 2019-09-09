@@ -133,7 +133,7 @@
                   that.fujian.param = new FormData();
                   that.fujian.param.append('file',file);
                   //console.log(that.fujian.param.get('file'))
-            this.baseAxios1.post('/upload',that.fujian.param).then((data)=>{
+            this.baseAxios2.post('/upload',that.fujian.param).then((data)=>{
               const url = data.data[0].download_file;
                 if(url){
                 that.url =location.origin+url;

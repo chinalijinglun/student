@@ -84,7 +84,7 @@
                      return false;
                 }
                 //获取验证码（邮箱）
-               this.baseAxios.post('auth/emailverify',{
+               this.baseAxios2.post('auth/emailverify',{
                    "email_address": that.emailNum
                })
                .then(function(response) {
@@ -116,7 +116,7 @@
                 }
                 if (that.secrtone.length>0&&(that.secrtone == that.secrtAgain)) {
                     //提交注册
-                    this.baseAxios.post('auth/register',{
+                    this.baseAxios2.post('auth/register',{
                         "password": that.secrtone,
                         "username": that.emailNum,
                         "usertype": "Student",

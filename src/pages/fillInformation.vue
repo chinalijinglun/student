@@ -427,7 +427,7 @@
               file = e.target.files[0];
             that.avatar = new FormData();
             that.avatar.append('file',file);
-            this.baseAxios1.post('/upload',that.avatar).then((data)=>{
+            this.baseAxios2.post('/upload',that.avatar).then((data)=>{
               if(data.status == 200){
                 that.avatar = '';
 //                that.avatar = window.location.origin+data.data[0].download_file;

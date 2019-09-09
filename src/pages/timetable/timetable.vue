@@ -91,11 +91,14 @@
           time:"",
           teachername:'',
           region:[{
+            id: '0',
+            name:'全部课程'
+          },{
             id: '1',
-            name:'完成'
+            name:'已结课'
           },{
             id:'2',
-            name:'未完成'
+            name:'进行中'
           }]
         }
       }

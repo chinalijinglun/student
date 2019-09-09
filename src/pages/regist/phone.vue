@@ -106,7 +106,7 @@
 //                     return false;
 //                }
                 //获取验证码（手机）
-               this.baseAxios.post('auth/smsverify',{
+               this.baseAxios2.post('auth/smsverify',{
                     "country_code": that.value,
                     "mobile_no": that.mobile_no
                 })
@@ -139,7 +139,7 @@
                 }
                 if (that.secrtone.length>0&&(that.secrtone == that.secrtAgain)) {
                     //提交注册
-                    this.baseAxios.post('auth/register',{
+                    this.baseAxios2.post('auth/register',{
 //                        'countryCode':that.value,
                         'code':that.value,
                         "password": that.secrtone,
@@ -166,7 +166,7 @@
             },
           resetsPass(){
               const that = this;
-              this.baseAxios.post('/auth/resetpassword',{
+              this.baseAxios2.post('/auth/resetpassword',{
                 "password": that.secrtone,
                 "username": that.mobile_no,
                 "verify_code": that.code

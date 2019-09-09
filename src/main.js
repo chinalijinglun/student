@@ -24,8 +24,6 @@ Vue.component('Calendar', Calendar);
 Vue.component('full-calendar', fullCalendar);
 Vue.component('vue-accordion', vueAccordion);
 
-console.log(vueAccordion)
-
 function getLocalStorage(key) {
   return localStorage.getItem(key);
 }
@@ -36,10 +34,18 @@ const devUrl = Vue.prototype.devUrl;
 
 let requestCount = 0;
 
-const baseAxios = axios.create({
+const baseAxios2 = axios.create({
   baseURL: devUrl,
   headers: {
     'Content-Type': 'application/json'
+  }
+});
+
+const baseAxios = axios.create({
+  baseURL: devUrl,
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': getLocalStorage('Authorization')
   }
 });
 
@@ -107,7 +113,7 @@ baseAxios1.interceptors.response.use(resp => {
 
 Vue.prototype.baseAxios = baseAxios;
 Vue.prototype.baseAxios1 = baseAxios1;
-
+Vue.prototype.baseAxios2 = baseAxios2;
 
 Vue.config.productionTip = false;
 

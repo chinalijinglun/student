@@ -2,8 +2,12 @@
     <div class="report-detail">
        <template v-if="studyresultId">
          <div class="main-tit">
-           <p class="firline">{{allthings[0]?allthings[0].course_name:''}}</p>
-           <p>{{allthings[0]?allthings[0].course_name_zh:''}}</p>
+           <p class="firline">
+              <!--{{courseName}}-->
+             {{allthings[0]?allthings[0].course_name:''}}
+           </p>
+
+           <!--<p>{{allthings[0]?allthings[0].course_name_zh:''}}</p>-->
 
          </div>
          <div class="tea">
@@ -65,8 +69,9 @@
        </template>
        <template v-else-if="studyscheduleId">
          <div class="main-tit">
-           <p class="firline">{{allthings[0]?allthings[0].course_name:''}}</p>
-           <p>{{allthings[0]?allthings[0].course_name_zh:''}}</p>
+           <p class="firline">{{courseName}}</p>
+           <!--<p class="firline">{{allthings[0]?allthings[0].course_name:''}}</p>-->
+           <!--<p>{{allthings[0]?allthings[0].course_name_zh:''}}</p>-->
          </div>
          <div class="tea">
            <div class="tilte">教师评语</div>
@@ -152,7 +157,8 @@
           studyscheduleId : this.$route.query.studyscheduleId,
           studyresult : [],
           studyschedule: [],
-          allthings:[]
+          allthings:[],
+          courseName:''
         }
       },
         created(){
@@ -181,6 +187,7 @@
               "page_no": 1
             }).then(function (data) {
                 that.studyschedule = data.data;
+                that.courseName = data.data.name;
                 that.member(data.data.course_schedule.course_id);
               })
           },

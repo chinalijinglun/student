@@ -191,6 +191,9 @@ export default new Router({
       children: schedule
     },
     // 404 page
-    {path: '*', component: index}
+    {path: '*',
+      component: index,
+      // redirect:main
+    }
   ]
 })

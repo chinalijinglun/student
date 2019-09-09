@@ -1,11 +1,11 @@
 <template>
-    <div class="login">
+    <div class="login" ref="mainText">
         <div class="login-box">
             <div class="title">
-                登录UStutor
+                登录
             </div>
             <div class="inps">
-                <input type="text" class="" v-model="mobile_no" placeholder="请输入注册手机号码或邮箱地址">
+                <input type="text" class="" v-model="mobile_no" placeholder="请输入注册手机号码">
                 <input type="password" v-model="passwd" placeholder="请输入登录密码">
             </div>
             <div class="remember-num">
@@ -41,7 +41,10 @@
 
         },
       created(){
-          this.create()
+          this.create();
+          this.$nextTick(()=>{
+            console.log(this.$refs.mainText.style.height = document.documentElement.clientHeight - 195+'px');
+          })
       },
         methods:{
           login(){
@@ -52,7 +55,7 @@
 //               var filter2  = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 //                if (filter1.test(that.mobile_no)||filter2.test(that.mobile_no)){
                      if(that.passwd){
-                         this.baseAxios.post('auth/login',{
+                         this.baseAxios2.post('auth/login',{
                             "password": that.passwd,
                             "username": that.mobile_no,
                             "usertype": "Student"
@@ -61,7 +64,7 @@
                             //  存储token
 //                           console.log(res)
                            if(res.status == 200){
-//                             localStorage.clear();
+                             localStorage.clear();
                              localStorage.setItem('Authorization',res.data.Authorization);
                              localStorage.setItem('id',res.data.id);
                              if(that.auto == '2'){
@@ -110,9 +113,10 @@
 
 <style scoped>
     .login{
-        height: 600px;
+        min-height: 600px;
         background: url('../assets/bj01.jpg') no-repeat;
         position: relative;
+        background-size: cover;
     }
     .login-box{
         width: 370px;

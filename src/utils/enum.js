@@ -402,7 +402,8 @@ export const NATIONAL_CODE = [
   },
   {
     name_zh: "爱沙尼亚",
-    name: "Estonia",
+    name: "Es" +
+    "stonia",
     code: "372",
     time: "-5.00"
   },
